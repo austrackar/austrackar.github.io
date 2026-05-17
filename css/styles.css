@@ -392,13 +392,6 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 768px) {
-  #left-panel { width: 100%; position: absolute; bottom: 0; height: 50vh; z-index: 800; border-right: none; border-top: 1px solid var(--border); }
-  #main-content { flex-direction: column; }
-  #notifications-container { left: 10px; right: 10px; bottom: 55vh; }
-}
-
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
