@@ -546,3 +546,10 @@ function renderRouteOptions(routeOptions, originCoords, destCoords, originName, 
   });
 
 }
+
+const panel = document.getElementById('left-panel');
+const handle = document.getElementById('panel-handle');
+
+handle.addEventListener('click', () => {
+    panel.classList.toggle('collapsed');
+});

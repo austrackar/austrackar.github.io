@@ -477,4 +477,22 @@ body {
         bottom: 10px;
         width: auto;
     }
+
+    #left-panel {
+       transition: transform 0.3s ease;
+    }
+
+    #left-panel.collapsed {
+      transform: translateY(75%);
+   }
+
+    #panel-handle {
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
 }
