@@ -398,3 +398,65 @@ body {
   #main-content { flex-direction: column; }
   #notifications-container { left: 10px; right: 10px; bottom: 55vh; }
 }
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  #main-content {
+    flex-direction: column;
+  }
+
+  #left-panel {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+  }
+
+  #map {
+    height: 40vh;
+  }
+
+  #top-bar {
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .logo-title {
+    font-size: 22px;
+  }
+
+  .top-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .route-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-section {
+    padding: 14px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .route-inputs {
+    gap: 12px;
+  }
+
+  .floating-controls {
+    right: 10px;
+    top: 120px;
+  }
+
+}
