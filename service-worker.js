@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rutasegura-v5';
+const CACHE_NAME = 'rutasegura-v6';
 const STATIC_ASSETS = [
   '/', '/index.html',
   '/css/styles.css',

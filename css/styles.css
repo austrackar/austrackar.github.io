@@ -491,7 +491,7 @@ body {
     }
 
     #left-panel.collapsed {
-      transform: translateY(calc(100% - 50px));
+      transform: translateY(calc(100% - 90px));
    }
 
     #panel-handle {
@@ -505,7 +505,7 @@ body {
     }
 
     .leaflet-bottom.leaflet-right {
-      bottom: 80px;
+      bottom: 120px;
     }
 
 }
