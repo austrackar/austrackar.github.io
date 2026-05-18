@@ -395,6 +395,9 @@ body {
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
+     body {
+       outline: 10px solid red !important;
+    }
 
      body {
        overflow: hidden;
