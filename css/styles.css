@@ -395,5 +395,5 @@ body {
 
 #panel-handle,
 #mobile-zoom-controls {
-    display: none;
+    display: none !important;
 }
