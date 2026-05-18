@@ -505,7 +505,7 @@ body {
        position: fixed;
        left: 12px;
        right: 12px;
-       bottom: 55px;
+       bottom: 25px;
        z-index: 800;
        text-align: center;
        padding: 12px;
@@ -525,7 +525,7 @@ body {
 
     .leaflet-right .leaflet-control {
        margin-right: 12px !important;
-       margin-bottom: 280px !important;
+       margin-bottom: 140px !important;
        z-index: 1500 !important;
        position: relative; 
   }
