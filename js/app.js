@@ -551,7 +551,7 @@ const panel = document.getElementById('left-panel');
 const handle = document.getElementById('panel-handle');
 
 handle.addEventListener('click', () => {
-    panel.classList.toggle('collapsed');
+    panel.classList.toggle('open');
 });
 
 document.getElementById('mobile-zoom-in').addEventListener('click', () => {

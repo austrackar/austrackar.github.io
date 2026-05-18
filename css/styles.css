@@ -478,66 +478,51 @@ body {
     }
 
     #left-panel {
-       position: fixed;
-       bottom: 0;
-       left: 0;
-       width: 100%;
-       max-height: 30dvh;
-       z-index: 900;
-       overflow-y: auto;
-       transition: transform 0.3s ease;
-       padding-bottom: 20px;
-       border-right: none;
-
-       background: linear-gradient(
-        to top,
-        rgba(6,11,23,0.98),
-        rgba(6,11,23,0.85),
-        transparent
-       );
-  } 
-
-     #left-panel.collapsed {
-       transform: translateY(100%);
-  }
-
-    #panel-handle {
-       position: fixed;
-       left: 12px;
-       right: 12px;
-       bottom: 25px;
-       z-index: 800;
-       text-align: center;
-       padding: 12px;
-       border-radius: 18px;
-       background: rgba(15, 23, 42, 0.95);
-       color: white;
-       font-weight: bold;
-       cursor: pointer;
-       box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-  }
-
-    .floating-controls {
-       top: 190px !important;
-       right: 12px !important;
-       z-index: 1400 !important;
-  }
-
-    .leaflet-right .leaflet-control {
-       margin-right: 12px !important;
-       margin-bottom: 140px !important;
-       z-index: 1500 !important;
-       position: relative; 
-  }
-    .leaflet-control-zoom {
-       display: none !important;
-  }
-
-  #mobile-zoom-controls {
     position: fixed;
-    right: 12px;
-    bottom: 320px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 58dvh;
+    overflow-y: auto;
+    z-index: 1100;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    padding-bottom: 95px;
+    background: rgba(6, 11, 23, 0.96);
+    border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+#left-panel.open {
+    transform: translateY(0);
+}
+
+#panel-handle {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 70px;
     z-index: 1600;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.96);
+    color: white;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.leaflet-control-zoom {
+    display: none !important;
+}
+
+#mobile-zoom-controls {
+    position: fixed;
+    right: 14px;
+    bottom: 145px;
+    z-index: 1700;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -548,10 +533,20 @@ body {
     height: 52px;
     border: none;
     border-radius: 14px;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.96);
     color: white;
     font-size: 28px;
     font-weight: bold;
+}
+
+.floating-controls {
+    position: fixed !important;
+    right: 14px !important;
+    top: 205px !important;
+    z-index: 1500 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
 }
 
 }
