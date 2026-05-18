@@ -392,3 +392,8 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+
+#panel-handle,
+#mobile-zoom-controls {
+    display: none;
+}
