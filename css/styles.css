@@ -412,7 +412,7 @@ body {
        inset: 0;
        width: 100%;
        top: 115px;
-       height: calc(100dvh - 115px);
+       height: calc(100dvh - 170px);
        z-index: 1;
     }
 
@@ -505,7 +505,7 @@ body {
        position: fixed;
        left: 12px;
        right: 12px;
-       bottom: 12px;
+       bottom: 55px;
        z-index: 1200;
        text-align: center;
        padding: 12px;
@@ -515,6 +515,12 @@ body {
        font-weight: bold;
        cursor: pointer;
        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+  }
+
+    .floating-controls {
+       top: 190px !important;
+       right: 12px !important;
+       z-index: 1400 !important;
   }
 
     .leaflet-right .leaflet-control {
