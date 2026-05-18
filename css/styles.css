@@ -517,11 +517,9 @@ body {
        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
   }
 
-    .leaflet-control-zoom {
-       position: fixed !important;
-       right: 12px !important;
-       bottom: 190px !important;
-       z-index: 1500 !important;
+    .leaflet-right .leaflet-control {
+       margin-right: 12px !important;
+       margin-bottom: 210px !important;
   }
 
 }
