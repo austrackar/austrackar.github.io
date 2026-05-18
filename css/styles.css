@@ -407,28 +407,6 @@ body {
        overflow: hidden;
     }  
 
-   #left-panel {
-       position: fixed;
-       bottom: 0;
-       left: 0;
-       width: 100%;
-       z-index: 900;
-
-    background: linear-gradient(
-        to top,
-        rgba(6,11,23,0.98),
-        rgba(6,11,23,0.85),
-        transparent
-    );
-
-    border-right: none;
-
-    max-height: 45vh;
-    overflow-y: auto;
-
-    padding-bottom: 20px;
-    }
-
     #map-container {
        position: absolute;
        inset: 0;
@@ -504,12 +482,20 @@ body {
        bottom: 0;
        left: 0;
        width: 100%;
-       max-height: 55dvh;
+       max-height: 30dvh;
        z-index: 900;
        overflow-y: auto;
        transition: transform 0.3s ease;
-      padding-bottom: 20px;
-  }
+       padding-bottom: 20px;
+       border-right: none;
+
+       background: linear-gradient(
+        to top,
+        rgba(6,11,23,0.98),
+        rgba(6,11,23,0.85),
+        transparent
+       );
+  } 
 
      #left-panel.collapsed {
        transform: translateY(100%);
@@ -534,8 +520,8 @@ body {
     .leaflet-control-zoom {
        position: fixed !important;
        right: 12px !important;
-       bottom: 95px !important;
-       z-index: 1300 !important;
+       bottom: 140px !important;
+       z-index: 1500 !important;
   }
 
 }
