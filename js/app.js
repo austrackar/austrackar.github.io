@@ -553,3 +553,11 @@ const handle = document.getElementById('panel-handle');
 handle.addEventListener('click', () => {
     panel.classList.toggle('collapsed');
 });
+
+document.getElementById('mobile-zoom-in').addEventListener('click', () => {
+    map.zoomIn();
+});
+
+document.getElementById('mobile-zoom-out').addEventListener('click', () => {
+    map.zoomOut();
+});

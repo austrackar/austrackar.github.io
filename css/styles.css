@@ -529,5 +529,29 @@ body {
        z-index: 1500 !important;
        position: relative; 
   }
+    .leaflet-control-zoom {
+       display: none !important;
+  }
+
+  #mobile-zoom-controls {
+    position: fixed;
+    right: 12px;
+    bottom: 160px;
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#mobile-zoom-controls button {
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.95);
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
 
 }
