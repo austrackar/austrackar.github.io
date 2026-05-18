@@ -395,17 +395,10 @@ body {
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
-     body {
-       outline: 10px solid red !important;
-    }
-
+   
      body {
        overflow: hidden;
     }
-
-    #map-container {
-       height: 100dvh;
-   }
 
     #main-content {
        position: relative;
@@ -415,7 +408,7 @@ body {
     }  
 
    #left-panel {
-       position: absolute;
+       position: fixed;
        bottom: 0;
        left: 0;
        width: 100%;
