@@ -520,7 +520,7 @@ body {
     .leaflet-control-zoom {
        position: fixed !important;
        right: 12px !important;
-       bottom: 140px !important;
+       bottom: 190px !important;
        z-index: 1500 !important;
   }
 
