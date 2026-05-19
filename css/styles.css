@@ -274,10 +274,10 @@ body {
   position: absolute; 
   top: 15px; 
   right: 30px;
-
   display: flex; 
   flex-direction: column; 
-  gap: 4px; 
+  gap: 8px; 
+  padding-bottom: 20px;
   z-index: 500;
 }
 .layer-btn {
