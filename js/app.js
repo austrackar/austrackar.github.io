@@ -84,39 +84,85 @@ function setupEventListeners() {
     if (e.target === document.getElementById('legend-modal')) hideModal('legend-modal');
   });
 
+  // Helper for mobile events (touch + click)
+  function onTap(el, fn) {
+    if (!el) return;
+    el.addEventListener('click', fn);
+    el.addEventListener('touchend', function(e) { e.preventDefault(); fn.call(this, e); });
+  }
+
   // Mobile notification button
   const mobileNotifBtn = document.getElementById('mobile-notif-btn');
-  if (mobileNotifBtn) {
-    mobileNotifBtn.addEventListener('click', () => {
-      const notifBtn = document.getElementById('notif-toggle-btn');
-      if (notifBtn) notifBtn.click();
-      // Toggle visual state
-      const isActive = notificationsEnabled;
-      mobileNotifBtn.textContent = isActive ? '🔕' : '🔔';
-      mobileNotifBtn.style.borderColor = isActive ? 'var(--accent)' : 'rgba(255,255,255,0.1)';
-    });
-  }
+  onTap(mobileNotifBtn, () => {
+    const notifBtn = document.getElementById('notif-toggle-btn');
+    if (notifBtn) notifBtn.click();
+    const isActive = notificationsEnabled;
+    mobileNotifBtn.textContent = isActive ? '🔕' : '🔔';
+    mobileNotifBtn.style.borderColor = isActive ? 'var(--accent)' : 'rgba(255,255,255,0.1)';
+  });
 
   // Mobile alerts button
   const mobileAlertsBtn = document.querySelector('.mobile-alerts-btn');
-  if (mobileAlertsBtn) {
-    mobileAlertsBtn.addEventListener('click', () => {
-      // Open the left panel and scroll to alerts section
-      panel.classList.add('open');
-      const alertsSection = document.querySelector('#left-panel .panel-section:last-of-type');
-      if (alertsSection) {
-        setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  onTap(mobileAlertsBtn, () => {
+    panel.classList.add('open');
+    const alertsSection = document.querySelector('#left-panel .panel-section:last-of-type');
+    if (alertsSection) {
+      setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  });
+
+  // Mobile zoom buttons
+  const zoomIn = document.getElementById('mobile-zoom-in');
+  const zoomOut = document.getElementById('mobile-zoom-out');
+  onTap(zoomIn, () => { if (typeof map !== 'undefined' && map) map.zoomIn(); });
+  onTap(zoomOut, () => { if (typeof map !== 'undefined' && map) map.zoomOut(); });
+
+  // Panel handle toggle
+  const panelHandle = document.getElementById('panel-handle');
+  onTap(panelHandle, () => { panel.classList.toggle('open'); });
+
+  // Close bottom sheet when tapping on the map
+  document.addEventListener('click', (e) => {
+    if (panel.classList.contains('open')) {
+      const mapEl = document.getElementById('map');
+      if (mapEl && mapEl.contains(e.target)) {
+        panel.classList.remove('open');
+      }
+    }
+  });
+
+  // Mobile search toggle
+  const mobileSearch = document.getElementById('mobile-search');
+  const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+  const mobileSearchInput = document.getElementById('mobile-search-input');
+  onTap(mobileSearchToggle, () => {
+    mobileSearch.classList.toggle('open');
+    if (mobileSearch.classList.contains('open')) {
+      setTimeout(() => mobileSearchInput.focus(), 100);
+    }
+  });
+
+  // Mobile search: reflect input in the panel's destination field
+  if (mobileSearchInput) {
+    mobileSearchInput.addEventListener('input', (e) => {
+      const destInput = document.getElementById('dest-input');
+      if (destInput) {
+        destInput.value = e.target.value;
+        const evt = new Event('input', { bubbles: true });
+        destInput.dispatchEvent(evt);
+      }
+    });
+    mobileSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        panel.classList.add('open');
+        mobileSearch.classList.remove('open');
+        setTimeout(() => {
+          const calcBtn = document.getElementById('calculate-btn');
+          if (calcBtn) calcBtn.click();
+        }, 200);
       }
     });
   }
-
-  // Mobile zoom buttons
-  document.getElementById('mobile-zoom-in').addEventListener('click', () => {
-    if (typeof map !== 'undefined' && map) map.zoomIn();
-  });
-  document.getElementById('mobile-zoom-out').addEventListener('click', () => {
-    if (typeof map !== 'undefined' && map) map.zoomOut();
-  });
 }
 
 // ─── SWAP ORIGIN/DEST ───────────────────────────
@@ -589,53 +635,3 @@ function renderRouteOptions(routeOptions, originCoords, destCoords, originName, 
 }
 
 const panel = document.getElementById('left-panel');
-const handle = document.getElementById('panel-handle');
-
-handle.addEventListener('click', () => {
-    panel.classList.toggle('open');
-});
-
-// Close bottom sheet when tapping on the map
-document.addEventListener('click', (e) => {
-    if (panel.classList.contains('open')) {
-        const mapEl = document.getElementById('map');
-        if (mapEl && mapEl.contains(e.target)) {
-            panel.classList.remove('open');
-        }
-    }
-});
-
-const mobileSearch = document.getElementById('mobile-search');
-const mobileSearchToggle = document.getElementById('mobile-search-toggle');
-const mobileSearchInput = document.getElementById('mobile-search-input');
-
-mobileSearchToggle.addEventListener('click', () => {
-    mobileSearch.classList.toggle('open');
-    if (mobileSearch.classList.contains('open')) {
-        setTimeout(() => mobileSearchInput.focus(), 100);
-    }
-});
-
-// Mobile search: reflect input in the panel's destination field
-mobileSearchInput.addEventListener('input', (e) => {
-    const destInput = document.getElementById('dest-input');
-    if (destInput) {
-        destInput.value = e.target.value;
-        // Trigger suggestions
-        const evt = new Event('input', { bubbles: true });
-        destInput.dispatchEvent(evt);
-    }
-});
-
-mobileSearchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        const panel = document.getElementById('left-panel');
-        if (panel) panel.classList.add('open');
-        mobileSearch.classList.remove('open');
-        // Trigger route calculation if both fields filled
-        setTimeout(() => {
-            const calcBtn = document.getElementById('calculate-btn');
-            if (calcBtn) calcBtn.click();
-        }, 200);
-    }
-});
