@@ -181,4 +181,8 @@
      z-index: 2500;
     }
 
+#left-panel {
+    display: none !important;
+}
+
 }
