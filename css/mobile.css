@@ -191,4 +191,14 @@
     display: none !important;
 }
 
+ main #left-panel,
+ aside#left-panel,
+ #left-panel {
+     display: none !important;
+     visibility: hidden !important;
+     width: 0 !important;
+     height: 0 !important;
+     overflow: hidden !important;
+    }
+
 }
