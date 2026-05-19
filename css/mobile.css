@@ -51,7 +51,7 @@
          top: 210px;
 
          width: 100%;
-         height: calc(100dvh - 210px);
+         height: calc(100dvh - 150px);
 
          z-index: 1;
         }
@@ -77,8 +77,8 @@
         }
 
     .layer-btn {
-         width: 52px;
-         height: 52px;
+         width: 48px;
+         height: 48px;
         }
 
     /* ================= ZOOM ================= */
@@ -98,7 +98,7 @@
 #mobile-search {
      position: fixed;
 
-     top: 145px;
+     top: 135px;
      left: 12px;
      right: 12px;
 
@@ -150,7 +150,7 @@
      position: fixed;
 
      left: 12px;
-     bottom: 160px;
+     bottom: 110px;
 
      z-index: 3000;
 
