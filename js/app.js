@@ -84,11 +84,9 @@ function setupEventListeners() {
     if (e.target === document.getElementById('legend-modal')) hideModal('legend-modal');
   });
 
-  // Helper for mobile events (touch + click)
   function onTap(el, fn) {
     if (!el) return;
     el.addEventListener('click', fn);
-    el.addEventListener('touchend', function(e) { e.preventDefault(); fn.call(this, e); });
   }
 
   // Mobile notification button
@@ -107,7 +105,7 @@ function setupEventListeners() {
     panel.classList.add('open');
     const alertsSection = document.querySelector('#left-panel .panel-section:last-of-type');
     if (alertsSection) {
-      setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
     }
   });
 

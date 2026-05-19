@@ -112,7 +112,7 @@
   }
 
   #mobile-search.open {
-    display: block;
+    display: block !important;
   }
 
   #mobile-search input {
