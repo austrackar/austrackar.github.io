@@ -90,7 +90,7 @@
     }
 
     #left-panel.collapsed {
-        transform: translateY(calc(100% - 85px));
+        transform: translateY(calc(100% - 160px));
     }
 
     #panel-handle {
@@ -102,6 +102,8 @@
         margin: -18px -18px 18px -18px;
 
         padding: 16px;
+
+        min-height: 64px;
 
         text-align: center;
 
