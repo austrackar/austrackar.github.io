@@ -61,63 +61,6 @@
          height: 100%;
         }
 
-    /* ================= PANEL ================= */
-
-    #left-panel {
-         position: fixed;
-         left: 12px;
-         right: 12px;
-         bottom: 90px;
-
-         max-height: 65dvh;
-         overflow-y: auto;
-
-         z-index: 2500;
-
-         transform: translateY(calc(100% + 120px));
-         transition: transform 0.3s ease;
-
-         padding: 18px;
-
-         background: rgba(6, 11, 23, 0.96);
-         border-radius: 24px;
-         border: 1px solid rgba(255,255,255,0.12);
-
-        }
-
-    #left-panel.open {
-         transform: translateY(0);
-        }
-
-    
-
-    #panel-handle {
-         position: fixed !important;
-
-         left: 16px !important;
-         right: 16px !important;
-         bottom: 90px !important;
-
-         z-index: 3000 !important;
-
-         min-height: 60px;
-
-         display: flex;
-         align-items: center;
-         justify-content: center;
-
-         border-radius: 18px;
-
-         background: rgba(15,23,42,0.98);
-
-         color: white;
-
-         font-weight: bold;
-
-         cursor: pointer;
-
-        }
-
     /* ================= RIGHT BUTTONS ================= */
 
     #layer-controls {
@@ -149,5 +92,52 @@
          z-index: 2500 !important;
 
         } 
+
+/* ================= SEARCH BAR ================= */
+
+#mobile-search {
+    position: fixed;
+
+    top: 92px;
+    left: 12px;
+    right: 12px;
+
+    z-index: 3000;
+
+    display: flex;
+    gap: 10px;
+}
+
+#mobile-search input {
+    flex: 1;
+
+    height: 52px;
+
+    border: none;
+    border-radius: 16px;
+
+    padding: 0 16px;
+
+    background: rgba(15,23,42,0.96);
+
+    color: white;
+
+    font-size: 16px;
+}
+
+#mobile-search button {
+    width: 52px;
+    height: 52px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: #f59e0b;
+
+    color: black;
+
+    font-size: 20px;
+    font-weight: bold;
+}
 
 }
