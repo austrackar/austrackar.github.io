@@ -271,7 +271,7 @@ body {
 
 /* ═══ LAYER CONTROLS ═══ */
 #layer-controls {
-  position: absolute; 
+  position: fixed; 
   top: 25px; 
   right: 30px;
   display: flex; 
