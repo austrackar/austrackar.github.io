@@ -48,10 +48,10 @@
     #map-container {
          position: absolute;
          inset: 0;
-         top: 210px;
+         top: 190px;
 
          width: 100%;
-         height: calc(100dvh - 150px);
+         height: calc(100dvh - 190px);
 
          z-index: 1;
         }
@@ -97,15 +97,18 @@
 
 #mobile-search {
      position: fixed;
-
      top: 135px;
      left: 12px;
-     right: 12px;
+     right: 72px;
 
      z-index: 3000;
 
-     display: flex;
+     display: none;
      gap: 10px;
+    }
+
+#mobile-search.open {
+     display: flex;
     }
 
 #mobile-search input {
@@ -120,14 +123,21 @@
 
      background: rgba(15,23,42,0.96);
 
-     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-
      color: white;
 
      font-size: 16px;
+
+     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
     }
 
-#mobile-search button {
+#mobile-search-toggle {
+     position: fixed;
+
+     top: 135px;
+     right: 12px;
+
+     z-index: 3100;
+
      width: 52px;
      height: 52px;
 
@@ -135,13 +145,10 @@
      border-radius: 16px;
 
      background: #f59e0b;
-     
+
+     font-size: 24px;
+
      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-
-     color: black;
-
-     font-size: 20px;
-     font-weight: bold;
     }
 
 /* ================= ALERT BUTTON ================= */

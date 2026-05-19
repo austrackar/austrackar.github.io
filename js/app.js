@@ -561,3 +561,10 @@ document.getElementById('mobile-zoom-in').addEventListener('click', () => {
 document.getElementById('mobile-zoom-out').addEventListener('click', () => {
     map.zoomOut();
 });
+
+const mobileSearch = document.getElementById('mobile-search');
+const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+
+mobileSearchToggle.addEventListener('click', () => {
+    mobileSearch.classList.toggle('open');
+});
