@@ -1,25 +1,57 @@
-/* ================= MOBILE ================= */
-
 @media (max-width: 768px) {
-   
-     body {
-       overflow: hidden;
+
+    body {
+        overflow: hidden;
     }
 
     #main-content {
-       position: relative;
-       width: 100%;
-       height: 100vh;
-       overflow: hidden;
-    }  
+        position: relative;
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    /* ================= TOP BAR ================= */
+
+    #top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2000;
+
+        padding: 10px;
+        padding-top: env(safe-area-inset-top);
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #logo-name {
+        font-size: 20px;
+    }
+
+    #logo-subtitle {
+        font-size: 11px;
+    }
+
+    .top-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    /* ================= MAP ================= */
 
     #map-container {
-       position: absolute;
-       inset: 0;
-       width: 100%;
-       top: 115px;
-       height: calc(100dvh - 170px);
-       z-index: 1;
+        position: absolute;
+        inset: 0;
+        top: 115px;
+
+        width: 100%;
+        height: calc(100dvh - 115px);
+
+        z-index: 1;
     }
 
     #map {
@@ -27,132 +59,93 @@
         height: 100%;
     }
 
-    #top-bar {
-       position: fixed;
-       top: 0;
-       left: 0;
-       right: 0;
-       z-index: 1300;
-
-       padding: 8px;
-       padding-top: env(safe-area-inset-top);
-
-       flex-wrap: wrap;
-       gap: 6px;
-   }
-
-    #logo-name {
-       font-size: 20px;
-    }
-
-    #logo-subtitle {
-       font-size: 11px;
-   }
-
-    .top-btn {
-        padding: 8px 10px;
-        font-size: 13px;
-    }
-
-    .panel-section {
-        padding: 14px;
-        margin: 10px;
-        border-radius: 16px;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        font-size: 16px;
-        padding: 14px;
-    }
-
-    .route-stats {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .route-stat {
-        min-height: 80px;
-    }
-
-    #notifications-container {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        width: auto;
-    }
+    /* ================= PANEL ================= */
 
     #left-panel {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-height: 58dvh;
-    overflow-y: auto;
-    z-index: 1100;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    padding-bottom: 95px;
-    background: rgba(6, 11, 23, 0.96);
-    border-top: 1px solid rgba(255,255,255,0.12);
-}
+        position: fixed;
 
-#left-panel.open {
-    transform: translateY(0);
-}
+        left: 0;
+        right: 0;
+        bottom: 0;
 
-#panel-handle {
-    position: fixed;
-    left: 16px;
-    right: 16px;
-    bottom: 70px;
-    z-index: 1600;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 18px;
-    background: rgba(15, 23, 42, 0.96);
-    color: white;
-    font-weight: 800;
-    font-size: 18px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-}
+        max-height: 75dvh;
 
-.leaflet-control-zoom {
-    display: none !important;
-}
+        overflow-y: auto;
 
-#mobile-zoom-controls {
-    position: fixed;
-    right: 14px;
-    bottom: 145px;
-    z-index: 1700;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        z-index: 1500;
 
-#mobile-zoom-controls button {
-    width: 52px;
-    height: 52px;
-    border: none;
-    border-radius: 14px;
-    background: rgba(15, 23, 42, 0.96);
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-}
+        padding: 18px;
+        padding-bottom: 120px;
 
-.floating-controls {
-    position: fixed !important;
-    right: 14px !important;
-    top: 205px !important;
-    z-index: 1500 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-}
+        transition: transform 0.3s ease;
+
+        background: linear-gradient(
+            to top,
+            rgba(6,11,23,0.98),
+            rgba(6,11,23,0.92)
+        );
+
+        border-top-left-radius: 22px;
+        border-top-right-radius: 22px;
+    }
+
+    #left-panel.collapsed {
+        transform: translateY(calc(100% - 85px));
+    }
+
+    #panel-handle {
+        position: sticky;
+        top: 0;
+
+        z-index: 2000;
+
+        margin: -18px -18px 18px -18px;
+
+        padding: 16px;
+
+        text-align: center;
+
+        background: rgba(15,23,42,0.98);
+
+        color: white;
+
+        font-weight: bold;
+
+        border-top-left-radius: 22px;
+        border-top-right-radius: 22px;
+
+        cursor: pointer;
+    }
+
+    /* ================= RIGHT BUTTONS ================= */
+
+    #layer-controls {
+        position: fixed;
+
+        top: 140px;
+        right: 12px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        z-index: 2500;
+    }
+
+    .layer-btn {
+        width: 52px;
+        height: 52px;
+    }
+
+    /* ================= ZOOM ================= */
+
+    .leaflet-control-zoom {
+        position: fixed !important;
+
+        right: 12px !important;
+        bottom: 110px !important;
+
+        z-index: 2500 !important;
+    }
 
 }
