@@ -272,16 +272,17 @@ body {
 /* ═══ LAYER CONTROLS ═══ */
 #layer-controls {
   position: fixed; 
-  top: 25px; 
-  right: 30px;
+  top: 90px; 
+  right: 35px;
   display: flex; 
   flex-direction: column; 
-  gap: 8px; 
-  padding-bottom: 20px;
-  z-index: 500;
+  gap: 10px; 
+  
+  z-index: 2000;
 }
 .layer-btn {
-  width: 38px; height: 38px;
+  width: 48px; 
+  height: 48px;
   background: var(--glass); backdrop-filter: blur(10px);
   border: 1px solid var(--border); border-radius: var(--radius-sm);
   cursor: pointer; font-size: 16px; transition: all 0.2s;
