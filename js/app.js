@@ -79,6 +79,40 @@ function setupEventListeners() {
   document.getElementById('legend-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('legend-modal')) hideModal('legend-modal');
   });
+
+  // Mobile notification button
+  const mobileNotifBtn = document.getElementById('mobile-notif-btn');
+  if (mobileNotifBtn) {
+    mobileNotifBtn.addEventListener('click', () => {
+      const notifBtn = document.getElementById('notif-toggle-btn');
+      if (notifBtn) notifBtn.click();
+      // Toggle visual state
+      const isActive = notificationsEnabled;
+      mobileNotifBtn.textContent = isActive ? '🔕' : '🔔';
+      mobileNotifBtn.style.borderColor = isActive ? 'var(--accent)' : 'rgba(255,255,255,0.1)';
+    });
+  }
+
+  // Mobile alerts button
+  const mobileAlertsBtn = document.querySelector('.mobile-alerts-btn');
+  if (mobileAlertsBtn) {
+    mobileAlertsBtn.addEventListener('click', () => {
+      // Open the left panel and scroll to alerts section
+      panel.classList.add('open');
+      const alertsSection = document.querySelector('#left-panel .panel-section:last-of-type');
+      if (alertsSection) {
+        setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    });
+  }
+
+  // Mobile zoom buttons
+  document.getElementById('mobile-zoom-in').addEventListener('click', () => {
+    if (typeof map !== 'undefined' && map) map.zoomIn();
+  });
+  document.getElementById('mobile-zoom-out').addEventListener('click', () => {
+    if (typeof map !== 'undefined' && map) map.zoomOut();
+  });
 }
 
 // ─── SWAP ORIGIN/DEST ───────────────────────────
@@ -422,10 +456,12 @@ function toggleNotifications() {
   notificationsEnabled = !notificationsEnabled;
   const btn = document.getElementById('notif-toggle-btn');
   const icon = document.getElementById('notif-icon');
+  const mobileBtn = document.getElementById('mobile-notif-btn');
   if (notificationsEnabled) {
     icon.textContent = '🔔';
     btn.style.borderColor = 'var(--accent)';
     btn.style.color = 'var(--accent)';
+    if (mobileBtn) { mobileBtn.textContent = '🔔'; mobileBtn.style.borderColor = 'var(--accent)'; }
     startNotifications();
     showNotification({ title: 'Alertas activadas', body: 'Recibirás notificaciones de cortes y clima en tiempo real.', type: 'success' });
     requestBrowserNotification();
@@ -433,6 +469,7 @@ function toggleNotifications() {
     icon.textContent = '🔕';
     btn.style.borderColor = '';
     btn.style.color = '';
+    if (mobileBtn) { mobileBtn.textContent = '🔕'; mobileBtn.style.borderColor = ''; }
     stopNotifications();
     showNotification({ title: 'Alertas desactivadas', body: 'Ya no recibirás notificaciones.', type: 'info' });
   }
@@ -554,17 +591,47 @@ handle.addEventListener('click', () => {
     panel.classList.toggle('open');
 });
 
-document.getElementById('mobile-zoom-in').addEventListener('click', () => {
-    map.zoomIn();
-});
-
-document.getElementById('mobile-zoom-out').addEventListener('click', () => {
-    map.zoomOut();
+// Close bottom sheet when tapping on the map
+document.addEventListener('click', (e) => {
+    if (panel.classList.contains('open')) {
+        const mapEl = document.getElementById('map');
+        if (mapEl && mapEl.contains(e.target)) {
+            panel.classList.remove('open');
+        }
+    }
 });
 
 const mobileSearch = document.getElementById('mobile-search');
 const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+const mobileSearchInput = document.getElementById('mobile-search-input');
 
 mobileSearchToggle.addEventListener('click', () => {
     mobileSearch.classList.toggle('open');
+    if (mobileSearch.classList.contains('open')) {
+        setTimeout(() => mobileSearchInput.focus(), 100);
+    }
+});
+
+// Mobile search: reflect input in the panel's destination field
+mobileSearchInput.addEventListener('input', (e) => {
+    const destInput = document.getElementById('dest-input');
+    if (destInput) {
+        destInput.value = e.target.value;
+        // Trigger suggestions
+        const evt = new Event('input', { bubbles: true });
+        destInput.dispatchEvent(evt);
+    }
+});
+
+mobileSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const panel = document.getElementById('left-panel');
+        if (panel) panel.classList.add('open');
+        mobileSearch.classList.remove('open');
+        // Trigger route calculation if both fields filled
+        setTimeout(() => {
+            const calcBtn = document.getElementById('calculate-btn');
+            if (calcBtn) calcBtn.click();
+        }, 200);
+    }
 });

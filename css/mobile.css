@@ -1,220 +1,320 @@
 @media (max-width: 768px) {
-
-    body {
-         overflow: hidden;
-        }
-
-    #main-content {
-         position: relative;
-         width: 100%;
-         height: 100dvh;
-         overflow: hidden;
-
-        }
-
-    /* ================= TOP BAR ================= */
-
-    #top-bar {
-         position: fixed;
-         top: 0;
-         left: 0;
-         right: 0;
-         z-index: 2000;
-
-         padding: 10px;
-         padding-top: env(safe-area-inset-top);
-
-         display: flex;
-         flex-wrap: wrap;
-         gap: 8px;
-
-        }
-
-    #logo-name {
-         font-size: 20px;
-    }
-
-    #logo-subtitle {
-         font-size: 11px;
-    }
-
-    .top-btn {
-         padding: 8px 12px;
-         font-size: 13px;
-    }
-
-    /* ================= MAP ================= */
-
-    #map-container {
-         position: absolute;
-         inset: 0;
-         top: 115px;
-
-         width: 100%;
-         height: calc(100dvh - 115px);
-
-         z-index: 1;
-        }
-
-    #map {
-         width: 100%;
-         height: 100%;
-        }
-
-    /* ================= RIGHT BUTTONS ================= */
-
-    #layer-controls {
-         position: fixed;
-
-         top: 200px;
-         right: 12px;
-
-         display: flex;
-         flex-direction: column;
-         gap: 10px;
-
-         z-index: 2500;
-        }
-
-    .layer-btn {
-         width: 48px;
-         height: 48px;
-        }
-
-    /* ================= ZOOM ================= */
-
-    .leaflet-control-zoom {
-         position: fixed !important;
-
-         right: 12px !important;
-         bottom: 90px !important;
-
-         z-index: 2500 !important;
-
-        } 
-
-/* ================= SEARCH BAR ================= */
-
-#mobile-search {
-     position: fixed;
-     top: 130px;
-     left: 12px;
-     right: 80px;
-
-     z-index: 3000;
-
-     display: none;
-     gap: 10px;
-    }
-
-#mobile-search.open {
-     display: flex;
-    }
-
-#mobile-search input {
-     flex: 1;
-
-     height: 52px;
-
-     border: none;
-     border-radius: 16px;
-
-     padding: 0 16px;
-
-     background: rgba(15,23,42,0.96);
-
-     color: white;
-
-     font-size: 16px;
-
-     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-    }
-
-#mobile-search-toggle {
-     position: fixed;
-
-     top: 130px;
-     right: 12px;
-
-     z-index: 3100;
-
-     width: 52px;
-     height: 52px;
-
-     border: none;
-     border-radius: 16px;
-
-     background: #f59e0b;
-
-     font-size: 24px;
-
-     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-    }
-
-/* ================= ALERT BUTTON ================= */
-
-.mobile-alerts-btn {
-     position: fixed;
-
-     left: 12px;
-     bottom: 140px;
-
-     z-index: 3000;
-
-     padding: 12px 18px;
-
-     border: none;
-     border-radius: 16px;
-
-     background: #ef4444;
-
-     color: white;
-
-     font-weight: bold;
-
-     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-
-    }
-
-/* ================= NOTIFICATIONS ================= */
-
-#notifications-container {
-     position: fixed;
-
-     left: 12px;
-     right: 12px;
-
-     bottom: 90px;
-
-     width: auto;
-
-     z-index: 2500;
-    }
-
-#left-panel {
+  html, body {
+    overflow: hidden;
+    background: #000;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  #app {
+    height: 100dvh;
+    width: 100%;
+    display: block;
+  }
+
+  #top-bar {
     display: none !important;
-}
+  }
 
-#sidebar,
-.sidebar,
-.sidebar-content {
+  /* ================= MAP (full screen) ================= */
+  #main-content {
+    display: block !important;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    flex: none !important;
+  }
+
+  #map-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    flex: none !important;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ================= TOP FLOATING CONTROLS ================= */
+
+  #panel-handle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 3000;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+
+  #panel-handle::before {
+    content: "☰";
+  }
+
+  #mobile-search-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 3100;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  #mobile-notif-btn {
+    position: fixed;
+    top: 12px;
+    right: 64px;
+    z-index: 3100;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ================= SEARCH BAR ================= */
+  #mobile-search {
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    right: 12px;
+    z-index: 3000;
+    display: none;
+  }
+
+  #mobile-search.open {
+    display: block;
+  }
+
+  #mobile-search input {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 24px;
+    padding: 0 20px;
+    background: rgba(15, 23, 42, 0.96);
+    color: white;
+    font-size: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  #mobile-search input::placeholder {
+    color: #94a3b8;
+  }
+
+  /* ================= BOTTOM CONTROLS ================= */
+
+  .mobile-alerts-btn {
+    position: fixed;
+    left: 12px;
+    bottom: 28px;
+    z-index: 3000;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 24px;
+    background: rgba(239, 68, 68, 0.92);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  #mobile-zoom-controls {
+    position: fixed;
+    right: 12px;
+    bottom: 28px;
+    z-index: 2500;
+    display: flex !important;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+
+  #mobile-zoom-controls button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-size: 22px;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  #mobile-zoom-controls button:last-child {
+    border-bottom: none;
+  }
+
+  #mobile-zoom-controls button:active {
+    background: rgba(245, 158, 11, 0.3);
+  }
+
+  #layer-controls {
+    position: fixed;
+    top: auto;
+    bottom: 126px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 2500;
+  }
+
+  .layer-btn {
+    width: 44px;
+    height: 44px;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    color: white;
+  }
+
+  .layer-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  /* ================= SUGGESTIONS DROPDOWN IN SHEET ================= */
+  .suggestions-dropdown {
+    left: 0 !important;
+    right: 0 !important;
+    top: calc(100% + 2px) !important;
+    border-radius: 0 0 12px 12px !important;
+  }
+
+  /* ================= BOTTOM SHEET ================= */
+  #left-panel {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000 !important;
+    width: 100% !important;
+    max-height: 75dvh;
+    background: #161b27;
+    border: none !important;
+    border-radius: 20px 20px 0 0;
+    display: flex !important;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.7);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    transform: translateY(100%);
+    visibility: visible !important;
+    height: auto !important;
+  }
+
+  #left-panel.open {
+    transform: translateY(0);
+  }
+
+  #left-panel::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    margin: 10px auto 6px;
+    flex-shrink: 0;
+  }
+
+  /* ================= NOTIFICATIONS ================= */
+  #notifications-container {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 80px;
+    width: auto;
+    z-index: 4000;
+  }
+
+  .notification {
+    padding: 10px 14px;
+    font-size: 12px;
+    max-width: 100%;
+  }
+
+  /* ================= MODAL ================= */
+  .modal-box {
+    max-width: 92%;
+    width: 100%;
+    margin: 0 16px;
+  }
+
+  /* ================= HIDE DESKTOP ELEMENTS ================= */
+  #zoom-controls,
+  #sidebar,
+  .sidebar {
     display: none !important;
-}
+  }
 
- main #left-panel,
- aside#left-panel,
- #left-panel {
-     display: none !important;
-     visibility: hidden !important;
-     width: 0 !important;
-     height: 0 !important;
-     overflow: hidden !important;
-    }
-
- #mobile-search-toggle,
- .mobile-alerts-btn,
- #mobile-zoom-controls {
-     display: flex !important;
-    }
-
+  /* Hide Leaflet default controls */
+  .leaflet-control-zoom,
+  .leaflet-control-attribution {
+    display: none !important;
+  }
 }
