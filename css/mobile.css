@@ -141,7 +141,16 @@
 }
 
 #mobile-search {
-    display: flex;
+    position: fixed !important;
+
+    top: 145px !important;
+    left: 12px !important;
+    right: 12px !important;
+
+    z-index: 4000 !important;
+
+    display: flex !important;
+    gap: 10px !important;
 }
 
 }
