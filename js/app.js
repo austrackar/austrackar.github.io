@@ -9,13 +9,17 @@ let savedRouteData = null;
 let availableRouteOptions = [];
 // ─── INIT ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  initMap();
-  buildAlertsList('all');
-  buildLegendModal();
-  setupEventListeners();
-  //registerServiceWorker();
-  checkOnlineStatus();
-  setTimeout(startNotificationDemo, 3000);
+  try {
+    initMap();
+    buildAlertsList('all');
+    buildLegendModal();
+    setupEventListeners();
+    checkOnlineStatus();
+    setTimeout(startNotificationDemo, 3000);
+  } catch (e) {
+    console.error('Error en inicialización:', e);
+    showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + e.message, type: 'danger' });
+  }
 });
 
 // ─── SERVICE WORKER ─────────────────────────────

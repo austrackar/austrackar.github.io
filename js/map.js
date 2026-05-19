@@ -17,6 +17,7 @@ const TILE_LAYERS = {
 let currentTileLayer = null;
 
 function initMap() {
+  try {
   map = L.map('map', {
     center: [-38.4161, -63.6167],
     zoom: 5,
@@ -53,6 +54,9 @@ subdomains: 'abc',
   renderCutsOnMap();
   renderSOSOnMap();
   renderClimaOnMap();
+  } catch (e) {
+    console.error('Error en initMap:', e);
+  }
 }
 
 // ─── NETWORK DE RUTAS NACIONALES ─────────────────
