@@ -48,10 +48,10 @@
     #map-container {
          position: absolute;
          inset: 0;
-         top: 190px;
+         top: 145px;
 
          width: 100%;
-         height: calc(100dvh - 190px);
+         height: calc(100dvh - 145px);
 
          z-index: 1;
         }
@@ -66,7 +66,7 @@
     #layer-controls {
          position: fixed;
 
-         top: 210px;
+         top: 220px;
          right: 12px;
 
          display: flex;
@@ -133,7 +133,7 @@
 #mobile-search-toggle {
      position: fixed;
 
-     top: 135px;
+     top: 155px;
      right: 12px;
 
      z-index: 3100;
