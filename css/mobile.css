@@ -20,6 +20,7 @@
     display: block !important;
     height: 100%;
     flex: none !important;
+    -webkit-overflow-scrolling: auto;
   }
 
   #map-container {
@@ -27,15 +28,6 @@
     width: 100%;
     position: relative;
     flex: none !important;
-    pointer-events: none;
-  }
-
-  #map,
-  #map .leaflet-pane,
-  #map .leaflet-control,
-  #map .leaflet-top,
-  #map .leaflet-bottom {
-    pointer-events: auto;
   }
 
   #map {

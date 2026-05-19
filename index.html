@@ -53,19 +53,10 @@
       </button>
     </div>
   </header>
-  <!-- Mobile logo badge -->
-  <div id="mobile-logo-badge">
-    <span>🛣️</span>
-    <span>RutaSegura AR</span>
-  </div>
-
   <!-- ══════════ MAIN ══════════ -->
   <main id="main-content">
 
     <!-- ══════════ LEFT PANEL ══════════ -->
-       <div id="panel-handle" title="Planificar viaje">
-        </div>
-
        <aside id="left-panel">
 
       <!-- SEARCH -->
@@ -175,62 +166,55 @@
         </div>
       </div>
 
-    </aside>
-
-       <div id="mobile-search">
-         <input id="mobile-search-input" type="text" placeholder="Buscar destino...">
-       </div>
-
-       <button id="mobile-search-toggle">🔍</button>
-
-       <button class="mobile-alerts-btn">
-            🚨 Alertas
-       </button>
-
-       <button id="mobile-notif-btn" title="Notificaciones">🔔</button>
+       </aside>
 
     <!-- ══════════ MAP ══════════ -->
     <div id="map-container">
       <div id="map"></div>
-
-    </div>
-
-    <div id="mobile-zoom-controls">
-      <button id="mobile-zoom-in">+</button>
-      <button id="mobile-zoom-out">−</button>
-    </div>
-
-      <!-- Zoom Controls — Bottom Right -->
-      <div id="zoom-controls">
-        <button id="zoom-in-btn" class="zoom-btn" title="Acercar">+</button>
-        <button id="zoom-out-btn" class="zoom-btn" title="Alejar">−</button>
-      </div>
-
-      <!-- Layer Toggle — Top Right -->
-      <div id="layer-controls">
-        <button class="layer-btn active" data-layer="dark" title="Oscuro">🌙</button>
-        <button class="layer-btn" data-layer="street" title="Calles">🗺️</button>
-        <button class="layer-btn" data-layer="satellite" title="Satélite">🛰️</button>
-      </div>
-
       <!-- Offline Banner -->
       <div id="offline-banner" class="hidden">
         📡 Sin conexión — Mostrando datos descargados
       </div>
-
       <!-- Loading Overlay -->
       <div id="map-loading" class="hidden">
         <div class="spinner"></div>
         <span>Calculando ruta...</span>
       </div>
-
       <!-- Map Watermark -->
       <div style="position:absolute;bottom:8px;left:10px;z-index:400;font-size:10px;color:rgba(255,255,255,0.4);pointer-events:none">
         Datos: Vialidad Nacional (simulado) · SMN (simulado) · Mapa: © OpenStreetMap
       </div>
     </div>
 
+    <!-- Zoom Controls — Bottom Right -->
+    <div id="zoom-controls">
+      <button id="zoom-in-btn" class="zoom-btn" title="Acercar">+</button>
+      <button id="zoom-out-btn" class="zoom-btn" title="Alejar">−</button>
+    </div>
+
   </main>
+
+  <!-- Mobile floating controls (outside main-content to avoid iOS fixed-position issues) -->
+  <div id="panel-handle" title="Planificar viaje"></div>
+  <div id="mobile-logo-badge">
+    <span>🛣️</span>
+    <span>RutaSegura AR</span>
+  </div>
+  <div id="mobile-search">
+    <input id="mobile-search-input" type="text" placeholder="Buscar destino...">
+  </div>
+  <button id="mobile-search-toggle">🔍</button>
+  <button class="mobile-alerts-btn">🚨 Alertas</button>
+  <button id="mobile-notif-btn" title="Notificaciones">🔔</button>
+  <div id="mobile-zoom-controls">
+    <button id="mobile-zoom-in">+</button>
+    <button id="mobile-zoom-out">−</button>
+  </div>
+  <div id="layer-controls">
+    <button class="layer-btn active" data-layer="dark" title="Oscuro">🌙</button>
+    <button class="layer-btn" data-layer="street" title="Calles">🗺️</button>
+    <button class="layer-btn" data-layer="satellite" title="Satélite">🛰️</button>
+  </div>
 
   <!-- ══════════ NOTIFICATIONS ══════════ -->
   <div id="notifications-container"></div>
