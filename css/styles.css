@@ -401,10 +401,9 @@ body {
 
 
 #panel-handle,
-#mobile-zoom-controls {
+#mobile-zoom-controls,
+#mobile-search,
+#mobile-search-toggle,
+.mobile-alerts-btn {
     display: none !important;
-}
-
-#mobile-search {
-    display: none;
 }

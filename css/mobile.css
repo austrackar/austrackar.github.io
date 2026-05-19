@@ -208,4 +208,10 @@
      overflow: hidden !important;
     }
 
+ #mobile-search-toggle,
+ .mobile-alerts-btn,
+ #mobile-zoom-controls {
+     display: flex !important;
+    }
+
 }
