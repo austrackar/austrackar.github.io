@@ -48,10 +48,10 @@
     #map-container {
          position: absolute;
          inset: 0;
-         top: 115px;
+         top: 210px;
 
          width: 100%;
-         height: calc(100dvh - 115px);
+         height: calc(100dvh - 210px);
 
          z-index: 1;
         }
@@ -66,7 +66,7 @@
     #layer-controls {
          position: fixed;
 
-         top: 140px;
+         top: 210px;
          right: 12px;
 
          display: flex;
@@ -87,7 +87,7 @@
          position: fixed !important;
 
          right: 12px !important;
-         bottom: 110px !important;
+         bottom: 140px !important;
 
          z-index: 2500 !important;
 
@@ -96,61 +96,89 @@
 /* ================= SEARCH BAR ================= */
 
 #mobile-search {
-    position: fixed;
+     position: fixed;
 
-    top: 92px;
-    left: 12px;
-    right: 12px;
+     top: 145px;
+     left: 12px;
+     right: 12px;
 
-    z-index: 3000;
+     z-index: 3000;
 
-    display: flex;
-    gap: 10px;
-}
+     display: flex;
+     gap: 10px;
+    }
 
 #mobile-search input {
-    flex: 1;
+     flex: 1;
 
-    height: 52px;
+     height: 52px;
 
-    border: none;
-    border-radius: 16px;
+     border: none;
+     border-radius: 16px;
 
-    padding: 0 16px;
+     padding: 0 16px;
 
-    background: rgba(15,23,42,0.96);
+     background: rgba(15,23,42,0.96);
 
-    color: white;
+     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
 
-    font-size: 16px;
-}
+     color: white;
+
+     font-size: 16px;
+    }
 
 #mobile-search button {
-    width: 52px;
-    height: 52px;
+     width: 52px;
+     height: 52px;
 
-    border: none;
-    border-radius: 16px;
+     border: none;
+     border-radius: 16px;
 
-    background: #f59e0b;
+     background: #f59e0b;
+     
+     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
 
-    color: black;
+     color: black;
 
-    font-size: 20px;
-    font-weight: bold;
-}
+     font-size: 20px;
+     font-weight: bold;
+    }
 
-#mobile-search {
-    position: fixed !important;
+/* ================= ALERT BUTTON ================= */
 
-    top: 145px !important;
-    left: 12px !important;
-    right: 12px !important;
+.mobile-alerts-btn {
+     position: fixed;
 
-    z-index: 4000 !important;
+     left: 12px;
+     bottom: 160px;
 
-    display: flex !important;
-    gap: 10px !important;
-}
+     z-index: 3000;
+
+     padding: 12px 16px;
+
+     border: none;
+     border-radius: 16px;
+
+     background: #ef4444;
+
+     color: white;
+
+     font-weight: bold;
+    }
+
+/* ================= NOTIFICATIONS ================= */
+
+#notifications-container {
+     position: fixed;
+
+     left: 12px;
+     right: 12px;
+
+     bottom: 90px;
+
+     width: auto;
+
+     z-index: 2500;
+    }
 
 }
