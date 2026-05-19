@@ -404,3 +404,7 @@ body {
 #mobile-zoom-controls {
     display: none !important;
 }
+
+#mobile-search {
+    display: none;
+}
