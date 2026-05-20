@@ -3,8 +3,10 @@
 // ═══════════════════════════════════════════════
 
 let map, currentRouteLayer = null, altRouteLayer = null;
+const isMobile = window.innerWidth <= 768;
 let cutLayers = [], 
     sosLayers = [], 
+    sosRouteLayers = [],
     climaLayers = [], 
     routeNetworkLayers = [],
     provincialRouteLayers = [];
@@ -79,8 +81,8 @@ function renderRoutesNetwork() {
         },
         style: feature => ({
           color: '#fb923c',
-          weight: 1.5,
-          opacity: 0.45
+          weight: isMobile ? 0.5 : 1,
+          opacity: isMobile ? 0.1 : 0.2
         }),
         onEachFeature: (feature, layer) => {
           const ref = feature.properties.ref;
@@ -94,6 +96,7 @@ function renderRoutesNetwork() {
       }).addTo(map);
 
       routeNetworkLayers.push(layer);
+      generateSOSOnRoutes(data);
     })
     .catch(err => {
       console.error('Error cargando rutas nacionales:', err);
@@ -101,6 +104,42 @@ function renderRoutesNetwork() {
 
 }
 
+// ─── POSTES SOS SOBRE RUTAS NACIONALES ──────────
+function generateSOSOnRoutes(geoData) {
+  sosRouteLayers.forEach(l => map.removeLayer(l));
+  sosRouteLayers = [];
+
+  const icon = L.divIcon({
+    html: `<div style="background:#dc2626;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.5);border:2px solid white;color:white;letter-spacing:0.5px">SOS</div>`,
+    className: '', iconSize: [22, 22], iconAnchor: [11, 11]
+  });
+
+  let count = 0;
+  const STEP = 800;
+
+  geoData.features.forEach(feature => {
+    if (!feature.geometry) return;
+    const ref = feature.properties.ref || feature.properties.name || 'Ruta Nacional';
+    const coords = feature.geometry.coordinates;
+    const paths = feature.geometry.type === 'MultiLineString' ? coords : [coords];
+
+    paths.forEach(path => {
+      for (let i = 0; i < path.length; i += STEP) {
+        const [lng, lat] = path[i];
+        const marker = L.marker([lat, lng], { icon }).addTo(map);
+        marker.bindPopup(`
+          <div style="font-family:Inter,sans-serif;min-width:170px">
+            <div style="background:#dc2626;color:white;padding:8px 12px;border-radius:6px 6px 0 0;margin:-4px -4px 8px;font-size:13px;font-weight:700">🆘 Poste SOS</div>
+            <div style="font-size:12px;margin-bottom:4px"><strong>${ref}</strong></div>
+            <div style="font-size:11px;color:#666">Emergencias: <strong>0800-555-5050</strong></div>
+          </div>
+        `);
+        sosRouteLayers.push(marker);
+        count++;
+      }
+    });
+  });
+}
 
 function renderProvincialRoutes() {
 
@@ -131,8 +170,8 @@ function renderProvincialRoutes() {
         style: feature => ({
 
           color: '#38bdf8',
-          weight: 1.2,
-          opacity: 0.3
+          weight: isMobile ? 0.4 : 0.8,
+          opacity: isMobile ? 0.06 : 0.12
 
         }),
 
