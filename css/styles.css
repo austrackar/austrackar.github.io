@@ -404,7 +404,9 @@ body {
 #mobile-zoom-controls,
 #mobile-search,
 #mobile-search-toggle,
-.mobile-alerts-btn {
+.mobile-alerts-btn,
+#mobile-logo-badge,
+#mobile-notif-btn {
     display: none !important;
 }
 
@@ -413,7 +415,9 @@ body {
     #mobile-search,
     #mobile-search-toggle,
     .mobile-alerts-btn,
-    #mobile-zoom-controls {
+    #mobile-zoom-controls,
+    #mobile-logo-badge,
+    #mobile-notif-btn {
         display: none !important;
     }
 
