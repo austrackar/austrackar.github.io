@@ -191,7 +191,7 @@
     position: fixed;
     right: 12px;
     bottom: 90px;
-    z-index: 2500;
+    z-index: 3000;
     display: flex !important;
     flex-direction: column;
     gap: 2px;
@@ -213,6 +213,8 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid rgba(255,255,255,0.08);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   #mobile-zoom-controls button:last-child {
