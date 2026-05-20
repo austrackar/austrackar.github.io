@@ -54,6 +54,18 @@ subdomains: 'abc',
   renderCutsOnMap();
   renderSOSOnMap();
   renderClimaOnMap();
+
+  // Label "Islas Malvinas"
+  L.marker([-51.65, -59.2], {
+    icon: L.divIcon({
+      html: `<div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid rgba(255,255,255,0.12);text-shadow:0 1px 3px rgba(0,0,0,0.6);letter-spacing:0.3px">Islas Malvinas</div>`,
+      className: '',
+      iconSize: [130, 22],
+      iconAnchor: [65, 11]
+    }),
+    interactive: false,
+    zIndexOffset: -1000
+  }).addTo(map);
   } catch (e) {
     console.error('Error en initMap:', e);
   }
