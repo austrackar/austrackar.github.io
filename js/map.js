@@ -49,6 +49,8 @@ function initMap() {
   // Zoom buttons
   document.getElementById('zoom-in-btn').addEventListener('click', () => map.zoomIn());
   document.getElementById('zoom-out-btn').addEventListener('click', () => map.zoomOut());
+  document.getElementById('mobile-zoom-in')?.addEventListener('click', () => map.zoomIn());
+  document.getElementById('mobile-zoom-out')?.addEventListener('click', () => map.zoomOut());
 
   // Layer toggle
   document.querySelectorAll('.layer-btn').forEach(btn => {
