@@ -2,7 +2,7 @@
 // MAP.JS — Gestión del mapa Leaflet
 // ═══════════════════════════════════════════════
 
-let map, currentRouteLayer = null, altRouteLayer = null;
+let map, sosCluster = null, currentRouteLayer = null, altRouteLayer = null;
 const isMobile = window.innerWidth <= 768;
 let cutLayers = [], 
     sosLayers = [], 
@@ -28,6 +28,16 @@ function initMap() {
     minZoom: 4,
     preferCanvas: true
   });
+
+  sosCluster = L.markerClusterGroup({
+    chunkedLoading: true,
+    maxClusterRadius: 50,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    disableClusteringAtZoom: 15
+  });
+  map.addLayer(sosCluster);
 
   const defaultLayer = TILE_LAYERS.argenmap_oscuro;
   currentTileLayer = L.tileLayer(defaultLayer.url, {
@@ -106,7 +116,8 @@ function renderRoutesNetwork() {
 
 // ─── POSTES SOS SOBRE RUTAS NACIONALES ──────────
 function generateSOSOnRoutes(geoData) {
-  sosRouteLayers.forEach(l => map.removeLayer(l));
+  if (!sosCluster) return;
+  sosCluster.clearLayers();
   sosRouteLayers = [];
 
   const icon = L.divIcon({
@@ -126,7 +137,7 @@ function generateSOSOnRoutes(geoData) {
     paths.forEach(path => {
       for (let i = 0; i < path.length; i += STEP) {
         const [lng, lat] = path[i];
-        const marker = L.marker([lat, lng], { icon }).addTo(map);
+        const marker = L.marker([lat, lng], { icon });
         marker.bindPopup(`
           <div style="font-family:Inter,sans-serif;min-width:170px">
             <div style="background:#dc2626;color:white;padding:8px 12px;border-radius:6px 6px 0 0;margin:-4px -4px 8px;font-size:13px;font-weight:700">🆘 Poste SOS</div>
@@ -135,6 +146,7 @@ function generateSOSOnRoutes(geoData) {
           </div>
         `);
         sosRouteLayers.push(marker);
+        sosCluster.addLayer(marker);
         count++;
       }
     });
