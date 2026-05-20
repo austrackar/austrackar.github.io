@@ -79,8 +79,8 @@ function renderRoutesNetwork() {
         },
         style: feature => ({
           color: '#fb923c',
-          weight: 3,
-          opacity: 0.85
+          weight: 1.5,
+          opacity: 0.45
         }),
         onEachFeature: (feature, layer) => {
           const ref = feature.properties.ref;
@@ -131,8 +131,8 @@ function renderProvincialRoutes() {
         style: feature => ({
 
           color: '#38bdf8',
-          weight: 2,
-          opacity: 0.65
+          weight: 1.2,
+          opacity: 0.3
 
         }),
 
