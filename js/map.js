@@ -49,8 +49,12 @@ function initMap() {
   // Zoom buttons
   document.getElementById('zoom-in-btn')?.addEventListener('click', () => map.zoomIn());
   document.getElementById('zoom-out-btn')?.addEventListener('click', () => map.zoomOut());
-  document.getElementById('mobile-zoom-in')?.addEventListener('pointerdown', e => { e.stopPropagation(); map.zoomIn(); });
-  document.getElementById('mobile-zoom-out')?.addEventListener('pointerdown', e => { e.stopPropagation(); map.zoomOut(); });
+  const doZoomIn = () => { map.setZoom(Math.min(map.getZoom() + 1, map.getMaxZoom())); };
+  const doZoomOut = () => { map.setZoom(Math.max(map.getZoom() - 1, map.getMinZoom())); };
+  const mzi = document.getElementById('mobile-zoom-in');
+  const mzo = document.getElementById('mobile-zoom-out');
+  if (mzi) { mzi.onclick = doZoomIn; mzi.ontouchstart = function(e) { e.preventDefault(); doZoomIn(); }; mzi.onmousedown = doZoomIn; }
+  if (mzo) { mzo.onclick = doZoomOut; mzo.ontouchstart = function(e) { e.preventDefault(); doZoomOut(); }; mzo.onmousedown = doZoomOut; }
 
   // Layer toggle
   document.querySelectorAll('.layer-btn').forEach(btn => {
