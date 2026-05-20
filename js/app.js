@@ -103,10 +103,7 @@ function setupEventListeners() {
   const mobileAlertsBtn = document.querySelector('.mobile-alerts-btn');
   onTap(mobileAlertsBtn, () => {
     panel.classList.add('open');
-    const alertsSection = document.querySelector('#left-panel .panel-section:last-of-type');
-    if (alertsSection) {
-      setTimeout(() => alertsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
-    }
+    panel.scrollTop = panel.scrollHeight;
   });
 
   // Mobile zoom buttons
@@ -140,24 +137,22 @@ function setupEventListeners() {
     }
   });
 
-  // Mobile search: reflect input in the panel's destination field
+  // Mobile search: geocode on Enter and show on map
   if (mobileSearchInput) {
-    mobileSearchInput.addEventListener('input', (e) => {
-      const destInput = document.getElementById('dest-input');
-      if (destInput) {
-        destInput.value = e.target.value;
-        const evt = new Event('input', { bubbles: true });
-        destInput.dispatchEvent(evt);
-      }
-    });
-    mobileSearchInput.addEventListener('keydown', (e) => {
+    mobileSearchInput.addEventListener('keydown', async (e) => {
       if (e.key === 'Enter') {
-        panel.classList.add('open');
+        const query = e.target.value.trim();
+        if (!query) return;
         mobileSearch.classList.remove('open');
-        setTimeout(() => {
-          const calcBtn = document.getElementById('calculate-btn');
-          if (calcBtn) calcBtn.click();
-        }, 200);
+        const coords = await geocodeCity(query);
+        if (coords && typeof map !== 'undefined' && map) {
+          map.setView(coords, 10, { animate: true });
+          L.marker(coords, {
+            icon: L.divIcon({ html: `<div style="background:#f59e0b;color:#000;padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.4)">📍 ${query}</div>`, className: '' })
+          }).addTo(map);
+        } else {
+          showNotification({ title: 'No encontrado', body: 'No se pudo encontrar esa ubicación.', type: 'warning' });
+        }
       }
     });
   }
