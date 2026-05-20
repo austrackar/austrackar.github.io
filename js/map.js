@@ -9,8 +9,8 @@ let cutLayers = [],
     routeNetworkLayers = [],
     provincialRouteLayers = [];
 const TILE_LAYERS = {
-  dark: { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', attr: '© OpenStreetMap, © CartoDB' },
-  street: { url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', attr: '© OpenStreetMap contributors' },
+  argenmap_oscuro: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/argenmap_oscuro@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
+  argenmap: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
   satellite: { url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', attr: '© Esri' }
 };
 
@@ -27,10 +27,11 @@ function initMap() {
     preferCanvas: true
   });
 
-  currentTileLayer = L.tileLayer(TILE_LAYERS.dark.url, {
-    attribution: TILE_LAYERS.dark.attr,
-subdomains: 'abc',
-    maxZoom: 19
+  const defaultLayer = TILE_LAYERS.argenmap_oscuro;
+  currentTileLayer = L.tileLayer(defaultLayer.url, {
+    attribution: defaultLayer.attr,
+    maxZoom: defaultLayer.maxZoom || 19,
+    tms: defaultLayer.tms || false
   }).addTo(map);
 
   // Zoom buttons
@@ -44,7 +45,7 @@ subdomains: 'abc',
       btn.classList.add('active');
       const l = TILE_LAYERS[btn.dataset.layer];
       if (currentTileLayer) map.removeLayer(currentTileLayer);
-      currentTileLayer = L.tileLayer(l.url, { attribution: l.attr, subdomains: 'abc', maxZoom: 19 }).addTo(map);
+      currentTileLayer = L.tileLayer(l.url, { attribution: l.attr, maxZoom: l.maxZoom || 19, tms: l.tms || false }).addTo(map);
       currentTileLayer.bringToBack();
     });
   });
@@ -55,17 +56,6 @@ subdomains: 'abc',
   renderSOSOnMap();
   renderClimaOnMap();
 
-  // Label "Islas Malvinas"
-  L.marker([-51.65, -59.2], {
-    icon: L.divIcon({
-      html: `<div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;padding:3px 12px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid rgba(255,255,255,0.12);text-shadow:0 1px 3px rgba(0,0,0,0.6);letter-spacing:0.3px">Islas Malvinas</div>`,
-      className: '',
-      iconSize: [130, 22],
-      iconAnchor: [65, 11]
-    }),
-    interactive: false,
-    zIndexOffset: -1000
-  }).addTo(map);
   } catch (e) {
     console.error('Error en initMap:', e);
   }
