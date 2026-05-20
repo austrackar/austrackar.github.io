@@ -400,25 +400,6 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
 
-#panel-handle,
-#mobile-zoom-controls,
-#mobile-search,
-#mobile-search-toggle,
-.mobile-alerts-btn,
-#mobile-logo-badge,
-#mobile-notif-btn {
+#mobile-ui {
     display: none !important;
-}
-
-@media screen and (min-width: 769px) {
-
-    #mobile-search,
-    #mobile-search-toggle,
-    .mobile-alerts-btn,
-    #mobile-zoom-controls,
-    #mobile-logo-badge,
-    #mobile-notif-btn {
-        display: none !important;
-    }
-
 }

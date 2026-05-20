@@ -7,6 +7,10 @@
     background: #000;
   }
 
+  #mobile-ui {
+    display: block !important;
+  }
+
   #top-bar {
     display: none !important;
   }
