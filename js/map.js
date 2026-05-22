@@ -129,6 +129,7 @@ function renderRoutesNetwork() {
 // ─── POSTES SOS SOBRE RUTAS NACIONALES ──────────
 function generateSOSOnRoutes(geoData) {
   if (!sosCluster) return;
+  try {
   sosCluster.clearLayers();
   sosRouteLayers = [];
 
@@ -142,13 +143,17 @@ function generateSOSOnRoutes(geoData) {
 
   geoData.features.forEach(feature => {
     if (!feature.geometry) return;
+    if (feature.geometry.type !== 'LineString' && feature.geometry.type !== 'MultiLineString') return;
     const ref = feature.properties.ref || feature.properties.name || 'Ruta Nacional';
     const coords = feature.geometry.coordinates;
     const paths = feature.geometry.type === 'MultiLineString' ? coords : [coords];
 
     paths.forEach(path => {
+      if (!Array.isArray(path) || path.length < 2) return;
       for (let i = 0; i < path.length; i += STEP) {
-        const [lng, lat] = path[i];
+        const pt = path[i];
+        if (!Array.isArray(pt) || pt.length < 2) continue;
+        const [lng, lat] = pt;
         const marker = L.marker([lat, lng], { icon });
         marker.bindPopup(`
           <div style="font-family:Inter,sans-serif;min-width:170px">
@@ -163,6 +168,9 @@ function generateSOSOnRoutes(geoData) {
       }
     });
   });
+  } catch (e) {
+    console.error('Error generando postes SOS:', e);
+  }
 }
 
 function renderProvincialRoutes() {
