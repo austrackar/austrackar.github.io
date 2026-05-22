@@ -156,10 +156,7 @@ document.getElementById('reg-btn').addEventListener('click', () => {
   if (pass.length < 6) { showErr(errEl, 'La contraseña debe tener al menos 6 caracteres'); return; }
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Creando cuenta...';
   register(email, pass, nombre, empresa, rol)
-    .then(() => {
-      if (rol === 'empleado') window.location.href = 'track.html';
-      else window.location.href = 'index.html';
-    })
+    .then(() => { window.location.href = 'index.html'; })
     .catch(e => { showErr(errEl, e.message.replace('Firebase: ', '').replace(/\(.*\)/, '')); btn.disabled = false; btn.textContent = 'Crear cuenta'; });
 });
 
