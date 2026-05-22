@@ -130,7 +130,8 @@ function startSharing() {
       },
       err => {
         console.warn('GPS error:', err.message);
-        setStatus('⚠️ Error de GPS: ' + err.message, 'err');
+        if (err.code === 1) setStatus('⚠️ Permiso de ubicación denegado. Activá GPS en Chrome > Configuración > Ubicación', 'err');
+        else setStatus('⚠️ Error de GPS: ' + err.message, 'err');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
     );
@@ -152,7 +153,10 @@ function startSharing() {
       firebase.database().ref('flota/' + trackEmpresa + '/' + empId).set(data);
       updateCoords(pos.coords.latitude, pos.coords.longitude);
     },
-    err => console.warn('watchPosition error:', err.message),
+      err => {
+        console.warn('watchPosition error:', err.message);
+        if (err.code === 1) setStatus('⚠️ Permiso de ubicación denegado. Activá GPS en Chrome > Configuración > Ubicación', 'err');
+      },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
   );
 
