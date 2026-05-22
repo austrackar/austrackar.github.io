@@ -39,7 +39,7 @@ function initMap() {
   });
   map.addLayer(sosCluster);
 
-  const defaultLayer = TILE_LAYERS.argenmap_oscuro;
+  const defaultLayer = TILE_LAYERS.argenmap;
   currentTileLayer = L.tileLayer(defaultLayer.url, {
     attribution: defaultLayer.attr,
     maxZoom: defaultLayer.maxZoom || 19,
