@@ -74,6 +74,12 @@ function initMap() {
   renderSOSOnMap();
   renderClimaOnMap();
 
+  // Re-render cuts/weather on map move
+  map.on('moveend', () => {
+    renderCutsOnMap();
+    renderClimaOnMap();
+  });
+
   } catch (e) {
     console.error('Error en initMap:', e);
   }
@@ -223,12 +229,20 @@ function renderProvincialRoutes() {
 
 }
 
+// ─── FILTRO POR VISTA ─────────────────────────
+function inViewport(latlng, pad = 0.3) {
+  if (!map) return true;
+  return map.getBounds().pad(pad).contains(latlng);
+}
+
 function renderCutsOnMap() {
   cutLayers.forEach(l => map.removeLayer(l));
   cutLayers = [];
 
   RUTAS_CORTADAS.forEach(corte => {
     if (!corte.coords || corte.coords.length < 2) return;
+    const visible = corte.coords.some(c => inViewport(c, 0.4));
+    if (!visible) return;
     const isTotal = corte.severidad === 'total';
     const color = isTotal ? '#ef4444' : '#f97316';
     const bgGlow = isTotal ? 'rgba(239,68,68,0.35)' : 'rgba(249,115,22,0.35)';
@@ -378,6 +392,7 @@ function renderClimaOnMap() {
   const tipoEmoji = { viento: '💨', nieve: '❄️', lluvia: '🌧️', tormenta: '⛈️', niebla: '🌫️' };
 
   ALERTAS_CLIMA.forEach(alerta => {
+    if (!inViewport(alerta.center, 1.5)) return;
     const cfg = colorMap[alerta.severidad] || colorMap.amarillo;
     const emoji = tipoEmoji[alerta.tipo] || '⚠️';
 
