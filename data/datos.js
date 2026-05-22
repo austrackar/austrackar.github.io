@@ -127,27 +127,41 @@ const PUNTOS_SOS = [
 ];
 
 const ESTACIONES_SERVICIO = [
-  { id: 'est-001', nombre: 'YPF Ruta 7 - San Luis', ruta: 'RN 7', km: 750, coords: [-33.30, -66.34], telefono: '(0266) 443-1234', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Estacionamiento para camiones'] },
-  { id: 'est-002', nombre: 'Shell Ruta 3 - Bahía Blanca', ruta: 'RN 3', km: 650, coords: [-38.72, -62.27], telefono: '(0291) 455-5678', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Lavado'] },
-  { id: 'est-003', nombre: 'Axion Ruta 40 - Zapala', ruta: 'RN 40', km: 700, coords: [-38.90, -70.06], telefono: '(0942) 425-789', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Aire'] },
-  { id: 'est-004', nombre: 'YPF Ruta 9 - Córdoba', ruta: 'RN 9', km: 410, coords: [-31.42, -64.18], telefono: '(0351) 470-1234', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
-  { id: 'est-005', nombre: 'Shell Ruta 14 - Paso de los Libres', ruta: 'RN 14', km: 620, coords: [-29.71, -57.09], telefono: '(03772) 428-345', horario: '06:00–22:00', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Estacionamiento'] },
-  { id: 'est-006', nombre: 'YPF Ruta 3 - Comodoro', ruta: 'RN 3', km: 1500, coords: [-45.86, -67.50], telefono: '(0297) 446-7890', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Restaurante', 'Hotel', 'Estacionamiento camiones'] },
-  { id: 'est-007', nombre: 'Axion Ruta 7 - Mendoza', ruta: 'RN 7', km: 1000, coords: [-32.89, -68.84], telefono: '(0261) 438-4567', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
-  { id: 'est-008', nombre: 'YPF Ruta 40 - El Calafate', ruta: 'RN 40', km: 2800, coords: [-50.33, -72.10], telefono: '(02902) 491-234', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Asistencia mecánica'] }
+  { id: 'est-001', nombre: 'YPF', marca: 'YPF', coords: [-34.5508304, -58.4993353], telefono: '+54 11 4807-8463', horario: '24/7' },
+  { id: 'est-002', nombre: 'YPF', marca: 'YPF', coords: [-34.6222790, -58.4004667], telefono: '', horario: '24h' },
+  { id: 'est-003', nombre: 'Petrugas', marca: 'Bandera Blanca', coords: [-34.6093727, -58.4172609], telefono: '', horario: '24h' },
+  { id: 'est-004', nombre: 'Shell 1695', marca: 'Shell', coords: [-34.6089060, -58.4290110], telefono: '', horario: '24h' },
+  { id: 'est-005', nombre: 'YPF', marca: 'YPF', coords: [-34.6085155, -58.4290005], telefono: '', horario: '24/7' },
+  { id: 'est-006', nombre: 'YPF', marca: 'YPF', coords: [-34.5512383, -58.5833430], telefono: '+54 (11) 4769-2500', horario: '24/7' },
+  { id: 'est-007', nombre: 'Oil', marca: 'Oil', coords: [-34.5593443, -58.5682388], telefono: '', horario: '24h' },
+  { id: 'est-008', nombre: 'Puma', marca: 'Puma', coords: [-34.5730279, -58.5439827], telefono: '', horario: '24h' },
+  { id: 'est-009', nombre: 'YPF', marca: 'YPF', coords: [-34.5696982, -58.5400626], telefono: '+54 (11) 4753-7972', horario: '24h' },
+  { id: 'est-010', nombre: 'Puma', marca: 'Puma', coords: [-34.5886372, -58.5197256], telefono: '', horario: '06:00-22:00' },
+  { id: 'est-011', nombre: 'Shell', marca: 'Shell', coords: [-34.4741352, -58.5019307], telefono: '', horario: '24/7' },
+  { id: 'est-012', nombre: 'Norest Shell', marca: 'Shell', coords: [-34.4887310, -58.5007334], telefono: '+54 11 4792-7691', horario: '24/7' },
+  { id: 'est-013', nombre: 'Axion', marca: 'Axion', coords: [-34.5185961, -58.5143000], telefono: '', horario: '24/7' },
+  { id: 'est-014', nombre: 'Shell', marca: 'Shell', coords: [-34.5414494, -58.5058781], telefono: '+54 11 4760-0356', horario: '24/7' },
+  { id: 'est-015', nombre: 'YPF', marca: 'YPF', coords: [-34.5053135, -58.5257736], telefono: '', horario: '24/7' },
+  { id: 'est-016', nombre: 'Axion', marca: 'Axion', coords: [-34.5281925, -58.4810158], telefono: '', horario: '24/7' },
+  { id: 'est-017', nombre: 'YPF', marca: 'YPF', coords: [-34.5253746, -58.4717200], telefono: '', horario: '24/7' },
+  { id: 'est-018', nombre: 'YPF', marca: 'YPF', coords: [-34.4562245, -58.7230020], telefono: '', horario: '24/7' },
+  { id: 'est-019', nombre: 'YPF', marca: 'YPF', coords: [-34.4074106, -58.7298067], telefono: '', horario: '24/7' },
+  { id: 'est-020', nombre: 'Shell', marca: 'Shell', coords: [-34.4645928, -58.5151537], telefono: '', horario: '24/7' }
 ];
 
 const ALOJAMIENTOS = [
-  { id: 'alo-001', nombre: 'Hotel Termas de Copahue', tipo: 'hotel', ruta: 'RN 40', km: 680, coords: [-37.82, -71.10], telefono: '(0948) 425-500', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno'] },
-  { id: 'alo-002', nombre: 'Hostería Ruta 40', tipo: 'hosteria', ruta: 'RN 40', km: 800, coords: [-40.15, -71.35], telefono: '(0944) 422-200', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Cochera'] },
-  { id: 'alo-003', nombre: 'Hotel Austral', tipo: 'hotel', ruta: 'RN 3', km: 1600, coords: [-51.63, -69.22], telefono: '(02966) 421-100', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] },
-  { id: 'alo-004', nombre: 'Cabañas del Sur', tipo: 'cabaña', ruta: 'RN 3', km: 1450, coords: [-45.86, -67.50], telefono: '(0297) 447-3000', estrellas: 2, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'TV'] },
-  { id: 'alo-005', nombre: 'Hotel Mendoza Downtown', tipo: 'hotel', ruta: 'RN 7', km: 985, coords: [-32.89, -68.84], telefono: '(0261) 439-4000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio', 'Bar'] },
-  { id: 'alo-006', nombre: 'Hostería San Luis', tipo: 'hosteria', ruta: 'RN 7', km: 740, coords: [-33.30, -66.34], telefono: '(0266) 444-5678', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
-  { id: 'alo-007', nombre: 'Hotel Bristol', tipo: 'hotel', ruta: 'RN 9', km: 400, coords: [-31.42, -64.18], telefono: '(0351) 428-9000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio'] },
-  { id: 'alo-008', nombre: 'Cabañas del Lago', tipo: 'cabaña', ruta: 'RN 40', km: 810, coords: [-41.14, -71.31], telefono: '(0944) 423-500', estrellas: 3, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'Vista al lago'] },
-  { id: 'alo-009', nombre: 'Hotel Norte', tipo: 'hotel', ruta: 'RN 9', km: 970, coords: [-24.89, -65.41], telefono: '(0387) 421-2000', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
-  { id: 'alo-010', nombre: 'Posada de la Quebrada', tipo: 'hosteria', ruta: 'RN 9', km: 1090, coords: [-23.20, -65.35], telefono: '(0388) 425-100', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] }
+  { id: 'alo-001', nombre: 'Misión Fagnano', tipo: 'hostel', coords: [-54.5274159, -67.2301145], telefono: '' },
+  { id: 'alo-002', nombre: 'Puerto Valle', tipo: 'hotel', coords: [-27.6063257, -56.4348929], telefono: '' },
+  { id: 'alo-003', nombre: 'Cabañas San Miguel', tipo: 'hotel', coords: [-29.1848787, -67.4768834], telefono: '+54 03825 429 153' },
+  { id: 'alo-004', nombre: 'Termas de Reyes', tipo: 'hotel', coords: [-24.1710847, -65.4891749], telefono: '' },
+  { id: 'alo-005', nombre: 'Establecimiento Las Costas', tipo: 'hotel', coords: [-24.7719173, -65.4951507], telefono: '' },
+  { id: 'alo-006', nombre: 'Portal del Sol', tipo: 'hotel', coords: [-31.4251727, -64.4939458], telefono: '' },
+  { id: 'alo-007', nombre: 'Dorá', tipo: 'hotel', coords: [-38.0031508, -57.5429812], telefono: '' },
+  { id: 'alo-008', nombre: 'Astor', tipo: 'hotel', coords: [-38.0008788, -57.5426106], telefono: '' },
+  { id: 'alo-009', nombre: 'Hi! Patagonia', tipo: 'hostel', coords: [-42.7741392, -65.0280075], telefono: '+549 280439 0422' },
+  { id: 'alo-010', nombre: 'Pampa Linda', tipo: 'guest_house', coords: [-41.2307642, -71.7740556], telefono: '' },
+  { id: 'alo-011', nombre: 'Hotel Magal', tipo: 'hotel', coords: [-35.4881931, -62.9820673], telefono: '+54 2337 453235' },
+  { id: 'alo-012', nombre: 'Txoko Maite', tipo: 'hotel', coords: [-35.4905508, -62.9793986], telefono: '+54 (2337) 40-5759' }
 ];
 
 const ALERTAS_CLIMA = [
