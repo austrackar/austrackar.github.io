@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="css/styles.css?v=3">
+  <link rel="stylesheet" href="css/styles.css?v=4">
   <link rel="stylesheet" href="css/mobile.css?v=3" media="screen and (max-width: 768px)">
 </head>
 <body>
@@ -57,6 +57,12 @@
       <button id="weather-btn" class="top-btn" title="Mapa del clima con Windy">
         <span>🌤</span>
         <span>Clima</span>
+      </button>
+
+      <button id="flota-btn" class="top-btn" title="Ver flota en tiempo real">
+        <span>🚛</span>
+        <span>Flota</span>
+        <span id="flota-badge" class="badge hidden">0</span>
       </button>
     </div>
   </header>
@@ -169,6 +175,15 @@
         <div id="servicios-list"></div>
       </div>
 
+      <!-- FLOTA -->
+      <div id="flota-section" class="panel-section hidden">
+        <div class="section-header">
+          <div class="section-title">🚛 Flota en Ruta</div>
+          <button id="flota-close-btn" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px">✕</button>
+        </div>
+        <div id="flota-list"></div>
+      </div>
+
       <!-- STATS FOOTER -->
       <div style="padding:12px 16px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;flex-shrink:0">
         <div style="text-align:center">
@@ -272,9 +287,13 @@
 </div><!-- /app -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<script src="data/datos.js?v=9"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="data/datos.js?v=10"></script>
+<script src="js/firebase-config.js"></script>
 <script src="js/map.js?v=7"></script>
 <script src="js/ui.js?v=5"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/app.js?v=5"></script>
+<script src="js/flota.js"></script>
 </body>
 </html>

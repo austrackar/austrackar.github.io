@@ -408,3 +408,28 @@ body {
 #mobile-ui {
     display: none !important;
 }
+
+/* ═══ FLOTA PANEL ═══ */
+#flota-list { display: flex; flex-direction: column; gap: 6px; }
+.flota-card {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.flota-card:hover { border-color: var(--accent); transform: translateX(2px); }
+.flota-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.flota-info { flex: 1; min-width: 0; }
+.flota-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.flota-meta { font-size: 11px; color: var(--text3); }
+.flota-status {
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 10px; color: white; flex-shrink: 0;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; } 50% { opacity:0.3; }
+}
