@@ -151,8 +151,6 @@ const ALOJAMIENTOS = [
 ];
 
 const ALERTAS_CLIMA = [
-
-const ALERTAS_CLIMA = [
   {
     id: 'clima-001',
     tipo: 'viento',
