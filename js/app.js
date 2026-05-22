@@ -84,6 +84,15 @@ function setupEventListeners() {
     if (e.target === document.getElementById('legend-modal')) hideModal('legend-modal');
   });
 
+  // Windy weather
+  const showWindy = () => showModal('windy-modal');
+  document.getElementById('weather-btn').addEventListener('click', showWindy);
+  document.getElementById('mobile-weather-btn')?.addEventListener('click', showWindy);
+  document.getElementById('windy-close').addEventListener('click', () => hideModal('windy-modal'));
+  document.getElementById('windy-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('windy-modal')) hideModal('windy-modal');
+  });
+
   function onTap(el, fn) {
     if (!el) return;
     el.addEventListener('click', fn);
