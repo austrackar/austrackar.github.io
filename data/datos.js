@@ -150,18 +150,16 @@ const ESTACIONES_SERVICIO = [
 ];
 
 const ALOJAMIENTOS = [
-  { id: 'alo-001', nombre: 'Misión Fagnano', tipo: 'hostel', coords: [-54.5274159, -67.2301145], telefono: '' },
-  { id: 'alo-002', nombre: 'Puerto Valle', tipo: 'hotel', coords: [-27.6063257, -56.4348929], telefono: '' },
-  { id: 'alo-003', nombre: 'Cabañas San Miguel', tipo: 'hotel', coords: [-29.1848787, -67.4768834], telefono: '+54 03825 429 153' },
-  { id: 'alo-004', nombre: 'Termas de Reyes', tipo: 'hotel', coords: [-24.1710847, -65.4891749], telefono: '' },
-  { id: 'alo-005', nombre: 'Establecimiento Las Costas', tipo: 'hotel', coords: [-24.7719173, -65.4951507], telefono: '' },
-  { id: 'alo-006', nombre: 'Portal del Sol', tipo: 'hotel', coords: [-31.4251727, -64.4939458], telefono: '' },
-  { id: 'alo-007', nombre: 'Dorá', tipo: 'hotel', coords: [-38.0031508, -57.5429812], telefono: '' },
-  { id: 'alo-008', nombre: 'Astor', tipo: 'hotel', coords: [-38.0008788, -57.5426106], telefono: '' },
-  { id: 'alo-009', nombre: 'Hi! Patagonia', tipo: 'hostel', coords: [-42.7741392, -65.0280075], telefono: '+549 280439 0422' },
-  { id: 'alo-010', nombre: 'Pampa Linda', tipo: 'guest_house', coords: [-41.2307642, -71.7740556], telefono: '' },
-  { id: 'alo-011', nombre: 'Hotel Magal', tipo: 'hotel', coords: [-35.4881931, -62.9820673], telefono: '+54 2337 453235' },
-  { id: 'alo-012', nombre: 'Txoko Maite', tipo: 'hotel', coords: [-35.4905508, -62.9793986], telefono: '+54 (2337) 40-5759' }
+  { id: 'alo-001', nombre: 'Hotel Termas de Copahue', tipo: 'hotel', ruta: 'RN 40', km: 680, coords: [-37.82, -71.10], telefono: '(0948) 425-500', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno'] },
+  { id: 'alo-002', nombre: 'Hostería Ruta 40', tipo: 'hosteria', ruta: 'RN 40', km: 800, coords: [-40.15, -71.35], telefono: '(0944) 422-200', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Cochera'] },
+  { id: 'alo-003', nombre: 'Hotel Austral', tipo: 'hotel', ruta: 'RN 3', km: 1600, coords: [-51.63, -69.22], telefono: '(02966) 421-100', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] },
+  { id: 'alo-004', nombre: 'Cabañas del Sur', tipo: 'cabaña', ruta: 'RN 3', km: 1450, coords: [-45.86, -67.50], telefono: '(0297) 447-3000', estrellas: 2, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'TV'] },
+  { id: 'alo-005', nombre: 'Hotel Mendoza Downtown', tipo: 'hotel', ruta: 'RN 7', km: 985, coords: [-32.89, -68.84], telefono: '(0261) 439-4000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio', 'Bar'] },
+  { id: 'alo-006', nombre: 'Hostería San Luis', tipo: 'hosteria', ruta: 'RN 7', km: 740, coords: [-33.30, -66.34], telefono: '(0266) 444-5678', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
+  { id: 'alo-007', nombre: 'Hotel Bristol', tipo: 'hotel', ruta: 'RN 9', km: 400, coords: [-31.42, -64.18], telefono: '(0351) 428-9000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio'] },
+  { id: 'alo-008', nombre: 'Cabañas del Lago', tipo: 'cabaña', ruta: 'RN 40', km: 810, coords: [-41.14, -71.31], telefono: '(0944) 423-500', estrellas: 3, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'Vista al lago'] },
+  { id: 'alo-009', nombre: 'Hotel Norte', tipo: 'hotel', ruta: 'RN 9', km: 970, coords: [-24.89, -65.41], telefono: '(0387) 421-2000', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
+  { id: 'alo-010', nombre: 'Posada de la Quebrada', tipo: 'hosteria', ruta: 'RN 9', km: 1090, coords: [-23.20, -65.35], telefono: '(0388) 425-100', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] }
 ];
 
 const ALERTAS_CLIMA = [

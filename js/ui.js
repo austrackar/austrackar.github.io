@@ -106,18 +106,22 @@ function buildServiciosList(filter = 'combustible') {
         L.popup().setLatLng(item.coords).setContent(`<strong>⛽ ${item.nombre}</strong><br>${item.marca ? 'Marca: ' + item.marca + '<br>' : ''}📞 ${item.telefono || 'Sin teléfono'}`).openOn(map);
       });
     } else {
-      const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖', hostel: '🎒', guest_house: '🏠' }[item.tipo] || '🏠';
+      const estrellas = '★'.repeat(item.estrellas) + '☆'.repeat(5 - item.estrellas);
+      const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖' }[item.tipo] || '🏠';
       card.innerHTML = `
         <div class="alert-header" style="padding-bottom:2px">
           <span class="alert-title">${tipoIcono} ${item.nombre}</span>
-          <span class="alert-badge badge-${item.tipo === 'hotel' ? 'total' : 'parcial'}" style="font-size:10px">${item.tipo.replace('_', ' ').toUpperCase()}</span>
+          <span class="alert-badge" style="background:#7c3aed;color:white">${item.precio}</span>
         </div>
-        <div class="alert-meta" style="font-size:12px">
-          📞 ${item.telefono || 'Sin teléfono'}
-        </div>`;
+        <div class="alert-meta" style="font-size:11px">
+          🛣️ ${item.ruta} · km ${item.km}<br>
+          ${estrellas} · ${item.telefono}
+        </div>
+        <div style="margin-top:6px">${item.servicios.map(s => `<span style="background:#f3e8ff;color:#6b21a8;font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;font-weight:600">${s}</span>`).join('')}</div>`;
       card.addEventListener('click', () => {
         map.setView(item.coords, 16, { animate: true });
-        L.popup().setLatLng(item.coords).setContent(`<strong>${tipoIcono} ${item.nombre}</strong><br>${item.tipo.replace('_', ' ')}<br>📞 ${item.telefono || 'Sin teléfono'}`).openOn(map);
+        const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖' }[item.tipo] || '🏠';
+        L.popup().setLatLng(item.coords).setContent(`<strong>${tipoIcono} ${item.nombre}</strong><br>${item.ruta} · km ${item.km}<br>📞 ${item.telefono}`).openOn(map);
       });
     }
 
