@@ -21,8 +21,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="css/styles.css?v=2">
-  <link rel="stylesheet" href="css/mobile.css?v=2" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="css/styles.css?v=3">
+  <link rel="stylesheet" href="css/mobile.css?v=3" media="screen and (max-width: 768px)">
 </head>
 <body>
 <div id="app">
@@ -145,7 +145,7 @@
       </div>
 
       <!-- ACTIVE ALERTS -->
-      <div class="panel-section" style="flex:1">
+      <div class="panel-section">
         <div class="section-header">
           <div class="section-title">🚨 Alertas Activas</div>
           <div class="filter-tabs">
@@ -157,8 +157,20 @@
         <div id="alerts-list"></div>
       </div>
 
+      <!-- SERVICIOS -->
+      <div class="panel-section">
+        <div class="section-header">
+          <div class="section-title">⛽ Servicios</div>
+          <div class="filter-tabs">
+            <button class="serv-filter-tab active" data-serv="combustible">Combustible</button>
+            <button class="serv-filter-tab" data-serv="alojamiento">Alojamiento</button>
+          </div>
+        </div>
+        <div id="servicios-list"></div>
+      </div>
+
       <!-- STATS FOOTER -->
-      <div style="padding:12px 16px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex-shrink:0">
+      <div style="padding:12px 16px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;flex-shrink:0">
         <div style="text-align:center">
           <div style="font-size:20px;font-weight:800;color:var(--danger)">6</div>
           <div style="font-size:10px;color:var(--text3)">Cortes activos</div>
@@ -168,8 +180,12 @@
           <div style="font-size:10px;color:var(--text3)">Alertas clima</div>
         </div>
         <div style="text-align:center">
-          <div style="font-size:20px;font-weight:800;color:var(--sos)">20</div>
+          <div style="font-size:20px;font-weight:800;color:var(--sos)">14</div>
           <div style="font-size:10px;color:var(--text3)">Puntos SOS</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:20px;font-weight:800;color:#0891b2">18</div>
+          <div style="font-size:10px;color:var(--text3)">Servicios</div>
         </div>
       </div>
 
@@ -256,9 +272,9 @@
 </div><!-- /app -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<script src="data/datos.js?v=5"></script>
-<script src="js/map.js?v=6"></script>
-<script src="js/ui.js?v=2"></script>
-<script src="js/app.js?v=3"></script>
+<script src="data/datos.js?v=6"></script>
+<script src="js/map.js?v=7"></script>
+<script src="js/ui.js?v=3"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>

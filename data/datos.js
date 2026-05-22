@@ -123,17 +123,34 @@ const PUNTOS_SOS = [
   // Bomberos
   { id: 'sos-018', tipo: 'bomberos', nombre: 'Bomberos Voluntarios Mendoza', ruta: 'RN 40', km: 1150, coords: [-32.89, -68.84], telefono: '100', servicios: ['Rescate', 'Incendios', 'Materiales peligrosos'] },
   { id: 'sos-019', tipo: 'bomberos', nombre: 'Bomberos Voluntarios Bariloche', ruta: 'RN 40', km: 820, coords: [-41.14, -71.31], telefono: '100', servicios: ['Rescate', 'Incendios', 'Rescate acuático'] },
-  { id: 'sos-020', tipo: 'bomberos', nombre: 'Bomberos Voluntarios Neuquén', ruta: 'RN 22', km: 5, coords: [-38.95, -68.06], telefono: '100', servicios: ['Rescate', 'Incendios', 'Materiales peligrosos', 'USAR'] },
-  // ═══ Estaciones de Servicio ═══
-  { id: 'sos-021', tipo: 'estacion-servicio', nombre: 'YPF Ruta 7 - San Luis', ruta: 'RN 7', km: 750, coords: [-33.30, -66.34], telefono: '(0266) 443-1234', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Estacionamiento para camiones'] },
-  { id: 'sos-022', tipo: 'estacion-servicio', nombre: 'Shell Ruta 3 - Bahía Blanca', ruta: 'RN 3', km: 650, coords: [-38.72, -62.27], telefono: '(0291) 455-5678', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Lavado'] },
-  { id: 'sos-023', tipo: 'estacion-servicio', nombre: 'Axion Ruta 40 - Zapala', ruta: 'RN 40', km: 700, coords: [-38.90, -70.06], telefono: '(0942) 425-789', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Aire'] },
-  { id: 'sos-024', tipo: 'estacion-servicio', nombre: 'YPF Ruta 9 - Córdoba', ruta: 'RN 9', km: 410, coords: [-31.42, -64.18], telefono: '(0351) 470-1234', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
-  { id: 'sos-025', tipo: 'estacion-servicio', nombre: 'Shell Ruta 14 - Paso de los Libres', ruta: 'RN 14', km: 620, coords: [-29.71, -57.09], telefono: '(03772) 428-345', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Estacionamiento'] },
-  { id: 'sos-026', tipo: 'estacion-servicio', nombre: 'YPF Ruta 3 - Comodoro', ruta: 'RN 3', km: 1500, coords: [-45.86, -67.50], telefono: '(0297) 446-7890', servicios: ['Nafta', 'Diesel', 'Baños', 'Restaurante', 'Hotel', 'Estacionamiento camiones'] },
-  { id: 'sos-027', tipo: 'estacion-servicio', nombre: 'Axion Ruta 7 - Mendoza', ruta: 'RN 7', km: 1000, coords: [-32.89, -68.84], telefono: '(0261) 438-4567', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
-  { id: 'sos-028', tipo: 'estacion-servicio', nombre: 'YPF Ruta 40 - El Calafate', ruta: 'RN 40', km: 2800, coords: [-50.33, -72.10], telefono: '(02902) 491-234', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Asistencia mecánica'] }
+  { id: 'sos-020', tipo: 'bomberos', nombre: 'Bomberos Voluntarios Neuquén', ruta: 'RN 22', km: 5, coords: [-38.95, -68.06], telefono: '100', servicios: ['Rescate', 'Incendios', 'Materiales peligrosos', 'USAR'] }
 ];
+
+const ESTACIONES_SERVICIO = [
+  { id: 'est-001', nombre: 'YPF Ruta 7 - San Luis', ruta: 'RN 7', km: 750, coords: [-33.30, -66.34], telefono: '(0266) 443-1234', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Estacionamiento para camiones'] },
+  { id: 'est-002', nombre: 'Shell Ruta 3 - Bahía Blanca', ruta: 'RN 3', km: 650, coords: [-38.72, -62.27], telefono: '(0291) 455-5678', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Lavado'] },
+  { id: 'est-003', nombre: 'Axion Ruta 40 - Zapala', ruta: 'RN 40', km: 700, coords: [-38.90, -70.06], telefono: '(0942) 425-789', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Aire'] },
+  { id: 'est-004', nombre: 'YPF Ruta 9 - Córdoba', ruta: 'RN 9', km: 410, coords: [-31.42, -64.18], telefono: '(0351) 470-1234', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
+  { id: 'est-005', nombre: 'Shell Ruta 14 - Paso de los Libres', ruta: 'RN 14', km: 620, coords: [-29.71, -57.09], telefono: '(03772) 428-345', horario: '06:00–22:00', servicios: ['Nafta', 'Diesel', 'Baños', 'Cafetería', 'Estacionamiento'] },
+  { id: 'est-006', nombre: 'YPF Ruta 3 - Comodoro', ruta: 'RN 3', km: 1500, coords: [-45.86, -67.50], telefono: '(0297) 446-7890', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Restaurante', 'Hotel', 'Estacionamiento camiones'] },
+  { id: 'est-007', nombre: 'Axion Ruta 7 - Mendoza', ruta: 'RN 7', km: 1000, coords: [-32.89, -68.84], telefono: '(0261) 438-4567', horario: '24h', servicios: ['Nafta', 'Diesel', 'GNC', 'Baños', 'Restaurante', 'Ducha'] },
+  { id: 'est-008', nombre: 'YPF Ruta 40 - El Calafate', ruta: 'RN 40', km: 2800, coords: [-50.33, -72.10], telefono: '(02902) 491-234', horario: '24h', servicios: ['Nafta', 'Diesel', 'Baños', 'Mini-market', 'Asistencia mecánica'] }
+];
+
+const ALOJAMIENTOS = [
+  { id: 'alo-001', nombre: 'Hotel Termas de Copahue', tipo: 'hotel', ruta: 'RN 40', km: 680, coords: [-37.82, -71.10], telefono: '(0948) 425-500', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno'] },
+  { id: 'alo-002', nombre: 'Hostería Ruta 40', tipo: 'hosteria', ruta: 'RN 40', km: 800, coords: [-40.15, -71.35], telefono: '(0944) 422-200', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Cochera'] },
+  { id: 'alo-003', nombre: 'Hotel Austral', tipo: 'hotel', ruta: 'RN 3', km: 1600, coords: [-51.63, -69.22], telefono: '(02966) 421-100', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] },
+  { id: 'alo-004', nombre: 'Cabañas del Sur', tipo: 'cabaña', ruta: 'RN 3', km: 1450, coords: [-45.86, -67.50], telefono: '(0297) 447-3000', estrellas: 2, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'TV'] },
+  { id: 'alo-005', nombre: 'Hotel Mendoza Downtown', tipo: 'hotel', ruta: 'RN 7', km: 985, coords: [-32.89, -68.84], telefono: '(0261) 439-4000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio', 'Bar'] },
+  { id: 'alo-006', nombre: 'Hostería San Luis', tipo: 'hosteria', ruta: 'RN 7', km: 740, coords: [-33.30, -66.34], telefono: '(0266) 444-5678', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
+  { id: 'alo-007', nombre: 'Hotel Bristol', tipo: 'hotel', ruta: 'RN 9', km: 400, coords: [-31.42, -64.18], telefono: '(0351) 428-9000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio'] },
+  { id: 'alo-008', nombre: 'Cabañas del Lago', tipo: 'cabaña', ruta: 'RN 40', km: 810, coords: [-41.14, -71.31], telefono: '(0944) 423-500', estrellas: 3, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'Vista al lago'] },
+  { id: 'alo-009', nombre: 'Hotel Norte', tipo: 'hotel', ruta: 'RN 9', km: 970, coords: [-24.89, -65.41], telefono: '(0387) 421-2000', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
+  { id: 'alo-010', nombre: 'Posada de la Quebrada', tipo: 'hosteria', ruta: 'RN 9', km: 1090, coords: [-23.20, -65.35], telefono: '(0388) 425-100', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] }
+];
+
+const ALERTAS_CLIMA = [
 
 const ALERTAS_CLIMA = [
   {

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     initMap();
     buildAlertsList('all');
+    buildServiciosList('combustible');
     buildLegendModal();
     setupEventListeners();
     checkOnlineStatus();
@@ -50,6 +51,15 @@ function setupEventListeners() {
       document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       buildAlertsList(tab.dataset.filter);
+    });
+  });
+
+  // Servicios filter tabs
+  document.querySelectorAll('.serv-filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.serv-filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      buildServiciosList(tab.dataset.serv);
     });
   });
 

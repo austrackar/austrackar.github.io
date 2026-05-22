@@ -73,6 +73,56 @@ function buildAlertsList(filter = 'all') {
   });
 }
 
+// ─── SERVICIOS ──────────────────────────────────
+function buildServiciosList(filter = 'combustible') {
+  const container = document.getElementById('servicios-list');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const items = filter === 'combustible' ? ESTACIONES_SERVICIO : ALOJAMIENTOS;
+
+  if (!items.length) {
+    container.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Sin servicios disponibles</div>';
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'alert-card';
+
+    if (filter === 'combustible') {
+      const horarioOk = item.horario === '24h';
+      card.innerHTML = `
+        <div class="alert-header" style="padding-bottom:2px">
+          <span class="alert-title">⛽ ${item.nombre}</span>
+          <span class="alert-badge" style="background:${horarioOk ? '#16a34a' : '#f59e0b'};color:white">${horarioOk ? '24h' : item.horario}</span>
+        </div>
+        <div class="alert-meta">
+          🛣️ ${item.ruta} · km ${item.km}<br>
+          📞 ${item.telefono}
+        </div>
+        <div style="margin-top:6px">${item.servicios.map(s => `<span style="background:#e0f2fe;color:#0369a1;font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;font-weight:600">${s}</span>`).join('')}</div>`;
+      card.addEventListener('click', () => map.setView(item.coords, 12, { animate: true }));
+    } else {
+      const estrellas = '★'.repeat(item.estrellas) + '☆'.repeat(5 - item.estrellas);
+      const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖' }[item.tipo] || '🏠';
+      card.innerHTML = `
+        <div class="alert-header" style="padding-bottom:2px">
+          <span class="alert-title">${tipoIcono} ${item.nombre}</span>
+          <span class="alert-badge" style="background:#7c3aed;color:white">${item.precio}</span>
+        </div>
+        <div class="alert-meta" style="font-size:11px">
+          🛣️ ${item.ruta} · km ${item.km}<br>
+          ${estrellas} · ${item.telefono}
+        </div>
+        <div style="margin-top:6px">${item.servicios.map(s => `<span style="background:#f3e8ff;color:#6b21a8;font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;font-weight:600">${s}</span>`).join('')}</div>`;
+      card.addEventListener('click', () => map.setView(item.coords, 12, { animate: true }));
+    }
+
+    container.appendChild(card);
+  });
+}
+
 function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
   const section = document.getElementById('route-info-section');
   section.classList.remove('hidden');

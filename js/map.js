@@ -359,8 +359,7 @@ function renderSOSOnMap() {
     hospital: { color: '#dc2626', bg: '#fee2e2', emoji: '🏥' },
     policia: { color: '#1d4ed8', bg: '#dbeafe', emoji: '👮' },
     bomberos: { color: '#ea580c', bg: '#fed7aa', emoji: '🚒' },
-    peaje: { color: '#7c3aed', bg: '#ede9fe', emoji: '🛣️' },
-    'estacion-servicio': { color: '#0891b2', bg: '#cffafe', emoji: '⛽' }
+    peaje: { color: '#7c3aed', bg: '#ede9fe', emoji: '🛣️' }
   };
 
   PUNTOS_SOS.forEach(sos => {
