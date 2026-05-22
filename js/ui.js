@@ -4,6 +4,7 @@
 
 function buildAlertsList(filter = 'all') {
   const container = document.getElementById('alerts-list');
+  if (!container) return;
   container.innerHTML = '';
 
   const allItems = [
@@ -11,9 +12,21 @@ function buildAlertsList(filter = 'all') {
     ...ALERTAS_CLIMA.map(a => ({ ...a, _kind: 'clima' }))
   ];
 
-  const filtered = filter === 'all' ? allItems
+  let filtered = filter === 'all' ? allItems
     : filter === 'corte' ? allItems.filter(i => i._kind === 'corte')
     : allItems.filter(i => i._kind === 'clima');
+
+  // Filter by current map viewport
+  if (map) {
+    const bounds = map.getBounds().pad(0.5);
+    filtered = filtered.filter(item => {
+      if (item._kind === 'corte') {
+        return item.coords && item.coords.some(c => bounds.contains(c));
+      } else {
+        return bounds.contains(item.center);
+      }
+    });
+  }
 
   if (filtered.length === 0) {
     container.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Sin alertas para este filtro</div>';

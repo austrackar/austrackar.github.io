@@ -78,6 +78,11 @@ function initMap() {
   map.on('moveend', () => {
     renderCutsOnMap();
     renderClimaOnMap();
+    const panel = document.getElementById('left-panel');
+    if (panel && panel.classList.contains('open')) {
+      const activeFilter = document.querySelector('.filter-tab.active');
+    if (activeFilter && typeof buildAlertsList === 'function') buildAlertsList(activeFilter.dataset.filter);
+    }
   });
 
   } catch (e) {
