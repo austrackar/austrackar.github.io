@@ -150,16 +150,14 @@ const ESTACIONES_SERVICIO = [
 ];
 
 const ALOJAMIENTOS = [
-  { id: 'alo-001', nombre: 'Hotel Termas de Copahue', tipo: 'hotel', ruta: 'RN 40', km: 680, coords: [-37.82, -71.10], telefono: '(0948) 425-500', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno'] },
-  { id: 'alo-002', nombre: 'Hostería Ruta 40', tipo: 'hosteria', ruta: 'RN 40', km: 800, coords: [-40.15, -71.35], telefono: '(0944) 422-200', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Cochera'] },
-  { id: 'alo-003', nombre: 'Hotel Austral', tipo: 'hotel', ruta: 'RN 3', km: 1600, coords: [-51.63, -69.22], telefono: '(02966) 421-100', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] },
-  { id: 'alo-004', nombre: 'Cabañas del Sur', tipo: 'cabaña', ruta: 'RN 3', km: 1450, coords: [-45.86, -67.50], telefono: '(0297) 447-3000', estrellas: 2, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'TV'] },
-  { id: 'alo-005', nombre: 'Hotel Mendoza Downtown', tipo: 'hotel', ruta: 'RN 7', km: 985, coords: [-32.89, -68.84], telefono: '(0261) 439-4000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio', 'Bar'] },
-  { id: 'alo-006', nombre: 'Hostería San Luis', tipo: 'hosteria', ruta: 'RN 7', km: 740, coords: [-33.30, -66.34], telefono: '(0266) 444-5678', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
-  { id: 'alo-007', nombre: 'Hotel Bristol', tipo: 'hotel', ruta: 'RN 9', km: 400, coords: [-31.42, -64.18], telefono: '(0351) 428-9000', estrellas: 4, precio: '$$$', servicios: ['Restaurante', 'Pileta', 'WiFi', 'Estacionamiento', 'Desayuno', 'Gimnasio'] },
-  { id: 'alo-008', nombre: 'Cabañas del Lago', tipo: 'cabaña', ruta: 'RN 40', km: 810, coords: [-41.14, -71.31], telefono: '(0944) 423-500', estrellas: 3, precio: '$$', servicios: ['WiFi', 'Estacionamiento', 'Cocina', 'Calefacción', 'Vista al lago'] },
-  { id: 'alo-009', nombre: 'Hotel Norte', tipo: 'hotel', ruta: 'RN 9', km: 970, coords: [-24.89, -65.41], telefono: '(0387) 421-2000', estrellas: 3, precio: '$$', servicios: ['Restaurante', 'WiFi', 'Estacionamiento', 'Desayuno', 'Aire'] },
-  { id: 'alo-010', nombre: 'Posada de la Quebrada', tipo: 'hosteria', ruta: 'RN 9', km: 1090, coords: [-23.20, -65.35], telefono: '(0388) 425-100', estrellas: 2, precio: '$', servicios: ['WiFi', 'Estacionamiento', 'Desayuno', 'Calefacción'] }
+  { id: 'alo-001', nombre: 'Hotel Napoleón', tipo: 'hotel', coords: [-30.9824, -64.0929], telefono: '+54 3525 401700', direccion: 'Ameghino 211, Jesús María, Córdoba', web: 'napoleononline.com.ar' },
+  { id: 'alo-002', nombre: 'Hotel Fenicia', tipo: 'hotel', coords: [-33.8951, -60.5654], telefono: '+54 (2477) 43-2604', direccion: 'Av H Yrigoyen 2, Pergamino, Buenos Aires', web: 'hotelfenicia.com.ar' },
+  { id: 'alo-003', nombre: 'Hotel Magal', tipo: 'hotel', coords: [-35.4882, -62.9821], telefono: '+54 2337 453235', direccion: 'Pellegrini 331, América, Buenos Aires' },
+  { id: 'alo-004', nombre: 'Hotel Tafí', tipo: 'hotel', coords: [-26.8543, -65.7107], telefono: '+5493815697400', direccion: 'Av. Belgrano 177, Tafí del Valle, Tucumán', web: 'hoteltafi.com' },
+  { id: 'alo-005', nombre: 'Exe Hotel Colón', tipo: 'hotel', coords: [-34.6023, -58.3809], telefono: '+54 11 4320-3500', direccion: 'Buenos Aires' },
+  { id: 'alo-006', nombre: 'Plaza Hotel Dolores', tipo: 'hotel', coords: [-36.3157, -57.6762], telefono: '+5492245442362', direccion: 'Dolores, Buenos Aires' },
+  { id: 'alo-007', nombre: 'Hotel Shincal', tipo: 'hotel', coords: [-28.4749, -65.7736], telefono: '+54-383 442-1083', direccion: 'Catamarca' },
+  { id: 'alo-008', nombre: 'Hotel de Turismo Santa Rita', tipo: 'hotel', coords: [-27.5832, -66.3103], telefono: '+54 3835 423308', direccion: 'Andalgalá, Catamarca' }
 ];
 
 const ALERTAS_CLIMA = [

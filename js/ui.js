@@ -106,22 +106,19 @@ function buildServiciosList(filter = 'combustible') {
         L.popup().setLatLng(item.coords).setContent(`<strong>⛽ ${item.nombre}</strong><br>${item.marca ? 'Marca: ' + item.marca + '<br>' : ''}📞 ${item.telefono || 'Sin teléfono'}`).openOn(map);
       });
     } else {
-      const estrellas = '★'.repeat(item.estrellas) + '☆'.repeat(5 - item.estrellas);
-      const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖' }[item.tipo] || '🏠';
       card.innerHTML = `
         <div class="alert-header" style="padding-bottom:2px">
-          <span class="alert-title">${tipoIcono} ${item.nombre}</span>
-          <span class="alert-badge" style="background:#7c3aed;color:white">${item.precio}</span>
+          <span class="alert-title">🏨 ${item.nombre}</span>
+          <span class="alert-badge" style="background:#7c3aed;color:white;font-size:10px">HOTEL</span>
         </div>
-        <div class="alert-meta" style="font-size:11px">
-          🛣️ ${item.ruta} · km ${item.km}<br>
-          ${estrellas} · ${item.telefono}
-        </div>
-        <div style="margin-top:6px">${item.servicios.map(s => `<span style="background:#f3e8ff;color:#6b21a8;font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;font-weight:600">${s}</span>`).join('')}</div>`;
+        <div class="alert-meta" style="font-size:12px">
+          ${item.direccion ? `📍 ${item.direccion}<br>` : ''}
+          📞 ${item.telefono}
+          ${item.web ? `<br>🌐 ${item.web}` : ''}
+        </div>`;
       card.addEventListener('click', () => {
         map.setView(item.coords, 16, { animate: true });
-        const tipoIcono = { hotel: '🏨', hosteria: '🏡', cabaña: '🛖' }[item.tipo] || '🏠';
-        L.popup().setLatLng(item.coords).setContent(`<strong>${tipoIcono} ${item.nombre}</strong><br>${item.ruta} · km ${item.km}<br>📞 ${item.telefono}`).openOn(map);
+        L.popup().setLatLng(item.coords).setContent(`<strong>🏨 ${item.nombre}</strong><br>${item.direccion ? '📍 ' + item.direccion + '<br>' : ''}📞 ${item.telefono}`).openOn(map);
       });
     }
 
