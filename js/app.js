@@ -7,6 +7,7 @@ let notifInterval = null;
 let savedRouteData = null;
 
 let availableRouteOptions = [];
+let notifiedAlerts = new Set();
 // ─── INIT ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     checkOnlineStatus();
     setTimeout(startNotificationDemo, 3000);
+    setTimeout(requestUserLocation, 1000);
   } catch (e) {
     console.error('Error en inicialización:', e);
     showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + e.message, type: 'danger' });
@@ -561,6 +563,56 @@ function startNotificationDemo() {
   setTimeout(() => {
     showNotification({ title: '🚨 Vialidad Nacional', body: 'RN 40 km 1420 (Mendoza): Derrumbe activo. Ambos carriles cortados.', type: 'danger', duration: 7000, location: [-32.58, -69.10] });
   }, 4000);
+}
+
+// ─── UBICACIÓN Y ALERTAS CERCANAS ──────────────
+function requestUserLocation() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    pos => checkNearbyAlerts(pos.coords.latitude, pos.coords.longitude),
+    () => {},
+    { enableHighAccuracy: false, timeout: 8000 }
+  );
+}
+
+function distKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function checkNearbyAlerts(lat, lng) {
+  // Check cuts
+  RUTAS_CORTADAS.forEach(c => {
+    if (notifiedAlerts.has(c.id)) return;
+    const mid = c.coords[Math.floor(c.coords.length / 2)];
+    const d = distKm(lat, lng, mid[0], mid[1]);
+    if (d < 200) {
+      notifiedAlerts.add(c.id);
+      showNotification({
+        title: `🚧 Corte cerca: ${c.ruta}`,
+        body: `${c.motivo}. ${c.localidad}, ${c.provincia} (a ${Math.round(d)} km)`,
+        type: 'danger', duration: 10000, location: mid
+      });
+    }
+  });
+
+  // Check weather alerts
+  ALERTAS_CLIMA.forEach(a => {
+    if (notifiedAlerts.has(a.id)) return;
+    const d = distKm(lat, lng, a.center[0], a.center[1]);
+    if (d < (a.radio / 1000 + 100)) {
+      notifiedAlerts.add(a.id);
+      showNotification({
+        title: `⛈️ Alerta cerca: ${a.titulo}`,
+        body: `${a.descripcion.slice(0, 80)}… (a ${Math.round(d)} km)`,
+        type: a.severidad === 'rojo' ? 'danger' : 'warning',
+        duration: 10000, location: a.center
+      });
+    }
+  });
 }
 
 function renderRouteOptions(routeOptions, originCoords, destCoords, originName, destName) {
