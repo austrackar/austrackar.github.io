@@ -127,22 +127,22 @@ const PUNTOS_SOS = [
 ];
 
 const ESTACIONES_SERVICIO = [
-  { id: 'est-001', nombre: 'YPF', marca: 'YPF', coords: [-34.5508304, -58.4993353], telefono: '+54 11 4807-8463', horario: '24/7' },
-  { id: 'est-002', nombre: 'Shell', marca: 'Shell', coords: [-35.6292269, -59.7816299], telefono: '+54 (2344) 45-3343', horario: '24/7' },
-  { id: 'est-003', nombre: 'Aca Villa Allende', marca: 'YPF', coords: [-31.2993919, -64.2880263], telefono: '+54 (3543) 43-7080' },
-  { id: 'est-004', nombre: 'YPF', marca: 'YPF', coords: [-30.8534305, -64.9929973], telefono: '+54 (3549) 48-0550', horario: '24/7' },
-  { id: 'est-005', nombre: 'YPF', marca: 'YPF', coords: [-33.6586070, -61.4567421], telefono: '+54 (3465) 49-9062' },
-  { id: 'est-006', nombre: 'Puma', marca: 'Puma', coords: [-32.6101854, -62.6906993], telefono: '+54 (3537) 41-2143' },
-  { id: 'est-007', nombre: 'YPF', marca: 'YPF', coords: [-36.6618830, -64.2833520], telefono: '+54 295 443-4355', horario: '24/7' },
-  { id: 'est-008', nombre: 'YPF', marca: 'YPF', coords: [-26.5694336, -54.7535952], telefono: '+54 3751 480053' },
-  { id: 'est-009', nombre: 'YPF', marca: 'YPF', coords: [-24.7866700, -65.4028200], telefono: '03872445379', horario: '24/7' },
-  { id: 'est-010', nombre: 'YPF', marca: 'YPF', coords: [-28.4609486, -65.8009466], telefono: '+54 -9 383-4453400' },
-  { id: 'est-011', nombre: 'Puma', marca: 'Puma', coords: [-37.6769114, -58.4445948], telefono: '+54 (2266) 44-7091' },
-  { id: 'est-012', nombre: 'YPF', marca: 'YPF', coords: [-41.1481345, -71.3048650], telefono: '0294 443-2392' },
-  { id: 'est-013', nombre: 'YPF', marca: 'YPF', coords: [-27.3726608, -55.9118683], telefono: '+54 376 4431231', horario: '24/7' },
-  { id: 'est-014', nombre: 'YPF', marca: 'YPF', coords: [-54.7934467, -68.2618420], telefono: '02901 43-5963', horario: '24/7' },
-  { id: 'est-015', nombre: 'ACA', marca: 'YPF', coords: [-44.6892379, -66.6248273], telefono: '0297-4477801', horario: '24/7' },
-  { id: 'est-016', nombre: 'ACA Comodoro', marca: 'YPF', coords: [-45.8654000, -67.4970600], telefono: '0297-4472978', horario: '24/7' }
+  { id: 'est-001', nombre: 'YPF Buenos Aires', marca: 'YPF', coords: [-34.5508304, -58.4993353], telefono: '+54 11 4807-8463', horario: '24/7' },
+  { id: 'est-002', nombre: 'Shell Saladillo', marca: 'Shell', coords: [-35.6292269, -59.7816299], telefono: '+54 (2344) 45-3343', horario: '24/7' },
+  { id: 'est-003', nombre: 'YPF Villa Allende', marca: 'YPF', coords: [-31.2993919, -64.2880263], telefono: '+54 (3543) 43-7080' },
+  { id: 'est-004', nombre: 'YPF Cruz del Eje', marca: 'YPF', coords: [-30.8534305, -64.9929973], telefono: '+54 (3549) 48-0550', horario: '24/7' },
+  { id: 'est-005', nombre: 'YPF Melincué', marca: 'YPF', coords: [-33.6586070, -61.4567421], telefono: '+54 (3465) 49-9062' },
+  { id: 'est-006', nombre: 'Puma Marcos Juárez', marca: 'Puma', coords: [-32.6101854, -62.6906993], telefono: '+54 (3537) 41-2143' },
+  { id: 'est-007', nombre: 'YPF Santa Rosa', marca: 'YPF', coords: [-36.6618830, -64.2833520], telefono: '+54 295 443-4355', horario: '24/7' },
+  { id: 'est-008', nombre: 'YPF Eldorado', marca: 'YPF', coords: [-26.5694336, -54.7535952], telefono: '+54 3751 480053' },
+  { id: 'est-009', nombre: 'YPF Salta', marca: 'YPF', coords: [-24.7866700, -65.4028200], telefono: '03872445379', horario: '24/7' },
+  { id: 'est-010', nombre: 'YPF Catamarca', marca: 'YPF', coords: [-28.4609486, -65.8009466], telefono: '+54 -9 383-4453400' },
+  { id: 'est-011', nombre: 'Puma Tandil', marca: 'Puma', coords: [-37.6769114, -58.4445948], telefono: '+54 (2266) 44-7091' },
+  { id: 'est-012', nombre: 'YPF Bariloche', marca: 'YPF', coords: [-41.1481345, -71.3048650], telefono: '0294 443-2392' },
+  { id: 'est-013', nombre: 'YPF Posadas', marca: 'YPF', coords: [-27.3726608, -55.9118683], telefono: '+54 376 4431231', horario: '24/7' },
+  { id: 'est-014', nombre: 'YPF Ushuaia', marca: 'YPF', coords: [-54.7934467, -68.2618420], telefono: '02901 43-5963', horario: '24/7' },
+  { id: 'est-015', nombre: 'ACA Comodoro Rivadavia', marca: 'YPF', coords: [-44.6892379, -66.6248273], telefono: '0297-4477801', horario: '24/7' },
+  { id: 'est-016', nombre: 'ACA Comodoro Rivadavia', marca: 'YPF', coords: [-45.8654000, -67.4970600], telefono: '0297-4472978', horario: '24/7' }
 ];
 
 const ALOJAMIENTOS = [
