@@ -63,12 +63,15 @@
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
 <script>
 let watchId = null;
 let intervalId = null;
 let empId = null;
+let trackEmpresa = '';
 
 const nameInput = document.getElementById('emp-name');
 const rutaSelect = document.getElementById('emp-ruta');
@@ -78,21 +81,20 @@ const statusEl = document.getElementById('status');
 const coordsEl = document.getElementById('coords');
 const badgeArea = document.getElementById('badge-area');
 
-// Enable start button when name is filled
-nameInput.addEventListener('input', () => {
-  btnStart.disabled = !nameInput.value.trim();
+// Init auth and wait for login
+initAuth();
+onAuthReady((user, profile) => {
+  if (!user || !profile || profile.rol !== 'empleado') {
+    window.location.href = 'login.html';
+    return;
+  }
+  trackEmpresa = profile.empresa;
+  nameInput.value = profile.nombre || '';
+  nameInput.disabled = true;
+  btnStart.disabled = false;
+  statusEl.textContent = '✅ Conectado como ' + profile.nombre + ' (' + profile.empresa + ')';
+  statusEl.className = 'status-box status-ok';
 });
-
-// Load saved name from localStorage
-const saved = localStorage.getItem('rt-empleado');
-if (saved) {
-  try {
-    const d = JSON.parse(saved);
-    nameInput.value = d.nombre || '';
-    if (d.ruta) rutaSelect.value = d.ruta;
-    btnStart.disabled = false;
-  } catch(e) {}
-}
 
 function setStatus(msg, type) {
   statusEl.textContent = msg;
@@ -106,58 +108,13 @@ function updateCoords(lat, lng) {
 function startSharing() {
   const nombre = nameInput.value.trim();
   const ruta = rutaSelect.value;
-  if (!nombre) return;
+  if (!nombre || !trackEmpresa) return;
 
-  // Create or reuse employee ID
-  empId = localStorage.getItem('rt-empleado-id');
-  if (!empId) {
-    empId = 'emp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
-    localStorage.setItem('rt-empleado-id', empId);
-  }
+  // Use uid as employee ID
+  empId = firebase.auth().currentUser.uid;
 
-  // Save name/ruta
-  localStorage.setItem('rt-empleado', JSON.stringify({ nombre, ruta }));
-
-  // Check Firebase config
-  if (!FIREBASE_CONFIG || FIREBASE_CONFIG.apiKey.startsWith('REEMPLAZA')) {
-    setStatus('❌ Firebase no configurado. Seguí los pasos en js/firebase-config.js', 'err');
-    return;
-  }
-
-  // Init Firebase
-  try {
-    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-    const db = firebase.database();
-
-    function sendLocation() {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const data = {
-            nombre,
-            ruta: ruta || '',
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            timestamp: Date.now(),
-            activo: true
-          };
-          db.ref('flota/' + empId).set(data);
-          updateCoords(pos.coords.latitude, pos.coords.longitude);
-          setStatus('✅ Ubicación enviada — te estamos viendo 📡', 'ok');
-        },
-        err => {
-          console.warn('GPS error:', err.message);
-          setStatus('⚠️ Error de GPS: ' + err.message, 'err');
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-      );
-    }
-
-    // Send immediately then every 10s
-    sendLocation();
-    intervalId = setInterval(sendLocation, 10000);
-
-    // Also watch position continuously
-    watchId = navigator.geolocation.watchPosition(
+  function sendLocation() {
+    navigator.geolocation.getCurrentPosition(
       pos => {
         const data = {
           nombre,
@@ -167,37 +124,54 @@ function startSharing() {
           timestamp: Date.now(),
           activo: true
         };
-        db.ref('flota/' + empId).set(data);
+        firebase.database().ref('flota/' + trackEmpresa + '/' + empId).set(data);
         updateCoords(pos.coords.latitude, pos.coords.longitude);
+        setStatus('✅ Ubicación enviada — te estamos viendo 📡', 'ok');
       },
-      err => console.warn('watchPosition error:', err.message),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
+      err => {
+        console.warn('GPS error:', err.message);
+        setStatus('⚠️ Error de GPS: ' + err.message, 'err');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
     );
-
-    btnStart.style.display = 'none';
-    btnStop.style.display = 'block';
-    nameInput.disabled = true;
-    rutaSelect.disabled = true;
-    badgeArea.innerHTML = '<span class="badge">🟢 Compartiendo ubicación</span>';
-
-  } catch (e) {
-    setStatus('❌ Error: ' + e.message, 'err');
   }
+
+  sendLocation();
+  intervalId = setInterval(sendLocation, 10000);
+
+  watchId = navigator.geolocation.watchPosition(
+    pos => {
+      const data = {
+        nombre,
+        ruta: ruta || '',
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        timestamp: Date.now(),
+        activo: true
+      };
+      firebase.database().ref('flota/' + trackEmpresa + '/' + empId).set(data);
+      updateCoords(pos.coords.latitude, pos.coords.longitude);
+    },
+    err => console.warn('watchPosition error:', err.message),
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
+  );
+
+  btnStart.style.display = 'none';
+  btnStop.style.display = 'block';
+  rutaSelect.disabled = true;
+  badgeArea.innerHTML = '<span class="badge">🟢 Compartiendo ubicación</span>';
 }
 
 function stopSharing() {
   if (intervalId) { clearInterval(intervalId); intervalId = null; }
   if (watchId) { navigator.geolocation.clearWatch(watchId); watchId = null; }
 
-  // Mark as inactive in Firebase
-  if (empId && firebase.apps.length) {
-    const db = firebase.database();
-    db.ref('flota/' + empId).update({ activo: false, timestamp: Date.now() });
+  if (empId && trackEmpresa) {
+    firebase.database().ref('flota/' + trackEmpresa + '/' + empId).update({ activo: false, timestamp: Date.now() });
   }
 
   btnStart.style.display = 'block';
   btnStop.style.display = 'none';
-  nameInput.disabled = false;
   rutaSelect.disabled = false;
   badgeArea.innerHTML = '<span class="badge" style="background:#6b7280">🔴 No compartiendo</span>';
   setStatus('Dejaste de compartir ubicación', 'err');
@@ -206,7 +180,6 @@ function stopSharing() {
 btnStart.addEventListener('click', startSharing);
 btnStop.addEventListener('click', stopSharing);
 
-// Stop on page unload
 window.addEventListener('beforeunload', () => {
   if (intervalId) clearInterval(intervalId);
   if (watchId) navigator.geolocation.clearWatch(watchId);

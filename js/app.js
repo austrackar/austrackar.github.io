@@ -10,20 +10,24 @@ let availableRouteOptions = [];
 let notifiedAlerts = new Set();
 // ─── INIT ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    initMap();
-    buildAlertsList('all');
-    buildServiciosList('combustible');
-    buildLegendModal();
-    setupEventListeners();
-    checkOnlineStatus();
-    setTimeout(startNotificationDemo, 3000);
-    setTimeout(requestUserLocation, 1000);
-    setTimeout(initFlota, 2000);
-  } catch (e) {
-    console.error('Error en inicialización:', e);
-    showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + e.message, type: 'danger' });
-  }
+  // Wait for auth-ready event (dispatched from index.html)
+  document.addEventListener('auth-ready', (e) => {
+    const profile = e.detail.profile;
+    try {
+      initMap();
+      buildAlertsList('all');
+      buildServiciosList('combustible');
+      buildLegendModal();
+      setupEventListeners();
+      checkOnlineStatus();
+      setTimeout(startNotificationDemo, 3000);
+      setTimeout(requestUserLocation, 1000);
+      setTimeout(() => initFlota(profile?.empresa), 2000);
+    } catch (err) {
+      console.error('Error en inicialización:', err);
+      showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + err.message, type: 'danger' });
+    }
+  });
 });
 
 // ─── SERVICE WORKER ─────────────────────────────

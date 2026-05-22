@@ -64,6 +64,20 @@
         <span>Flota</span>
         <span id="flota-badge" class="badge hidden">0</span>
       </button>
+
+      <div id="user-menu" style="position:relative">
+        <button id="user-btn" class="top-btn" title="Tu cuenta">
+          <span id="user-avatar">👤</span>
+          <span id="user-name">Cuenta</span>
+        </button>
+        <div id="user-dropdown" class="hidden" style="position:absolute;top:100%;right:0;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:8px;min-width:180px;z-index:5000;box-shadow:0 8px 24px rgba(0,0,0,0.5)">
+          <div style="padding:8px 12px;font-size:13px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:4px">
+            <div id="dropdown-name" style="font-weight:600;color:var(--text1)"></div>
+            <div id="dropdown-empresa" style="font-size:12px"></div>
+          </div>
+          <button id="logout-btn" style="width:100%;background:none;border:none;color:#f85149;padding:10px 12px;text-align:left;cursor:pointer;font-size:13px;border-radius:8px;font-family:inherit">🚪 Cerrar sesión</button>
+        </div>
+      </div>
     </div>
   </header>
   <!-- ══════════ MAIN ══════════ -->
@@ -288,12 +302,33 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="data/datos.js?v=10"></script>
 <script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/map.js?v=7"></script>
 <script src="js/ui.js?v=5"></script>
-<script src="js/app.js?v=5"></script>
-<script src="js/flota.js"></script>
+<script src="js/app.js?v=6"></script>
+<script src="js/flota.js?v=2"></script>
+<script>
+// Boot: wait for auth, then init app
+initAuth();
+onAuthReady((user, profile) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  document.getElementById('user-name').textContent = profile?.nombre || user.email;
+  document.getElementById('dropdown-name').textContent = profile?.nombre || 'Usuario';
+  document.getElementById('dropdown-empresa').textContent = (profile?.empresa || '') + (profile?.rol ? ' · ' + profile.rol : '');
+  document.getElementById('user-btn').addEventListener('click', () => document.getElementById('user-dropdown').classList.toggle('hidden'));
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    logout().then(() => window.location.href = 'login.html');
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#user-menu')) document.getElementById('user-dropdown').classList.add('hidden');
+  });
+  // Dispatch event for app.js to start
+  document.dispatchEvent(new CustomEvent('auth-ready', { detail: { user, profile } }));
+});
+</script>
 </body>
 </html>

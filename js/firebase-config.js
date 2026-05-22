@@ -2,10 +2,20 @@
 // FIREBASE CONFIG — RutaSegura AR Flota
 // ═══════════════════════════════════════════════
 // 1. Andá a https://console.firebase.google.com
-// 2. Creá un proyecto nuevo (o usá uno existente)
-// 3. Activá Realtime Database en modo prueba
-// 4. En Configuración del proyecto > General > Tus apps
-//    → Agregá una app web y copiá la config acá abajo
+// 2. Entrá al proyecto rutaseguraar
+// 3. Andá a Build > Authentication > Sign-in method
+//    → Habilitá "Correo electrónico/contraseña" → Guardar
+// 4. Andá a Build > Realtime Database > Reglas
+//    → Pegá las reglas de abajo → Publicar
+// ═══════════════════════════════════════════════
+//
+// Reglas para Realtime Database:
+// {
+//   "rules": {
+//     "usuarios": { "$uid": { ".read": "$uid === auth.uid", ".write": "$uid === auth.uid" } },
+//     "flota": { "$empresa": { ".read": "auth != null", ".write": "auth != null" } }
+//   }
+// }
 // ═══════════════════════════════════════════════
 
 const FIREBASE_CONFIG = {

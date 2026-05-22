@@ -10,17 +10,24 @@ let flotaInitialized = false;
 let flotaDbRef = null;
 let flotaLayerGroup = null;
 
-function initFlota() {
+let currentEmpresa = '';
+
+function initFlota(empresa) {
   if (flotaInitialized) return;
+  if (!empresa) {
+    console.warn('⚠️ Sin empresa configurada. Flota desactivada.');
+    return;
+  }
+  currentEmpresa = empresa;
   try {
     if (typeof firebase === 'undefined' || !FIREBASE_CONFIG) {
       console.warn('⚠️ Firebase no disponible. Flota desactivada.');
       showNotification({ title: 'Flota no disponible', body: 'Configurá Firebase en js/firebase-config.js para usar el tracking de flota.', type: 'warning', duration: 5000 });
       return;
     }
-    firebase.initializeApp(FIREBASE_CONFIG);
+    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
     const db = firebase.database();
-    flotaDbRef = db.ref('flota');
+    flotaDbRef = db.ref('flota/' + empresa);
     flotaLayerGroup = L.layerGroup().addTo(map);
 
     flotaDbRef.on('value', snapshot => {
