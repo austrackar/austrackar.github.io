@@ -42,17 +42,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mUserBtn = document.getElementById('mobile-user-btn');
     if (mUserBtn) mUserBtn.style.display = 'flex';
+    const dd = document.getElementById('user-dropdown');
+    if (dd) dd.style.display = 'none';
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
+    document.getElementById('user-btn').onclick = function(e) {
+      e.stopPropagation();
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    };
+    if (mUserBtn) mUserBtn.onclick = function(e) {
+      e.stopPropagation();
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    };
+
+    document.getElementById('logout-btn').onclick = function() {
       logout().then(() => window.location.href = 'login.html');
-    });
+    };
 
-    // Close dropdown on outside click
-    document.addEventListener('click', e => {
-      if (!e.target.closest('#user-btn') && !e.target.closest('#mobile-user-btn') && !e.target.closest('#user-dropdown')) {
-        document.getElementById('user-dropdown').classList.add('hidden');
-      }
-    });
+    document.addEventListener('click', function() { if (dd) dd.style.display = 'none'; });
 
     initApp(profile);
   });
