@@ -241,26 +241,35 @@ function calculateRoute() {
 }
 
 // ─── USER LOCATION ────────────────────────────────
+let userLocationMarker = null;
+
 function requestUserLocation() {
   if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      checkNearbyAlerts(lat, lng);
 
-      // Add a blue dot marker for user location
-      const userIcon = L.divIcon({
-        html: '<div style="background:#3b82f6;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>',
-        className: '', iconSize: [16, 16], iconAnchor: [8, 8]
-      });
-      L.marker([lat, lng], { icon: userIcon, zIndexOffset: 2000 })
+  const userIcon = L.divIcon({
+    html: '<div style="background:#3b82f6;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>',
+    className: '', iconSize: [16, 16], iconAnchor: [8, 8]
+  });
+
+  function onPosition(pos) {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    checkNearbyAlerts(lat, lng);
+
+    if (userLocationMarker) {
+      userLocationMarker.setLatLng([lat, lng]);
+    } else {
+      userLocationMarker = L.marker([lat, lng], { icon: userIcon, zIndexOffset: 2000 })
         .addTo(map)
         .bindPopup('<strong>📍 Tu ubicación</strong>');
-    },
-    err => console.warn('Geolocation error:', err.message),
-    { enableHighAccuracy: true, timeout: 10000 }
-  );
+    }
+  }
+
+  // Get initial position
+  navigator.geolocation.getCurrentPosition(onPosition, err => console.warn('GPS init:', err.message), { enableHighAccuracy: true, timeout: 10000 });
+
+  // Watch for changes
+  navigator.geolocation.watchPosition(onPosition, err => console.warn('GPS watch:', err.message), { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 });
 }
 
 // ─── NEARBY ALERTS (Haversine) ────────────────────
