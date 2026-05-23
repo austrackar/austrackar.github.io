@@ -22,7 +22,7 @@
 
   <!-- App CSS -->
   <link rel="stylesheet" href="css/styles.css?v=4">
-  <link rel="stylesheet" href="css/mobile.css?v=3" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="css/mobile.css?v=4" media="screen and (max-width: 768px)">
 </head>
 <body>
 <div id="app">
@@ -65,19 +65,10 @@
         <span id="flota-badge" class="badge hidden">0</span>
       </button>
 
-      <div id="user-menu" style="position:relative">
-        <button id="user-btn" class="top-btn" title="Tu cuenta">
-          <span id="user-avatar">👤</span>
-          <span id="user-name">Cuenta</span>
-        </button>
-        <div id="user-dropdown" class="hidden" style="position:absolute;top:100%;right:0;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:8px;min-width:180px;z-index:5000;box-shadow:0 8px 24px rgba(0,0,0,0.5)">
-          <div style="padding:8px 12px;font-size:13px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:4px">
-            <div id="dropdown-name" style="font-weight:600;color:var(--text1)"></div>
-            <div id="dropdown-empresa" style="font-size:12px"></div>
-          </div>
-          <button id="logout-btn" style="width:100%;background:none;border:none;color:#f85149;padding:10px 12px;text-align:left;cursor:pointer;font-size:13px;border-radius:8px;font-family:inherit">🚪 Cerrar sesión</button>
-        </div>
-      </div>
+      <button id="user-btn" class="top-btn" title="Tu cuenta" style="display:none">
+        <span id="user-avatar">👤</span>
+        <span id="user-name">Cuenta</span>
+      </button>
     </div>
   </header>
   <!-- ══════════ MAIN ══════════ -->
@@ -260,6 +251,14 @@
   <button class="mobile-alerts-btn">🚨 Alertas</button>
   <button id="mobile-notif-btn" title="Notificaciones">🔔</button>
   <button id="mobile-weather-btn" title="Clima">🌤</button>
+  <button id="mobile-user-btn" title="Cuenta" style="display:none">👤</button>
+  <div id="user-dropdown" class="hidden" style="position:fixed;top:60px;right:12px;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:8px;min-width:190px;z-index:50000;box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+    <div style="padding:8px 12px;font-size:13px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:4px">
+      <div id="dropdown-name" style="font-weight:600;color:var(--text1)"></div>
+      <div id="dropdown-empresa" style="font-size:12px"></div>
+    </div>
+    <button id="logout-btn" style="width:100%;background:none;border:none;color:#f85149;padding:10px 12px;text-align:left;cursor:pointer;font-size:13px;border-radius:8px;font-family:inherit">🚪 Cerrar sesión</button>
+  </div>
   <div id="mobile-zoom-controls">
     <button id="mobile-zoom-in">+</button>
     <button id="mobile-zoom-out">−</button>
@@ -316,15 +315,32 @@
 initAuth();
 onAuthReady((user, profile) => {
   if (!user) { window.location.href = 'login.html'; return; }
-  document.getElementById('user-name').textContent = profile?.nombre || user.email;
-  document.getElementById('dropdown-name').textContent = profile?.nombre || 'Usuario';
+  const userName = profile?.nombre || user.email;
+  document.getElementById('user-name').textContent = userName;
+  document.getElementById('user-btn').style.display = '';
+  document.getElementById('dropdown-name').textContent = userName;
   document.getElementById('dropdown-empresa').textContent = (profile?.empresa || '') + (profile?.rol ? ' · ' + profile.rol : '');
-  document.getElementById('user-btn').addEventListener('click', () => document.getElementById('user-dropdown').classList.toggle('hidden'));
+
+  // Show mobile user button, hide search toggle
+  const mUserBtn = document.getElementById('mobile-user-btn');
+  if (mUserBtn) { mUserBtn.style.display = 'flex'; }
+
+  function toggleDropdown() {
+    const dd = document.getElementById('user-dropdown');
+    dd.classList.toggle('hidden');
+  }
+
+  document.getElementById('user-btn').addEventListener('click', toggleDropdown);
+  if (mUserBtn) mUserBtn.addEventListener('click', toggleDropdown);
+
   document.getElementById('logout-btn').addEventListener('click', () => {
     logout().then(() => window.location.href = 'login.html');
   });
+
   document.addEventListener('click', e => {
-    if (!e.target.closest('#user-menu')) document.getElementById('user-dropdown').classList.add('hidden');
+    if (!e.target.closest('#user-btn') && !e.target.closest('#mobile-user-btn') && !e.target.closest('#user-dropdown')) {
+      document.getElementById('user-dropdown').classList.add('hidden');
+    }
   });
   // Dispatch event for app.js to start
   document.dispatchEvent(new CustomEvent('auth-ready', { detail: { user, profile } }));
