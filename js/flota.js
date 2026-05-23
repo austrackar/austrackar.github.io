@@ -84,6 +84,7 @@ function updateFlotaMarkers(data) {
       marker.bindPopup(`
         <strong>🚛 ${emp.nombre}</strong><br>
         ${emp.ruta ? '🛣️ ' + emp.ruta + '<br>' : ''}
+        ${emp.destino ? '🏁 ' + emp.destino + '<br>' : ''}
         📱 ${isActive ? '🟢 En línea' : '🔴 Sin señal'}<br>
         🕐 ${lastSeen ? new Date(lastSeen).toLocaleTimeString('es-AR') : '—'}
       `);
@@ -114,7 +115,8 @@ function updateFlotaPanel(data) {
       <div class="flota-avatar" style="background:${isActive ? '#16a34a' : '#6b7280'}">🚛</div>
       <div class="flota-info">
         <div class="flota-name">${emp.nombre}</div>
-        <div class="flota-meta">${emp.ruta ? '🛣️ ' + emp.ruta + ' · ' : ''}${ago}</div>
+        <div class="flota-meta">${emp.destino ? '🏁 ' + emp.destino + ' · ' : ''}${ago}</div>
+        ${emp.ruta ? '<div class="flota-meta" style="font-size:10px">🛣️ ' + emp.ruta + '</div>' : ''}
       </div>
       <span class="flota-status" style="background:${isActive ? '#16a34a' : '#6b7280'}">${isActive ? 'En ruta' : 'Inactivo'}</span>
     </div>`;

@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(startNotificationDemo, 3000);
       setTimeout(requestUserLocation, 1000);
       setTimeout(() => initFlota(profile?.empresa), 2000);
+
+      // Show sharing section for employees
+      if (profile?.rol === 'empleado') {
+        setupEmpleadoSharing(profile);
+      }
     } catch (err) {
       console.error('Error en inicialización:', err);
       showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + err.message, type: 'danger' });
@@ -191,6 +196,13 @@ function calculateRoute() {
         cuts: [],
         alt: alt ? { desc: 'Ruta alternativa disponible', kmExtra: Math.round((alt.distance - primary.distance) / 1000), minExtra: Math.round((alt.duration - primary.duration) / 60) } : null
       });
+
+      // Enable sharing button for employees
+      if (sharingProfile) {
+        const destName = document.getElementById('dest-input')?.value || 'Destino';
+        enableSharingButton();
+        updateSharingDestInfo(destName, Math.round(primary.distance / 1000), formatDuration(primary.duration));
+      }
     })
     .catch(err => {
       hideLoading();
@@ -276,4 +288,114 @@ function startNotificationDemo() {
       duration: 4000
     });
   }, 3000);
+}
+
+// ─── EMPLEADO SHARING ─────────────────────────────
+let sharingWatchId = null;
+let sharingInterval = null;
+let sharingActive = false;
+let sharingProfile = null;
+let sharingDestCoords = null;
+let sharingRouteCoords = null;
+
+function setupEmpleadoSharing(profile) {
+  sharingProfile = profile;
+  const section = document.getElementById('compartir-section');
+  if (section) section.classList.remove('hidden');
+
+  document.getElementById('compartir-start-btn')?.addEventListener('click', startSharing);
+  document.getElementById('compartir-stop-btn')?.addEventListener('click', stopSharing);
+}
+
+function enableSharingButton() {
+  const btn = document.getElementById('compartir-start-btn');
+  if (btn && sharingProfile) btn.disabled = false;
+}
+
+function updateSharingDestInfo(nombre, dist, dur) {
+  document.getElementById('compartir-dest-name').textContent = nombre;
+  document.getElementById('compartir-dist').textContent = dist ? `${dist} km` : '';
+  document.getElementById('compartir-time').textContent = dur || '';
+  document.getElementById('compartir-dest-info').classList.remove('hidden');
+}
+
+function startSharing() {
+  if (sharingActive || !sharingProfile) return;
+  const destInput = document.getElementById('dest-input');
+  const destName = destInput?.value?.trim() || 'Sin destino';
+  const destLat = destInput?.dataset?.lat;
+  const destLng = destInput?.dataset?.lng;
+  if (!destLat || !destLng) {
+    showNotification({ title: 'Elegí un destino', body: 'Seleccioná una ciudad de destino de las sugerencias', type: 'warning', duration: 4000 });
+    return;
+  }
+
+  sharingActive = true;
+  document.getElementById('compartir-start-btn').classList.add('hidden');
+  document.getElementById('compartir-stop-btn').classList.remove('hidden');
+  document.getElementById('compartir-gps-status').textContent = '🟢 Compartiendo ubicación...';
+
+  const db = firebase.database();
+  const empId = firebase.auth().currentUser.uid;
+  const empresa = sharingProfile.empresa;
+  const nombre = sharingProfile.nombre;
+
+  function sendLocation() {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const data = {
+          nombre,
+          destino: destName,
+          destinoCoords: [parseFloat(destLng), parseFloat(destLat)],
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          timestamp: Date.now(),
+          activo: true
+        };
+        db.ref('flota/' + empresa + '/' + empId).set(data);
+      },
+      err => console.warn('GPS error:', err.message),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
+  }
+
+  sendLocation();
+  sharingInterval = setInterval(sendLocation, 10000);
+
+  sharingWatchId = navigator.geolocation.watchPosition(
+    pos => {
+      const data = {
+        nombre,
+        destino: destName,
+        destinoCoords: [parseFloat(destLng), parseFloat(destLat)],
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        timestamp: Date.now(),
+        activo: true
+      };
+      db.ref('flota/' + empresa + '/' + empId).set(data);
+    },
+    err => console.warn('watchPosition error:', err.message),
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
+  );
+
+  showNotification({ title: '📍 Viaje iniciado', body: 'Tu ubicación se está compartiendo con el dueño', type: 'success', duration: 4000 });
+}
+
+function stopSharing() {
+  if (!sharingActive) return;
+  sharingActive = false;
+
+  if (sharingInterval) { clearInterval(sharingInterval); sharingInterval = null; }
+  if (sharingWatchId) { navigator.geolocation.clearWatch(sharingWatchId); sharingWatchId = null; }
+
+  const db = firebase.database();
+  const empId = firebase.auth().currentUser.uid;
+  db.ref('flota/' + sharingProfile.empresa + '/' + empId).update({ activo: false, timestamp: Date.now() });
+
+  document.getElementById('compartir-start-btn').classList.remove('hidden');
+  document.getElementById('compartir-stop-btn').classList.add('hidden');
+  document.getElementById('compartir-gps-status').textContent = '🔴 No compartiendo';
+
+  showNotification({ title: 'Viaje finalizado', body: 'Dejaste de compartir tu ubicación', type: 'info', duration: 4000 });
 }
