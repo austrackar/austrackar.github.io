@@ -1,4 +1,4 @@
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const CORS_PROXY = 'https://api.allorigins.win/get?url=';
 
 let REALTIME_DATA = { cuts: [], weather: [] };
 
@@ -7,11 +7,11 @@ async function fetchRealData() {
   let weatherFetched = false;
 
   try {
-    const html = await fetch(CORS_PROXY + encodeURIComponent('https://www.ruta0.com/estado_rutas.aspx')).then(r => r.text());
+    const res = await fetch(CORS_PROXY + encodeURIComponent('https://www.ruta0.com/estado_rutas.aspx')).then(r => r.json());
+    const html = res.contents;
     const cuts = parseRuta0Alerts(html);
     if (cuts.length > 0) {
       REALTIME_DATA.cuts = cuts;
-      // Merge with existing map-ready data (simulated coords are kept for map rendering)
       mergeRealCuts(cuts);
       cutsFetched = true;
       console.log('✅ Cortes reales cargados desde Ruta0 (' + cuts.length + ' alertas)');
@@ -21,7 +21,8 @@ async function fetchRealData() {
   }
 
   try {
-    const xml = await fetch(CORS_PROXY + encodeURIComponent('https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo.xml')).then(r => r.text());
+    const res = await fetch(CORS_PROXY + encodeURIComponent('https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo.xml')).then(r => r.json());
+    const xml = res.contents;
     const alerts = parseSmnAlerts(xml);
     if (alerts.length > 0) {
       REALTIME_DATA.weather = alerts;
