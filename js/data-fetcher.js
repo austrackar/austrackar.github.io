@@ -61,54 +61,51 @@ function mergeRealCuts(realCuts) {
 
 function parseRuta0Alerts(html) {
   const cuts = [];
-  const alertSection = html.match(/Alertas Vialidad Nacional\s*<[^>]*>(\d+)\s*tramos/i);
-  if (!alertSection) return cuts;
 
-  // Split alerts by type markers
-  const blocks = html.split(/CORTE TOTAL|RESTRINGIDA|CORTE PARCIAL/);
-  const types = html.match(/(CORTE TOTAL|RESTRINGIDA|CORTE PARCIAL)/g);
+  // Each alert is a div with this exact inline style pattern
+  const alertDivPattern = /<div style="background:#fff;border:1px solid #dce8f8;border-radius:7px;padding:8px 10px;margin-bottom:6px">([\s\S]*?)<\/div>\s*(?=<div style="background:#fff;border|$)/g;
+  let match;
 
-  if (!types || blocks.length < 2) return cuts;
+  while ((match = alertDivPattern.exec(html)) !== null) {
+    const block = match[1];
 
-  for (let i = 1; i < blocks.length && i - 1 < types.length; i++) {
-    const block = blocks[i];
-    const type = types[i - 1];
+    const typeMatch = block.match(/(CORTE TOTAL|RESTRINGIDA|CORTE PARCIAL)/);
+    if (!typeMatch) continue;
+    const type = typeMatch[1];
 
-    const routeMatch = block.match(/RN\s*(\d+[A-Z]?)/i);
+    // Capture the whole route string after RN&nbsp; (handles "3", "40", "Ex 34", etc.)
+    const routeMatch = block.match(/RN\s*(?:&nbsp;)?([\d A-Za-z]+)/);
     if (!routeMatch) continue;
-    const ruta = 'RN ' + routeMatch[1];
+    const ruta = ('RN ' + routeMatch[1].trim()).replace(/&nbsp;/g, ' ');
 
     const provMatch = block.match(/(Buenos Aires|Santa Cruz|Mendoza|San Juan|Santiago del Estero|Tucumán|Salta|Córdoba|La Pampa|Río Negro|Neuquén|Chubut|Entre Ríos|Santa Fe|San Luis|Jujuy|Catamarca|La Rioja|Corrientes|Misiones|Formosa|Chaco|Tierra del Fuego)/);
     const provincia = provMatch ? provMatch[1] : 'Argentina';
 
-    // Clean description (remove nav/HTML garbage)
-    let desc = block
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    const innerDivs = block.match(/<div[^>]*>([\s\S]*?)<\/div>/g);
+    let tramo = '';
+    let desc = '';
+    if (innerDivs && innerDivs.length >= 2) {
+      const tramoDiv = innerDivs[1];
+      const tramoClean = tramoDiv.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      tramo = tramoClean.replace(/·.*$/, '').trim();
+    }
+    if (innerDivs && innerDivs.length >= 3) {
+      desc = innerDivs[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
 
-    // Try to extract location info
-    const tramoMatch = block.match(/>([^<]+)<[^>]*>\s*·\s*([^<]+)</);
-    const tramo = tramoMatch ? tramoMatch[1].trim() : '';
-
-    const severidad = type === 'CORTE TOTAL' ? 'total' : type === 'RESTRINGIDA' ? 'parcial' : 'parcial';
+    const severidad = type === 'CORTE TOTAL' ? 'total' : 'parcial';
     const motivo = type === 'CORTE TOTAL' ? 'Corte total de ruta' : type === 'RESTRINGIDA' ? 'Circulación restringida' : 'Corte parcial';
 
-    // Look for km info in the description
-    const kmMatch = desc.match(/(?:km\s*)?(\d+)[\s,]*/i);
-    const km = kmMatch ? parseInt(kmMatch[1]) : 500;
-
     cuts.push({
-      id: 'real-' + cuts.length,
       ruta,
-      kmInicio: km,
-      kmFin: km + 15,
+      kmInicio: null,
+      kmFin: null,
       provincia,
-      localidad: tramo.split('›').pop()?.trim() || tramo,
+      localidad: tramo.substring(0, 80),
       motivo,
       descripcion: desc.substring(0, 200),
       desde: new Date().toISOString(),
-      estimacion: new Date(Date.now() + 86400000).toISOString(),
+      estimacion: '',
       severidad,
       coords: [],
       fuente: 'Ruta0.com / Vialidad Nacional',

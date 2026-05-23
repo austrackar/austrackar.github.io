@@ -21,7 +21,8 @@ function buildAlertsList(filter = 'all') {
     const bounds = map.getBounds().pad(0.5);
     filtered = filtered.filter(item => {
       if (item._kind === 'corte') {
-        return item.coords && item.coords.some(c => bounds.contains(c));
+        if (!item.coords || item.coords.length === 0) return true;
+        return item.coords.some(c => bounds.contains(c));
       } else {
         return bounds.contains(item.center);
       }
