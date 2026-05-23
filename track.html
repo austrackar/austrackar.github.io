@@ -129,9 +129,19 @@ function startSharing() {
         setStatus('✅ Ubicación enviada — te estamos viendo 📡', 'ok');
       },
       err => {
-        console.warn('GPS error:', err.message);
-        if (err.code === 1) setStatus('⚠️ Permiso de ubicación denegado. Activá GPS en Chrome > Configuración > Ubicación', 'err');
-        else setStatus('⚠️ Error de GPS: ' + err.message, 'err');
+        console.warn('GPS error:', err.code, err.message);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        let msg = '';
+        if (err.code === 1) {
+          msg = isSafari ? 'Permiso denegado. Tocá "aA" en la barra → Configuración → Ubicación: Permitir' : 'Permiso denegado. Activá GPS en Chrome > Configuración > Ubicación';
+        } else if (err.code === 2) {
+          msg = 'GPS no disponible. Activá la ubicación del celular.';
+        } else if (err.code === 3) {
+          msg = 'GPS tardó mucho. Probá al aire libre con buena señal.';
+        } else {
+          msg = 'Error de GPS: ' + err.message;
+        }
+        setStatus('⚠️ ' + msg, 'err');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
     );

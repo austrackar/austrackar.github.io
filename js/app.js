@@ -303,6 +303,13 @@ function setupEmpleadoSharing(profile) {
   const section = document.getElementById('compartir-section');
   if (section) section.classList.remove('hidden');
 
+  // Detect Safari
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  if (isSafari && section) {
+    document.getElementById('compartir-status').textContent =
+      '⚠️ Safari requiere permisos especiales: tocá "aA" en la barra → Configuración del sitio web → Ubicación: Permitir. También verificá que el GPS esté activado.';
+  }
+
   document.getElementById('compartir-start-btn')?.addEventListener('click', startSharing);
   document.getElementById('compartir-stop-btn')?.addEventListener('click', stopSharing);
 }
@@ -340,6 +347,24 @@ function startSharing() {
   const empresa = sharingProfile.empresa;
   const nombre = sharingProfile.nombre;
 
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  function handleGpsError(err) {
+    console.warn('GPS error:', err.code, err.message);
+    let msg = '';
+    if (err.code === 1) {
+      msg = 'Permiso denegado. En iPhone: Configuración > Safari > Ubicación > Permitir';
+      if (isSafari) msg += '. También tocá "aA" en la barra y permití la ubicación para este sitio.';
+    } else if (err.code === 2) {
+      msg = 'GPS no disponible. Activá la ubicación en el celular y probá al aire libre.';
+    } else if (err.code === 3) {
+      msg = 'GPS tardó mucho. ¿Estás al aire libre con buena señal?';
+    } else {
+      msg = 'Error de GPS: ' + err.message;
+    }
+    document.getElementById('compartir-gps-status').textContent = '⚠️ ' + msg;
+  }
+
   function sendLocation() {
     navigator.geolocation.getCurrentPosition(
       pos => {
@@ -353,8 +378,9 @@ function startSharing() {
           activo: true
         };
         db.ref('flota/' + empresa + '/' + empId).set(data);
+        document.getElementById('compartir-gps-status').textContent = '🟢 Compartiendo ubicación...';
       },
-      err => console.warn('GPS error:', err.message),
+      handleGpsError,
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
     );
   }
@@ -375,7 +401,7 @@ function startSharing() {
       };
       db.ref('flota/' + empresa + '/' + empId).set(data);
     },
-    err => console.warn('watchPosition error:', err.message),
+    handleGpsError,
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
   );
 
