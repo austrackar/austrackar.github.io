@@ -43,17 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const mUserBtn = document.getElementById('mobile-user-btn');
     if (mUserBtn) mUserBtn.style.display = 'flex';
 
-    function toggleDropdown() {
-      document.getElementById('user-dropdown').classList.toggle('hidden');
-    }
-
-    document.getElementById('user-btn').addEventListener('click', toggleDropdown);
-    if (mUserBtn) mUserBtn.addEventListener('click', toggleDropdown);
-
     document.getElementById('logout-btn').addEventListener('click', () => {
       logout().then(() => window.location.href = 'login.html');
     });
 
+    // Close dropdown on outside click
     document.addEventListener('click', e => {
       if (!e.target.closest('#user-btn') && !e.target.closest('#mobile-user-btn') && !e.target.closest('#user-dropdown')) {
         document.getElementById('user-dropdown').classList.add('hidden');
