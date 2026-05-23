@@ -10,8 +10,17 @@ let availableRouteOptions = [];
 let notifiedAlerts = new Set();
 // ─── INIT ───────────────────────────────────────
 // Called from boot script after Firebase auth resolves
-function initApp(profile) {
+async function initApp(profile) {
   try {
+    // Try to fetch real data from Ruta0 and SMN
+    fetchRealData().then(({ cutsFetched, weatherFetched }) => {
+      if (cutsFetched || weatherFetched) {
+        renderCutsOnMap();
+        renderClimaOnMap();
+        buildAlertsList('all');
+      }
+    });
+
     initMap();
     buildAlertsList('all');
     buildServiciosList('combustible');

@@ -40,18 +40,23 @@ function buildAlertsList(filter = 'all') {
 
     if (item._kind === 'corte') {
       const typeEmoji = { total: '🔴', parcial: '🟠' }[sev] || '⚠️';
+      const realTag = item.esReal ? '<span style="font-size:9px;background:#1f6feb;color:white;padding:1px 6px;border-radius:6px;margin-left:4px">EN VIVO</span>' : '';
       card.innerHTML = `
         <div class="alert-header">
-          <span class="alert-title">${typeEmoji} ${item.motivo}</span>
+          <span class="alert-title">${typeEmoji} ${item.motivo}${realTag}</span>
           <span class="alert-badge badge-${sev}">${sev === 'total' ? 'TOTAL' : 'PARCIAL'}</span>
         </div>
         <div class="alert-meta">
-          <span class="alert-ruta">🛣️ ${item.ruta}</span> · km ${item.kmInicio}–${item.kmFin}<br>
+          <span class="alert-ruta">🛣️ ${item.ruta}</span>${item.kmInicio ? ` · km ${item.kmInicio}–${item.kmFin}` : ''}<br>
           📍 ${item.localidad}, ${item.provincia}
         </div>`;
       card.addEventListener('click', () => {
-        const mid = item.coords[Math.floor(item.coords.length / 2)];
-        map.setView(mid, 10, { animate: true });
+        if (item.coords && item.coords.length > 0) {
+          const mid = item.coords[Math.floor(item.coords.length / 2)];
+          map.setView(mid, 10, { animate: true });
+        } else {
+          map.setView([-38.4161, -63.6167], 5, { animate: true });
+        }
       });
     } else {
       const emoji = { viento: '💨', nieve: '❄️', lluvia: '🌧️', tormenta: '⛈️', niebla: '🌫️' }[item.tipo] || '⚠️';
