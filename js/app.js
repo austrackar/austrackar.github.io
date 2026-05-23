@@ -9,29 +9,58 @@ let savedRouteData = null;
 let availableRouteOptions = [];
 let notifiedAlerts = new Set();
 // ─── INIT ───────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  // Wait for auth-ready event (dispatched from index.html)
-  document.addEventListener('auth-ready', (e) => {
-    const profile = e.detail.profile;
-    try {
-      initMap();
-      buildAlertsList('all');
-      buildServiciosList('combustible');
-      buildLegendModal();
-      setupEventListeners();
-      checkOnlineStatus();
-      setTimeout(startNotificationDemo, 3000);
-      setTimeout(requestUserLocation, 1000);
-      setTimeout(() => initFlota(profile?.empresa), 2000);
+// Called from boot script after Firebase auth resolves
+function initApp(profile) {
+  try {
+    initMap();
+    buildAlertsList('all');
+    buildServiciosList('combustible');
+    buildLegendModal();
+    setupEventListeners();
+    checkOnlineStatus();
+    setTimeout(startNotificationDemo, 3000);
+    setTimeout(requestUserLocation, 1000);
+    setTimeout(() => initFlota(profile?.empresa), 2000);
 
-      // Show sharing section for employees
-      if (profile?.rol === 'empleado') {
-        setupEmpleadoSharing(profile);
-      }
-    } catch (err) {
-      console.error('Error en inicialización:', err);
-      showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + err.message, type: 'danger' });
+    if (profile?.rol === 'empleado') {
+      setupEmpleadoSharing(profile);
     }
+  } catch (err) {
+    console.error('Error en inicialización:', err);
+    showNotification({ title: 'Error de carga', body: 'Ocurrió un error al iniciar la aplicación: ' + err.message, type: 'danger' });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  onAuthReady((user, profile) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    document.getElementById('user-name').textContent = profile?.nombre || user.email;
+    document.getElementById('user-btn').style.display = '';
+    document.getElementById('dropdown-name').textContent = profile?.nombre || 'Usuario';
+    document.getElementById('dropdown-empresa').textContent = (profile?.empresa || '') + (profile?.rol ? ' · ' + profile.rol : '');
+
+    const mUserBtn = document.getElementById('mobile-user-btn');
+    if (mUserBtn) mUserBtn.style.display = 'flex';
+
+    function toggleDropdown() {
+      document.getElementById('user-dropdown').classList.toggle('hidden');
+    }
+
+    document.getElementById('user-btn').addEventListener('click', toggleDropdown);
+    if (mUserBtn) mUserBtn.addEventListener('click', toggleDropdown);
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      logout().then(() => window.location.href = 'login.html');
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#user-btn') && !e.target.closest('#mobile-user-btn') && !e.target.closest('#user-dropdown')) {
+        document.getElementById('user-dropdown').classList.add('hidden');
+      }
+    });
+
+    initApp(profile);
   });
 });
 
@@ -329,21 +358,31 @@ function updateSharingDestInfo(nombre, dist, dur) {
 function startSharing() {
   if (sharingActive || !sharingProfile) return;
   const destInput = document.getElementById('dest-input');
-  const destName = destInput?.value?.trim() || 'Sin destino';
+  const destName = destInput?.value?.trim() || 'En viaje';
   const destLat = destInput?.dataset?.lat;
   const destLng = destInput?.dataset?.lng;
-  if (!destLat || !destLng) {
-    showNotification({ title: 'Elegí un destino', body: 'Seleccioná una ciudad de destino de las sugerencias', type: 'warning', duration: 4000 });
-    return;
-  }
 
   sharingActive = true;
   document.getElementById('compartir-start-btn').classList.add('hidden');
   document.getElementById('compartir-stop-btn').classList.remove('hidden');
-  document.getElementById('compartir-gps-status').textContent = '🟢 Compartiendo ubicación...';
+  document.getElementById('compartir-gps-status').textContent = '🟢 Iniciando GPS...';
+
+  try {
+    if (typeof firebase === 'undefined' || !firebase.apps.length) {
+      document.getElementById('compartir-gps-status').textContent = '⚠️ Firebase no conectado';
+      return;
+    }
+  } catch (e) {
+    document.getElementById('compartir-gps-status').textContent = '⚠️ Error: ' + e.message;
+    return;
+  }
 
   const db = firebase.database();
-  const empId = firebase.auth().currentUser.uid;
+  const empId = firebase.auth().currentUser?.uid;
+  if (!empId) {
+    document.getElementById('compartir-gps-status').textContent = '⚠️ Sesión no encontrada';
+    return;
+  }
   const empresa = sharingProfile.empresa;
   const nombre = sharingProfile.nombre;
 
@@ -353,12 +392,12 @@ function startSharing() {
     console.warn('GPS error:', err.code, err.message);
     let msg = '';
     if (err.code === 1) {
-      msg = 'Permiso denegado. En iPhone: Configuración > Safari > Ubicación > Permitir';
-      if (isSafari) msg += '. También tocá "aA" en la barra y permití la ubicación para este sitio.';
+      msg = 'Permiso denegado. En iPhone: Ajustes > Privacidad > Ubicación > activar para Safari';
+      if (isSafari) msg += '. También tocá "aA" en la barra de direcciones y permití la ubicación.';
     } else if (err.code === 2) {
-      msg = 'GPS no disponible. Activá la ubicación en el celular y probá al aire libre.';
+      msg = 'GPS no disponible. Activá la ubicación del celular y probá al aire libre.';
     } else if (err.code === 3) {
-      msg = 'GPS tardó mucho. ¿Estás al aire libre con buena señal?';
+      msg = 'GPS tardó mucho. ¿Estás al aire libre?';
     } else {
       msg = 'Error de GPS: ' + err.message;
     }
@@ -371,14 +410,15 @@ function startSharing() {
         const data = {
           nombre,
           destino: destName,
-          destinoCoords: [parseFloat(destLng), parseFloat(destLat)],
+          destinoCoords: (destLat && destLng) ? [parseFloat(destLng), parseFloat(destLat)] : null,
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
           timestamp: Date.now(),
           activo: true
         };
-        db.ref('flota/' + empresa + '/' + empId).set(data);
-        document.getElementById('compartir-gps-status').textContent = '🟢 Compartiendo ubicación...';
+        db.ref('flota/' + empresa + '/' + empId).set(data)
+          .then(() => document.getElementById('compartir-gps-status').textContent = '🟢 Compartiendo ubicación...')
+          .catch(e => document.getElementById('compartir-gps-status').textContent = '⚠️ Error Firebase: ' + e.message);
       },
       handleGpsError,
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
@@ -393,7 +433,7 @@ function startSharing() {
       const data = {
         nombre,
         destino: destName,
-        destinoCoords: [parseFloat(destLng), parseFloat(destLat)],
+        destinoCoords: (destLat && destLng) ? [parseFloat(destLng), parseFloat(destLat)] : null,
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
         timestamp: Date.now(),
@@ -405,7 +445,7 @@ function startSharing() {
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
   );
 
-  showNotification({ title: '📍 Viaje iniciado', body: 'Tu ubicación se está compartiendo con el dueño', type: 'success', duration: 4000 });
+  showNotification({ title: '📍 Viaje iniciado', body: 'Compartiendo ubicación con el dueño', type: 'success', duration: 4000 });
 }
 
 function stopSharing() {

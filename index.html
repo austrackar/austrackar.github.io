@@ -159,7 +159,7 @@
       <div id="compartir-section" class="panel-section hidden">
         <div class="section-title">🚛 Compartir Viaje</div>
         <div id="compartir-status" style="font-size:13px;color:var(--text3);margin-bottom:12px">
-          Calculá tu ruta y compartí tu ubicación con el dueño de la flota.
+          Calculá tu ruta (opcional) y compartí tu ubicación con el dueño de la flota.
         </div>
         <div id="compartir-dest-info" class="hidden" style="font-size:13px;background:var(--panel2);border-radius:10px;padding:12px;margin-bottom:12px;border:1px solid var(--border)">
           <div style="font-weight:600;margin-bottom:4px">🏁 Destino planificado</div>
@@ -327,43 +327,8 @@
 <script src="js/auth.js"></script>
 <script src="js/map.js?v=7"></script>
 <script src="js/ui.js?v=5"></script>
-<script src="js/app.js?v=8"></script>
+<script src="js/app.js?v=9"></script>
 <script src="js/flota.js?v=3"></script>
-<script>
-// Boot: wait for auth, then init app
-initAuth();
-onAuthReady((user, profile) => {
-  if (!user) { window.location.href = 'login.html'; return; }
-  const userName = profile?.nombre || user.email;
-  document.getElementById('user-name').textContent = userName;
-  document.getElementById('user-btn').style.display = '';
-  document.getElementById('dropdown-name').textContent = userName;
-  document.getElementById('dropdown-empresa').textContent = (profile?.empresa || '') + (profile?.rol ? ' · ' + profile.rol : '');
 
-  // Show mobile user button, hide search toggle
-  const mUserBtn = document.getElementById('mobile-user-btn');
-  if (mUserBtn) { mUserBtn.style.display = 'flex'; }
-
-  function toggleDropdown() {
-    const dd = document.getElementById('user-dropdown');
-    dd.classList.toggle('hidden');
-  }
-
-  document.getElementById('user-btn').addEventListener('click', toggleDropdown);
-  if (mUserBtn) mUserBtn.addEventListener('click', toggleDropdown);
-
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    logout().then(() => window.location.href = 'login.html');
-  });
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#user-btn') && !e.target.closest('#mobile-user-btn') && !e.target.closest('#user-dropdown')) {
-      document.getElementById('user-dropdown').classList.add('hidden');
-    }
-  });
-  // Dispatch event for app.js to start
-  document.dispatchEvent(new CustomEvent('auth-ready', { detail: { user, profile } }));
-});
-</script>
 </body>
 </html>
