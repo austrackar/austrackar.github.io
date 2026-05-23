@@ -123,19 +123,6 @@ function buildServiciosList(filter = 'combustible') {
         map.setView([item.lat, item.lng], 14, { animate: true });
         L.popup().setLatLng([item.lat, item.lng]).setContent(`<strong>⚖️ ${item.nombre}</strong><br>${item.operador ? '🏢 ' + item.operador : ''}`).openOn(map);
       });
-    } else if (filter === 'balanza') {
-      card.innerHTML = `
-        <div class="alert-header" style="padding-bottom:2px">
-          <span class="alert-title">⚖️ ${item.nombre}</span>
-          <span class="alert-badge" style="background:#06b6d4;color:white">BALANZA</span>
-        </div>
-        <div class="alert-meta">
-          ${item.operador ? `🏢 ${item.operador}` : '📍 ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}`}
-        </div>`;
-      card.addEventListener('click', () => {
-        map.setView([item.lat, item.lng], 14, { animate: true });
-        L.popup().setLatLng([item.lat, item.lng]).setContent(`<strong>⚖️ ${item.nombre}</strong><br>${item.operador ? '🏢 ' + item.operador : ''}`).openOn(map);
-      });
     } else if (filter === 'combustible') {
       const horarioOk = item.horario === '24h' || item.horario === '24/7';
       const marcaDisplay = item.marca && item.marca !== item.nombre ? ` · ${item.marca}` : '';

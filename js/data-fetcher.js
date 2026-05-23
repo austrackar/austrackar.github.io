@@ -17,7 +17,7 @@ async function proxyFetch(url) {
   try {
     const json = JSON.parse(text);
     if (json.contents) return json.contents;
-  } catch { /* not JSON, treat as raw response (worker format) */ }
+  } catch (e) { /* not JSON, treat as raw response (worker format) */ }
 
   return text;
 }
