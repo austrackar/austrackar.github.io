@@ -332,11 +332,14 @@ function setupEmpleadoSharing(profile) {
   const section = document.getElementById('compartir-section');
   if (section) section.classList.remove('hidden');
 
-  // Detect Safari
+  // Detect browser for tips
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  if (isSafari && section) {
+  if (isSafari) {
     document.getElementById('compartir-status').textContent =
-      '⚠️ Safari requiere permisos especiales: tocá "aA" en la barra → Configuración del sitio web → Ubicación: Permitir. También verificá que el GPS esté activado.';
+      '⚠️ Safari requiere permisos: tocá "aA" en la barra → Configuración del sitio web → Ubicación: Permitir.';
+  } else if (/chrome/i.test(navigator.userAgent)) {
+    document.getElementById('compartir-status').innerHTML =
+      '📌 Hacé clic en el 🔒 de la barra de direcciones → <strong>Ubicación</strong>: Permitir. Después tocá <strong>Empezar Viaje</strong>.';
   }
 
   document.getElementById('compartir-start-btn')?.addEventListener('click', startSharing);
@@ -392,12 +395,13 @@ function startSharing() {
     console.warn('GPS error:', err.code, err.message);
     let msg = '';
     if (err.code === 1) {
-      msg = 'Permiso denegado. En iPhone: Ajustes > Privacidad > Ubicación > activar para Safari';
-      if (isSafari) msg += '. También tocá "aA" en la barra de direcciones y permití la ubicación.';
+      if (isSafari) msg = 'Permiso denegado. Tocá "aA" en la barra → Configuración → Ubicación: Permitir';
+      else if (/chrome/i.test(navigator.userAgent)) msg = 'Permiso denegado. Hacé clic en el 🔒 de la barra → Ubicación → Permitir';
+      else msg = 'Permiso de ubicación denegado. Activá la ubicación en la configuración del navegador.';
     } else if (err.code === 2) {
-      msg = 'GPS no disponible. Activá la ubicación del celular y probá al aire libre.';
+      msg = 'GPS no disponible. Verificá que el GPS esté activado.';
     } else if (err.code === 3) {
-      msg = 'GPS tardó mucho. ¿Estás al aire libre?';
+      msg = 'GPS tardó mucho. Probá al aire libre o verificá la señal.';
     } else {
       msg = 'Error de GPS: ' + err.message;
     }

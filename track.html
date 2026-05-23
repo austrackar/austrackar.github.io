@@ -133,7 +133,9 @@ function startSharing() {
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         let msg = '';
         if (err.code === 1) {
-          msg = isSafari ? 'Permiso denegado. Tocá "aA" en la barra → Configuración → Ubicación: Permitir' : 'Permiso denegado. Activá GPS en Chrome > Configuración > Ubicación';
+          if (isSafari) msg = 'Permiso denegado. Tocá "aA" en la barra → Configuración → Ubicación: Permitir';
+          else if (/chrome/i.test(navigator.userAgent)) msg = 'Permiso denegado. Hacé clic en el 🔒 de la barra → Ubicación → Permitir';
+          else msg = 'Permiso de ubicación denegado. Activá la ubicación en la configuración del navegador.';
         } else if (err.code === 2) {
           msg = 'GPS no disponible. Activá la ubicación del celular.';
         } else if (err.code === 3) {
