@@ -1,4 +1,26 @@
-const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+// Configura acá tu proxy propio (Cloudflare Worker)
+// Si queda vacío, usa allorigins.win como fallback
+const CUSTOM_PROXY = ''; // ej: 'https://rutaproxy.miempresa.workers.dev/proxy?url='
+const FALLBACK_PROXY = 'https://api.allorigins.win/raw?url=';
+
+function getProxyUrl(target) {
+  const enc = encodeURIComponent(target);
+  return (CUSTOM_PROXY || FALLBACK_PROXY) + enc;
+}
+
+async function proxyFetch(url) {
+  const proxyUrl = getProxyUrl(url);
+  const res = await fetch(proxyUrl);
+  const text = await res.text();
+
+  // Try JSON (allorigins format: { contents: "..." })
+  try {
+    const json = JSON.parse(text);
+    if (json.contents) return json.contents;
+  } catch { /* not JSON, treat as raw response (worker format) */ }
+
+  return text;
+}
 
 let REALTIME_DATA = { cuts: [], weather: [] };
 
@@ -7,8 +29,7 @@ async function fetchRealData() {
   let weatherFetched = false;
 
   try {
-    const res = await fetch(CORS_PROXY + encodeURIComponent('https://www.ruta0.com/estado_rutas.aspx')).then(r => r.json());
-    const html = res.contents;
+    const html = await proxyFetch('https://www.ruta0.com/estado_rutas.aspx');
     const cuts = parseRuta0Alerts(html);
     if (cuts.length > 0) {
       REALTIME_DATA.cuts = cuts;
@@ -21,8 +42,7 @@ async function fetchRealData() {
   }
 
   try {
-    const res = await fetch(CORS_PROXY + encodeURIComponent('https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo.xml')).then(r => r.json());
-    const xml = res.contents;
+    const xml = await proxyFetch('https://ssl.smn.gob.ar/feeds/CAP/rss_alertaCAP_nuevo.xml');
     const alerts = parseSmnAlerts(xml);
     if (alerts.length > 0) {
       REALTIME_DATA.weather = alerts;

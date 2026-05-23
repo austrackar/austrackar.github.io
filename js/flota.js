@@ -35,11 +35,19 @@ function initFlota(empresa) {
       if (!data) {
         clearFlotaMarkers();
         updateFlotaPanel([]);
+        document.getElementById('flota-badge')?.classList.add('hidden');
         return;
       }
       flotaData = data;
       updateFlotaMarkers(data);
       updateFlotaPanel(data);
+      const now = Date.now();
+      const activeCount = Object.values(data).filter(e => (now - (e.timestamp || 0)) < 60000).length;
+      const badge = document.getElementById('flota-badge');
+      if (badge) {
+        badge.textContent = activeCount;
+        badge.classList.toggle('hidden', activeCount === 0);
+      }
     });
 
     flotaInitialized = true;
@@ -106,19 +114,49 @@ function updateFlotaPanel(data) {
     container.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Nadie en ruta todavía</div>';
     return;
   }
-  container.innerHTML = entries.map(([id, emp]) => {
-    const now = Date.now();
+
+  const now = Date.now();
+  const total = entries.length;
+  const activos = entries.filter(([, e]) => (now - (e.timestamp || 0)) < 60000).length;
+  const enMovimiento = entries.filter(([, e]) => (now - (e.timestamp || 0)) < 30000).length;
+  const sinSenal = total - activos;
+
+  // Dashboard header
+  const dashboard = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;padding:8px;background:var(--panel2);border-radius:10px;border:1px solid var(--border)">
+      <div style="text-align:center">
+        <div style="font-size:18px;font-weight:800;color:#22c55e">${enMovimiento}</div>
+        <div style="font-size:9px;color:var(--text3)">En ruta</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:18px;font-weight:800;color:#f59e0b">${activos - enMovimiento}</div>
+        <div style="font-size:9px;color:var(--text3)">Detenidos</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:18px;font-weight:800;color:${sinSenal > 0 ? '#ef4444' : 'var(--text3)'}">${sinSenal}</div>
+        <div style="font-size:9px;color:var(--text3)">Sin señal</div>
+      </div>
+    </div>`;
+
+  container.innerHTML = dashboard + entries.map(([id, emp]) => {
     const lastSeen = emp.timestamp || 0;
-    const isActive = (now - lastSeen) < 60000;
-    const ago = lastSeen ? formatTimeAgo(now - lastSeen) : '—';
+    const diff = now - lastSeen;
+    const isActive = diff < 60000;
+    const isMoving = diff < 30000;
+    const ago = lastSeen ? formatTimeAgo(diff) : '—';
+
+    let statusText, statusColor;
+    if (isMoving) { statusText = 'En ruta'; statusColor = '#16a34a'; }
+    else if (isActive) { statusText = 'Detenido'; statusColor = '#f59e0b'; }
+    else { statusText = 'Sin señal'; statusColor = '#6b7280'; }
+
     return `<div class="flota-card" data-flota-id="${id}">
-      <div class="flota-avatar" style="background:${isActive ? '#16a34a' : '#6b7280'}">🚛</div>
+      <div class="flota-avatar" style="background:${statusColor}">🚛</div>
       <div class="flota-info">
         <div class="flota-name">${emp.nombre}</div>
         <div class="flota-meta">${emp.destino ? '🏁 ' + emp.destino + ' · ' : ''}${ago}</div>
-        ${emp.ruta ? '<div class="flota-meta" style="font-size:10px">🛣️ ' + emp.ruta + '</div>' : ''}
       </div>
-      <span class="flota-status" style="background:${isActive ? '#16a34a' : '#6b7280'}">${isActive ? 'En ruta' : 'Inactivo'}</span>
+      <span class="flota-status" style="background:${statusColor}">${statusText}</span>
     </div>`;
   }).join('');
 

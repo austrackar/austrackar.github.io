@@ -27,6 +27,7 @@ async function initApp(profile) {
     buildLegendModal();
     setupEventListeners();
     checkOnlineStatus();
+    registerServiceWorker();
     setTimeout(startNotificationDemo, 3000);
     setTimeout(requestUserLocation, 1000);
     setTimeout(() => initFlota(profile?.empresa), 2000);
@@ -63,13 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ─── SERVICE WORKER ─────────────────────────────
-//function registerServiceWorker() {
-  //if ('serviceWorker' in navigator) {
-    //navigator.serviceWorker.register('./service-worker.js')
-      //.then(reg => console.log('SW registrado:', reg.scope))
-      //.catch(err => console.log('SW error:', err));
-  //}
-//}
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('SW registrado:', reg.scope))
+      .catch(err => console.log('SW error:', err));
+  }
+}
 
 // ─── ONLINE/OFFLINE ─────────────────────────────
 function checkOnlineStatus() {
@@ -157,6 +158,10 @@ function setupEventListeners() {
   // Route calculation
   document.getElementById('calculate-btn')?.addEventListener('click', calculateRoute);
 
+  // Peajes / Balanzas toggles
+  document.getElementById('peajes-btn')?.addEventListener('click', togglePeajesLayer);
+  document.getElementById('balanzas-btn')?.addEventListener('click', toggleBalanzasLayer);
+
   // Swap origin/dest
   document.getElementById('swap-btn')?.addEventListener('click', () => {
     const origin = document.getElementById('origin-input');
@@ -216,13 +221,29 @@ function calculateRoute() {
         fitRoute(coords);
       }
 
+      // Check for road cuts along the route
+      const routeCuts = findCutsAlongRoute(coords, RUTAS_CORTADAS);
+      const hasCuts = routeCuts.length > 0;
+
       updateRouteInfo({
         distance: primary.distance,
         duration: primary.duration,
-        hasCuts: false,
-        cuts: [],
+        hasCuts,
+        cuts: routeCuts,
         alt: alt ? { desc: 'Ruta alternativa disponible', kmExtra: Math.round((alt.distance - primary.distance) / 1000), minExtra: Math.round((alt.duration - primary.duration) / 60) } : null
       });
+
+      if (hasCuts) {
+        const warningSection = document.getElementById('route-warning');
+        const warningText = document.getElementById('warning-text');
+        warningSection.classList.remove('hidden');
+        warningText.innerHTML = routeCuts.map(c =>
+          `🚧 <strong>${c.ruta}</strong> — ${c.motivo} (${c.provincia})`
+        ).join('<br>');
+        showNotification({ title: '⚠️ Cortes en la ruta', body: `Se detectaron ${routeCuts.length} corte(s) en el camino`, type: 'warning', duration: 8000 });
+      } else {
+        document.getElementById('route-warning')?.classList.add('hidden');
+      }
 
       // Enable sharing button for employees
       if (sharingProfile) {
@@ -236,6 +257,37 @@ function calculateRoute() {
       console.error('Error al calcular ruta:', err);
       showNotification({ title: 'Error de ruta', body: 'No se pudo conectar con OSRM', type: 'danger', duration: 4000 });
     });
+}
+
+function findCutsAlongRoute(routeCoords, cuts) {
+  const R = 6371;
+  const toRad = d => d * Math.PI / 180;
+  const haversine = (p1, p2) => {
+    const dLat = toRad(p2[0] - p1[0]);
+    const dLng = toRad(p2[1] - p1[1]);
+    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(p1[0])) * Math.cos(toRad(p2[0])) * Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const affected = [];
+  const THRESHOLD = 20; // km
+
+  cuts.forEach(cut => {
+    if (!cut.coords || cut.coords.length === 0) return;
+    let near = false;
+    for (let i = 0; i < routeCoords.length; i += 10) {
+      for (let j = 0; j < cut.coords.length; j += 2) {
+        if (haversine(routeCoords[i], cut.coords[j]) < THRESHOLD) {
+          near = true;
+          break;
+        }
+      }
+      if (near) break;
+    }
+    if (near) affected.push(cut);
+  });
+
+  return affected;
 }
 
 // ─── USER LOCATION ────────────────────────────────

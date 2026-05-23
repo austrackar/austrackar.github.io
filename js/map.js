@@ -9,7 +9,10 @@ let cutLayers = [],
     sosRouteLayers = [],
     climaLayers = [], 
     routeNetworkLayers = [],
-    provincialRouteLayers = [];
+    provincialRouteLayers = [],
+    peajeLayers = [],
+    balanzaLayers = [];
+let peajeVisible = false, balanzaVisible = false;
 const TILE_LAYERS = {
   argenmap_oscuro: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/argenmap_oscuro@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
   argenmap: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
@@ -74,10 +77,12 @@ function initMap() {
   renderSOSOnMap();
   renderClimaOnMap();
 
-  // Re-render cuts/weather on map move
+  // Re-render layers on map move
   map.on('moveend', () => {
     renderCutsOnMap();
     renderClimaOnMap();
+    if (peajeVisible) renderPeajesOnMap();
+    if (balanzaVisible) renderBalanzasOnMap();
     const panel = document.getElementById('left-panel');
     if (panel && panel.classList.contains('open')) {
       const activeFilter = document.querySelector('.filter-tab.active');
@@ -441,6 +446,60 @@ function renderClimaOnMap() {
 
     climaLayers.push(circle, label);
   });
+}
+
+function renderPeajesOnMap() {
+  peajeLayers.forEach(l => map.removeLayer(l));
+  peajeLayers = [];
+  if (!peajeVisible) return;
+
+  PEAJES.forEach(p => {
+    if (!inViewport([p.lat, p.lng], 0.3)) return;
+    const icon = L.divIcon({
+      html: '<div style="background:#a855f7;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:2px solid white">💰</div>',
+      className: '', iconSize: [20, 20], iconAnchor: [10, 10]
+    });
+    const m = L.marker([p.lat, p.lng], { icon }).addTo(map);
+    m.bindPopup(`<div style="font-family:Inter,sans-serif;min-width:180px">
+      <div style="background:#a855f7;color:white;padding:8px 12px;border-radius:6px 6px 0 0;margin:-4px -4px 8px;font-size:13px;font-weight:700">💰 Peaje</div>
+      <div style="font-size:12px;margin-bottom:4px"><strong>${p.nombre || 'Peaje'}</strong></div>
+      ${p.operador ? `<div style="font-size:11px;color:#666">Operador: ${p.operador}</div>` : ''}
+    </div>`, { maxWidth: 250 });
+    peajeLayers.push(m);
+  });
+}
+
+function renderBalanzasOnMap() {
+  balanzaLayers.forEach(l => map.removeLayer(l));
+  balanzaLayers = [];
+  if (!balanzaVisible) return;
+
+  BALANZAS.forEach(b => {
+    if (!inViewport([b.lat, b.lng], 0.3)) return;
+    const icon = L.divIcon({
+      html: '<div style="background:#06b6d4;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:2px solid white">⚖️</div>',
+      className: '', iconSize: [20, 20], iconAnchor: [10, 10]
+    });
+    const m = L.marker([b.lat, b.lng], { icon }).addTo(map);
+    m.bindPopup(`<div style="font-family:Inter,sans-serif;min-width:180px">
+      <div style="background:#06b6d4;color:white;padding:8px 12px;border-radius:6px 6px 0 0;margin:-4px -4px 8px;font-size:13px;font-weight:700">⚖️ Balanza</div>
+      <div style="font-size:12px;margin-bottom:4px"><strong>${b.nombre}</strong></div>
+      ${b.operador ? `<div style="font-size:11px;color:#666">Operador: ${b.operador}</div>` : ''}
+    </div>`, { maxWidth: 250 });
+    balanzaLayers.push(m);
+  });
+}
+
+function togglePeajesLayer() {
+  peajeVisible = !peajeVisible;
+  document.getElementById('peajes-btn')?.classList.toggle('active');
+  renderPeajesOnMap();
+}
+
+function toggleBalanzasLayer() {
+  balanzaVisible = !balanzaVisible;
+  document.getElementById('balanzas-btn')?.classList.toggle('active');
+  renderBalanzasOnMap();
 }
 
 function formatDate(dateStr) {
