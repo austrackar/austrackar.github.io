@@ -69,6 +69,10 @@
         <span id="user-avatar">👤</span>
         <span id="user-name">Cuenta</span>
       </button>
+      <button id="logout-btn-header" class="top-btn" title="Cerrar sesión" style="display:none">
+        <span>🚪</span>
+        <span>Salir</span>
+      </button>
     </div>
   </header>
   <!-- ══════════ MAIN ══════════ -->
@@ -271,13 +275,7 @@
   <button id="mobile-notif-btn" title="Notificaciones">🔔</button>
   <button id="mobile-weather-btn" title="Clima">🌤</button>
   <button id="mobile-user-btn" title="Cuenta" style="display:none">👤</button>
-  <div id="user-dropdown" style="display:none;position:fixed;top:60px;right:12px;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:8px;min-width:190px;z-index:50000;box-shadow:0 8px 24px rgba(0,0,0,0.6)">
-    <div style="padding:8px 12px;font-size:13px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:4px">
-      <div id="dropdown-name" style="font-weight:600;color:var(--text1)"></div>
-      <div id="dropdown-empresa" style="font-size:12px"></div>
-    </div>
-    <button id="logout-btn" style="width:100%;background:none;border:none;color:#f85149;padding:10px 12px;text-align:left;cursor:pointer;font-size:13px;border-radius:8px;font-family:inherit">🚪 Cerrar sesión</button>
-  </div>
+  <button id="mobile-logout-btn" title="Cerrar sesión" style="display:none">🚪</button>
   <div id="mobile-zoom-controls">
     <button id="mobile-zoom-in">+</button>
     <button id="mobile-zoom-out">−</button>
@@ -327,7 +325,7 @@
 <script src="js/auth.js"></script>
 <script src="js/map.js?v=7"></script>
 <script src="js/ui.js?v=5"></script>
-<script src="js/app.js?v=13"></script>
+<script src="js/app.js?v=15"></script>
 <script src="js/flota.js?v=3"></script>
 
 </body>

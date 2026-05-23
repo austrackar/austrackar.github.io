@@ -37,28 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user) { window.location.href = 'login.html'; return; }
     document.getElementById('user-name').textContent = profile?.nombre || user.email;
     document.getElementById('user-btn').style.display = '';
-    document.getElementById('dropdown-name').textContent = profile?.nombre || 'Usuario';
-    document.getElementById('dropdown-empresa').textContent = (profile?.empresa || '') + (profile?.rol ? ' · ' + profile.rol : '');
 
     const mUserBtn = document.getElementById('mobile-user-btn');
     if (mUserBtn) mUserBtn.style.display = 'flex';
-    const dd = document.getElementById('user-dropdown');
-    if (dd) dd.style.display = 'none';
+    const mLogoutBtn = document.getElementById('mobile-logout-btn');
+    if (mLogoutBtn) mLogoutBtn.style.display = 'flex';
+    document.getElementById('logout-btn-header').style.display = '';
 
-    document.getElementById('user-btn').onclick = function(e) {
-      e.stopPropagation();
-      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-    };
-    if (mUserBtn) mUserBtn.onclick = function(e) {
-      e.stopPropagation();
-      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-    };
+    function doLogout() { logout().then(() => window.location.href = 'login.html'); }
 
-    document.getElementById('logout-btn').onclick = function() {
-      logout().then(() => window.location.href = 'login.html');
-    };
-
-    document.addEventListener('click', function() { if (dd) dd.style.display = 'none'; });
+    document.getElementById('logout-btn-header').onclick = doLogout;
+    if (mLogoutBtn) mLogoutBtn.onclick = doLogout;
 
     initApp(profile);
   });

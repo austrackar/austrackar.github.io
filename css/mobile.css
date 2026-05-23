@@ -148,6 +148,27 @@
     cursor: pointer;
   }
 
+  #mobile-logout-btn {
+    position: fixed;
+    top: 116px;
+    right: 12px;
+    z-index: 3100;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(218, 54, 51, 0.85);
+    backdrop-filter: blur(12px);
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
   #mobile-search {
     position: fixed;
     top: 64px;
