@@ -158,10 +158,6 @@ function setupEventListeners() {
   // Route calculation
   document.getElementById('calculate-btn')?.addEventListener('click', calculateRoute);
 
-  // Peajes / Balanzas toggles
-  document.getElementById('peajes-btn')?.addEventListener('click', togglePeajesLayer);
-  document.getElementById('balanzas-btn')?.addEventListener('click', toggleBalanzasLayer);
-
   // Swap origin/dest
   document.getElementById('swap-btn')?.addEventListener('click', () => {
     const origin = document.getElementById('origin-input');

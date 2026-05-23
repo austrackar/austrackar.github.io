@@ -85,7 +85,10 @@ function buildServiciosList(filter = 'combustible') {
   if (!container) return;
   container.innerHTML = '';
 
-  const items = filter === 'combustible' ? ESTACIONES_SERVICIO : ALOJAMIENTOS;
+  let items;
+  if (filter === 'peaje') items = PEAJES;
+  else if (filter === 'balanza') items = BALANZAS;
+  else items = filter === 'combustible' ? ESTACIONES_SERVICIO : ALOJAMIENTOS;
 
   if (!items.length) {
     container.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Sin servicios disponibles</div>';
@@ -96,7 +99,44 @@ function buildServiciosList(filter = 'combustible') {
     const card = document.createElement('div');
     card.className = 'alert-card';
 
-    if (filter === 'combustible') {
+    if (filter === 'peaje') {
+      const meta = item.operador ? '🏢 ' + item.operador : '📍 ' + item.lat.toFixed(4) + ', ' + item.lng.toFixed(4);
+      card.innerHTML = `
+        <div class="alert-header" style="padding-bottom:2px">
+          <span class="alert-title">💰 ${item.nombre || 'Peaje'}</span>
+          <span class="alert-badge" style="background:#a855f7;color:white">PEAJE</span>
+        </div>
+        <div class="alert-meta">${meta}</div>`;
+      card.addEventListener('click', () => {
+        map.setView([item.lat, item.lng], 14, { animate: true });
+        L.popup().setLatLng([item.lat, item.lng]).setContent(`<strong>💰 ${item.nombre || 'Peaje'}</strong><br>${item.operador ? '🏢 ' + item.operador : ''}`).openOn(map);
+      });
+    } else if (filter === 'balanza') {
+      const meta = item.operador ? '🏢 ' + item.operador : '📍 ' + item.lat.toFixed(4) + ', ' + item.lng.toFixed(4);
+      card.innerHTML = `
+        <div class="alert-header" style="padding-bottom:2px">
+          <span class="alert-title">⚖️ ${item.nombre}</span>
+          <span class="alert-badge" style="background:#06b6d4;color:white">BALANZA</span>
+        </div>
+        <div class="alert-meta">${meta}</div>`;
+      card.addEventListener('click', () => {
+        map.setView([item.lat, item.lng], 14, { animate: true });
+        L.popup().setLatLng([item.lat, item.lng]).setContent(`<strong>⚖️ ${item.nombre}</strong><br>${item.operador ? '🏢 ' + item.operador : ''}`).openOn(map);
+      });
+    } else if (filter === 'balanza') {
+      card.innerHTML = `
+        <div class="alert-header" style="padding-bottom:2px">
+          <span class="alert-title">⚖️ ${item.nombre}</span>
+          <span class="alert-badge" style="background:#06b6d4;color:white">BALANZA</span>
+        </div>
+        <div class="alert-meta">
+          ${item.operador ? `🏢 ${item.operador}` : '📍 ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}`}
+        </div>`;
+      card.addEventListener('click', () => {
+        map.setView([item.lat, item.lng], 14, { animate: true });
+        L.popup().setLatLng([item.lat, item.lng]).setContent(`<strong>⚖️ ${item.nombre}</strong><br>${item.operador ? '🏢 ' + item.operador : ''}`).openOn(map);
+      });
+    } else if (filter === 'combustible') {
       const horarioOk = item.horario === '24h' || item.horario === '24/7';
       const marcaDisplay = item.marca && item.marca !== item.nombre ? ` · ${item.marca}` : '';
       card.innerHTML = `
