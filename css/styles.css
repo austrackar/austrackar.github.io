@@ -212,7 +212,9 @@ body {
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .section-header .section-title { margin-bottom: 0; }
 
-.filter-tabs { display: flex; gap: 4px; }
+.filter-tabs { display: flex; gap: 4px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+.filter-tabs::-webkit-scrollbar { height: 3px; }
+.filter-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 .filter-tab {
   padding: 4px 10px; border-radius: 20px; font-size: 11px;
   font-family: 'Inter', sans-serif; cursor: pointer;
