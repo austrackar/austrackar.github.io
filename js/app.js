@@ -267,6 +267,29 @@ function calculateRoute() {
         enableSharingButton();
         updateSharingDestInfo(destName, Math.round(primary.distance / 1000), formatDuration(primary.duration));
       }
+
+      // Try to get real OSRM routes for alternatives with waypoints
+      const oLat = parseFloat(document.getElementById('origin-input')?.dataset?.lat);
+      const oLng = parseFloat(document.getElementById('origin-input')?.dataset?.lng);
+      const dLat = parseFloat(document.getElementById('dest-input')?.dataset?.lat);
+      const dLng = parseFloat(document.getElementById('dest-input')?.dataset?.lng);
+      allCutsAlts.forEach((a, idx) => {
+        if (!a.waypoints || !a.waypoints[0] || isNaN(oLat)) return;
+        const altId = `alt-${idx}`;
+        const wp = a.waypoints[0];
+        const url = `https://router.project-osrm.org/route/v1/driving/${oLng},${oLat};${wp[1]},${wp[0]};${dLng},${dLat}?overview=full&geometries=geojson`;
+        fetch(url)
+          .then(res => res.json())
+          .then(d => {
+            if (!d.routes || !d.routes[0]) return;
+            const realCoords = d.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+            // Replace the hardcoded route with the real OSRM one
+            drawAltRoute(realCoords, altId);
+            // Add new coords to fit bounds if not already
+            allCoords = allCoords.concat(realCoords);
+          })
+          .catch(() => {});
+      });
     })
     .catch(err => {
       hideLoading();
