@@ -3,7 +3,7 @@
 // En producción estos datos vienen de Vialidad Nacional y SMN
 // ═══════════════════════════════════════════════════
 
-console.log('✅ datos.js v5 cargado - RN3/RN40 con trazado OSRM real');
+console.log('✅ datos.js v6 cargado - Alternativas RN188 + RN8/148');
 
 const RUTAS_CORTADAS = [
   {
@@ -20,8 +20,28 @@ const RUTAS_CORTADAS = [
     coords: [[-32.58, -69.10], [-32.65, -69.15], [-32.80, -69.00], [-32.89, -68.90], [-32.95, -68.85]],
     fuente: 'Vialidad Nacional',
     alternativas: [
-      { desc: 'RN 188 (ingresando por el sur mendocino)', kmExtra: 150, minExtra: 120, waypoints: [[-34.55, -68.55]] },
-      { desc: 'Variante por RN 8 y RN 148', kmExtra: 100, minExtra: 80, waypoints: [[-33.13, -64.35]] }
+      {
+        desc: 'RN 188 (ingresando por el sur mendocino)',
+        kmExtra: 180, minExtra: 150,
+        altCoords: [
+          [-34.61, -58.38], [-34.92, -59.80], [-35.10, -60.80], [-35.80, -61.80],
+          [-36.30, -62.60], [-36.90, -63.50], [-37.00, -63.90], [-36.60, -64.50],
+          [-36.00, -65.20], [-35.50, -66.00], [-35.00, -66.80], [-34.62, -67.70],
+          [-34.62, -68.33], [-34.55, -68.55], [-34.30, -68.70], [-33.80, -68.75],
+          [-33.30, -68.80], [-32.89, -68.84]
+        ]
+      },
+      {
+        desc: 'Variante por RN 8 y RN 148',
+        kmExtra: 120, minExtra: 95,
+        altCoords: [
+          [-34.61, -58.38], [-34.50, -59.30], [-34.20, -60.00], [-33.80, -60.80],
+          [-33.50, -61.50], [-33.20, -62.20], [-33.13, -63.00], [-33.13, -63.80],
+          [-33.30, -64.35], [-33.47, -64.85], [-33.60, -65.30], [-33.67, -65.46],
+          [-33.60, -66.00], [-33.40, -66.50], [-33.20, -67.00], [-33.00, -67.50],
+          [-32.89, -68.00], [-32.89, -68.84]
+        ]
+      }
     ]
   },
   {
