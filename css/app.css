@@ -309,6 +309,16 @@ body {
 }
 .layer-btn.active { background: var(--accent); border-color: var(--accent); }
 .layer-btn:hover { border-color: var(--accent); }
+.overlay-btn {
+  width: 48px; height: 48px;
+  background: var(--glass); backdrop-filter: blur(10px);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  cursor: pointer; font-size: 16px; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+}
+.overlay-btn.active { background: #92400e; border-color: #b45309; }
+.overlay-btn:hover { border-color: #b45309; }
 
 /* ═══ OFFLINE BANNER ═══ */
 #offline-banner {

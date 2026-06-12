@@ -290,15 +290,16 @@ function renderOilRoutes() {
 
 function toggleOilRoutes() {
   const btn = document.getElementById('oil-toggle-btn');
-  const layer = oilRouteLayers[0];
-  if (!layer) return;
   const visible = btn.classList.toggle('active');
-  if (visible) {
-    map.addLayer(layer);
-  } else {
-    map.removeLayer(layer);
-  }
   localStorage.setItem('oilRoutesVisible', visible);
+  if (oilRouteLayers.length > 0) {
+    const layer = oilRouteLayers[0];
+    if (visible) {
+      map.addLayer(layer);
+    } else {
+      map.removeLayer(layer);
+    }
+  }
 }
 
 // ─── FILTRO POR VISTA ─────────────────────────

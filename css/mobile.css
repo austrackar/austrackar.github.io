@@ -320,6 +320,24 @@
     color: #000;
   }
 
+  .overlay-btn {
+    width: 44px; height: 44px;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    color: white;
+  }
+
+  .overlay-btn.active {
+    background: #92400e;
+    border-color: #b45309;
+    color: white;
+  }
+
   .suggestions-dropdown {
     left: 0 !important;
     right: 0 !important;
