@@ -221,6 +221,14 @@ body {
 }
 .filter-tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
 
+.serv-filter-tab {
+  padding: 4px 10px; border-radius: 20px; font-size: 11px;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  border: 1px solid var(--border); background: none; color: var(--text3);
+  transition: all 0.2s;
+}
+.serv-filter-tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+
 .alert-card {
   background: var(--panel2); border-radius: var(--radius-sm);
   padding: 12px; margin-bottom: 8px;
