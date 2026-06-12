@@ -209,24 +209,40 @@ function calculateRoute() {
       const coords = primary.geometry.coordinates.map(c => [c[1], c[0]]);
       drawRoute(coords, 'primary');
 
+      // Check for road cuts along the route
+      const routeCuts = findCutsAlongRoute(coords, RUTAS_CORTADAS);
+      const hasCuts = routeCuts.length > 0;
+
+      // Alternative from OSRM, or fallback to cut's alternativa data
+      let altData = null;
       if (alt) {
         const altCoords = alt.geometry.coordinates.map(c => [c[1], c[0]]);
         drawRoute(altCoords, 'alternative');
         fitRoute([...coords, ...altCoords]);
+        altData = { desc: 'Ruta alternativa disponible', kmExtra: Math.round((alt.distance - primary.distance) / 1000), minExtra: Math.round((alt.duration - primary.duration) / 60) };
+      } else if (hasCuts) {
+        // Use alternativa from the first cut that has one
+        const cutWithAlt = routeCuts.find(c => c.alternativa);
+        if (cutWithAlt) {
+          const a = cutWithAlt.alternativa;
+          if (a.altCoords && a.altCoords.length > 0) {
+            drawRoute(a.altCoords, 'alternative');
+            fitRoute([...coords, ...a.altCoords]);
+          }
+          altData = { desc: a.desc, kmExtra: a.kmExtra, minExtra: a.minExtra };
+        } else {
+          fitRoute(coords);
+        }
       } else {
         fitRoute(coords);
       }
-
-      // Check for road cuts along the route
-      const routeCuts = findCutsAlongRoute(coords, RUTAS_CORTADAS);
-      const hasCuts = routeCuts.length > 0;
 
       updateRouteInfo({
         distance: primary.distance,
         duration: primary.duration,
         hasCuts,
         cuts: routeCuts,
-        alt: alt ? { desc: 'Ruta alternativa disponible', kmExtra: Math.round((alt.distance - primary.distance) / 1000), minExtra: Math.round((alt.duration - primary.duration) / 60) } : null
+        alt: altData
       });
 
       if (hasCuts) {
