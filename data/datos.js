@@ -19,7 +19,10 @@ const RUTAS_CORTADAS = [
     severidad: 'total',
     coords: [[-32.58, -69.10], [-32.65, -69.15]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Tomar RP 52 y luego RN 7 hasta Mendoza ciudad', kmExtra: 45, minExtra: 35, altCoords: [[-32.58, -69.10], [-32.55, -69.00], [-32.50, -68.90], [-32.60, -68.85], [-32.89, -68.84]] }
+    alternativas: [
+      { desc: 'RN 188 (ingresando por el sur mendocino)', kmExtra: 150, minExtra: 120, waypoints: [[-34.55, -68.55]] },
+      { desc: 'Variante por RN 8 y RN 148', kmExtra: 100, minExtra: 80, waypoints: [[-33.13, -64.35]] }
+    ]
   },
   {
     id: 'corte-002',
@@ -34,7 +37,9 @@ const RUTAS_CORTADAS = [
     severidad: 'total',
     coords: [[-47.75, -65.90], [-47.95, -65.95]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Desvío por camino provincial RP 47 (ripio). Reducir velocidad.', kmExtra: 62, minExtra: 50, altCoords: [[-47.75, -65.90], [-47.80, -66.10], [-47.85, -66.30], [-48.00, -66.40], [-48.10, -66.50], [-48.08, -66.30], [-48.00, -66.05], [-47.95, -65.95]] }
+    alternativas: [
+      { desc: 'Desvío por camino provincial RP 47 (ripio). Reducir velocidad.', kmExtra: 62, minExtra: 50, altCoords: [[-47.75, -65.90], [-47.80, -66.10], [-47.85, -66.30], [-48.00, -66.40], [-48.10, -66.50], [-48.08, -66.30], [-48.00, -66.05], [-47.95, -65.95]] }
+    ]
   },
   {
     id: 'corte-003',
@@ -49,7 +54,9 @@ const RUTAS_CORTADAS = [
     severidad: 'parcial',
     coords: [[-33.68, -65.45], [-33.72, -65.55]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Continuar por RN 7 con precaución. Tráfico alternado controlado.', kmExtra: 0, minExtra: 40 }
+    alternativas: [
+      { desc: 'Continuar por RN 7 con precaución. Tráfico alternado controlado.', kmExtra: 0, minExtra: 40 }
+    ]
   },
   {
     id: 'corte-004',
