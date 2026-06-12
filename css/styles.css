@@ -47,7 +47,7 @@ body {
 }
 
 #logo-area { display: flex; align-items: center; gap: 12px; }
-#logo-icon { font-size: 28px; }
+#logo-img { height: 32px; width: auto; }
 #logo-name { font-size: 18px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; display: block; }
 #logo-subtitle { font-size: 11px; color: var(--text3); display: block; }
 

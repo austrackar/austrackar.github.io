@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RutaSegura AR — Iniciar Sesión</title>
+  <title>AusTrack — Iniciar Sesión</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     body { font-family: 'Inter', -apple-system, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .card { background: #161b22; border: 1px solid #30363d; border-radius: 20px; padding: 32px; width: 100%; max-width: 420px; }
     .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-    .logo-icon { font-size: 32px; }
+    .login-logo { height: 48px; width: auto; }
     .logo-text { font-weight: 800; font-size: 20px; }
     .logo-sub { color: #8b949e; font-size: 13px; }
     .tabs { display: flex; background: #0d1117; border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid #30363d; }
@@ -39,9 +39,10 @@
 <body>
 <div class="card">
   <div class="logo">
-    <span class="logo-icon">🛣️</span>
+
     <div>
-      <div class="logo-text">RutaSegura AR</div>
+      <img src="img/logo.png" class="login-logo" alt="AusTrack">
+      <div class="logo-text">AusTrack</div>
       <div class="logo-sub">Sistema de Monitoreo Vial</div>
     </div>
   </div>
@@ -92,7 +93,7 @@
     <button class="btn btn-primary" id="reg-btn">Crear cuenta</button>
   </div>
 
-  <div class="footer">RutaSegura AR — Datos protegidos</div>
+  <div class="footer">AusTrack — Datos protegidos</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

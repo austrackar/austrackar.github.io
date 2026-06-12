@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-// DATOS SIMULADOS - RutaSegura AR
+// DATOS - AusTrack
 // En producción estos datos vienen de Vialidad Nacional y SMN
 // ═══════════════════════════════════════════════════
 

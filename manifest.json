@@ -1,6 +1,6 @@
 {
-  "name": "RutaSegura AR",
-  "short_name": "RutaSegura",
+  "name": "AusTrack",
+  "short_name": "AusTrack",
   "description": "Monitoreo de rutas nacionales, cortes, alertas climáticas y puntos SOS para empresas de transporte en Argentina",
   "start_url": "/index.html",
   "display": "standalone",

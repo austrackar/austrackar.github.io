@@ -25,7 +25,7 @@ async function handleRequest(request) {
 
   const response = await fetch(target, {
     headers: {
-      'User-Agent': 'RutaSeguraAR/1.0 (+https://github.com/rutaseguraar)'
+      'User-Agent': 'AusTrack/1.0 (+https://github.com/rutaseguraar)'
     }
   });
 

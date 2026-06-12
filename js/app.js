@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// APP.JS — Lógica principal de RutaSegura AR
+// APP.JS — Lógica principal de AusTrack
 // ═══════════════════════════════════════════════
 
 let notificationsEnabled = false;
@@ -366,7 +366,7 @@ function checkNearbyAlerts(lat, lng) {
 function startNotificationDemo() {
   setTimeout(() => {
     showNotification({
-      title: '🚛 RutaSegura AR activo',
+      title: '🚛 AusTrack activo',
       body: 'Sistema de monitoreo vial en funcionamiento',
       type: 'success',
       duration: 4000

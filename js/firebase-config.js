@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════
-// FIREBASE CONFIG — RutaSegura AR Flota
+// FIREBASE CONFIG — AusTrack Flota
 // ═══════════════════════════════════════════════
 // 1. Andá a https://console.firebase.google.com
-// 2. Entrá al proyecto rutaseguraar
+// 2. Entrá al proyecto rutaseguraar (Firebase Console)
 // 3. Andá a Build > Authentication > Sign-in method
 //    → Habilitá "Correo electrónico/contraseña" → Guardar
 // 4. Andá a Build > Realtime Database > Reglas
