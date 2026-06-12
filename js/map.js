@@ -451,24 +451,40 @@ function formatDate(dateStr) {
 function drawRoute(coords, type) {
   clearRoute();
   const isPrimary = type === 'primary';
-  // Dark outline/halo for visibility over any background
-  const outline = L.polyline(coords, {
-    color: '#000',
-    weight: isPrimary ? 9 : 7,
-    opacity: 0.55,
-    dashArray: isPrimary ? null : '12,6'
-  }).addTo(map);
-  const layer = L.polyline(coords, {
-    color: isPrimary ? '#fbbf24' : '#22c55e',
-    weight: isPrimary ? 5 : 4,
-    opacity: 0.95,
-    dashArray: isPrimary ? null : '12,6'
-  }).addTo(map);
+  const defaultOpts = {
+    outline: { color: '#000', weight: isPrimary ? 9 : 7, opacity: 0.55, dashArray: isPrimary ? null : '12,6' },
+    layer: { color: isPrimary ? '#fbbf24' : '#22c55e', weight: isPrimary ? 5 : 4, opacity: 0.95, dashArray: isPrimary ? null : '12,6' }
+  };
+  const highlightOpts = {
+    outline: { color: '#000', weight: isPrimary ? 14 : 12, opacity: 0.7, dashArray: isPrimary ? null : '12,6' },
+    layer: { color: isPrimary ? '#fef08a' : '#86efac', weight: isPrimary ? 8 : 7, opacity: 1, dashArray: isPrimary ? null : '12,6' }
+  };
 
-  if (isPrimary) currentRouteLayer = [outline, layer];
-  else altRouteLayer = [outline, layer];
+  const outline = L.polyline(coords, defaultOpts.outline).addTo(map);
+  const layer = L.polyline(coords, defaultOpts.layer).addTo(map);
+
+  if (isPrimary) {
+    currentRouteLayer = [outline, layer];
+    currentRouteLayer._default = defaultOpts;
+    currentRouteLayer._highlight = highlightOpts;
+  } else {
+    altRouteLayer = [outline, layer];
+    altRouteLayer._default = defaultOpts;
+    altRouteLayer._highlight = highlightOpts;
+  }
 
   return layer;
+}
+
+function highlightRoute(type) {
+  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
+  const otherLayer = type === 'primary' ? altRouteLayer : currentRouteLayer;
+  [layer, otherLayer].forEach(l => {
+    if (!l) return;
+    const opts = l === layer ? l._highlight : l._default;
+    l[0].setStyle(opts.outline);
+    l[1].setStyle(opts.layer);
+  });
 }
 
 function clearRoute() {
@@ -480,18 +496,6 @@ function clearRoute() {
     altRouteLayer.forEach(l => map.removeLayer(l));
     altRouteLayer = null;
   }
-}
-
-function toggleRoute(type) {
-  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
-  if (!layer) return false;
-  const visible = layer[0].options.opacity > 0;
-  const newOpacity = visible ? 0 : 1;
-  layer.forEach(l => {
-    l.setStyle({ opacity: newOpacity });
-    if (l.setStyle) l.setStyle({ pointerEvents: newOpacity === 0 ? 'none' : '' });
-  });
-  return !visible;
 }
 
 function focusRoute(type) {

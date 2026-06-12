@@ -237,6 +237,9 @@ function calculateRoute() {
         fitRoute(coords);
       }
 
+      // Highlight primary by default after both routes are drawn
+      if (currentRouteLayer) highlightRoute('primary');
+
       updateRouteInfo({
         distance: primary.distance,
         duration: primary.duration,
@@ -257,14 +260,20 @@ function calculateRoute() {
         document.getElementById('route-warning')?.classList.add('hidden');
       }
 
-      // Route click handlers — focus on selected route
+      // Route click handlers — highlight selected route
       const primaryToggle = document.getElementById('route-primary-toggle');
       const altToggle = document.getElementById('route-alt-toggle');
       if (primaryToggle) {
-        primaryToggle.onclick = () => focusRoute('primary');
+        primaryToggle.onclick = () => {
+          highlightRoute('primary');
+          focusRoute('primary');
+        };
       }
       if (altToggle) {
-        altToggle.onclick = () => focusRoute('alternative');
+        altToggle.onclick = () => {
+          highlightRoute('alternative');
+          focusRoute('alternative');
+        };
       }
 
       // Enable sharing button for employees
