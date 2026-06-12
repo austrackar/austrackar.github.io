@@ -176,18 +176,17 @@ function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
     warnEl.classList.remove('hidden');
     document.getElementById('warning-text').textContent =
       `Tu ruta pasa por ${cuts.length} zona(s) con cortes: ${cuts.map(c => `${c.ruta} (${c.motivo})`).join(', ')}.`;
-
-    if (alt) {
-      altEl.classList.remove('hidden');
-      document.getElementById('alt-route-details').innerHTML = `
-        <div class="alt-detail"><span>📍 ${alt.desc}</span></div>
-        <div class="alt-detail"><span>Distancia adicional</span><strong>+${alt.kmExtra} km</strong></div>
-        <div class="alt-detail"><span>Tiempo adicional</span><strong>+${alt.minExtra} min</strong></div>`;
-    } else {
-      altEl.classList.add('hidden');
-    }
   } else {
     warnEl.classList.add('hidden');
+  }
+
+  if (alt) {
+    altEl.classList.remove('hidden');
+    document.getElementById('alt-route-details').innerHTML = `
+      <div class="alt-detail"><span>📍 ${alt.desc}</span></div>
+      <div class="alt-detail"><span>Distancia adicional</span><strong>+${alt.kmExtra} km</strong></div>
+      <div class="alt-detail"><span>Tiempo adicional</span><strong>+${alt.minExtra} min</strong></div>`;
+  } else {
     altEl.classList.add('hidden');
   }
 
