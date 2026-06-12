@@ -58,13 +58,13 @@
     /* Truck */
     #splash-truck {
       font-size: 56px; line-height: 1;
-      transform: translateX(-120px);
+      transform: translateX(120px);
       animation: truckDrive 1.2s cubic-bezier(.4,0,.2,1) forwards;
       animation-delay: 0.2s;
       opacity: 0;
     }
     @keyframes truckDrive {
-      0%   { transform: translateX(-120px); opacity: 0; }
+      0%   { transform: translateX(120px); opacity: 0; }
       40%  { opacity: 1; }
       100% { transform: translateX(0); opacity: 1; }
     }
@@ -72,13 +72,13 @@
     /* Shadow under truck */
     #splash-shadow {
       width: 60px; height: 6px; background: rgba(255,255,255,0.06); border-radius: 50%;
-      transform: translateX(-120px);
+      transform: translateX(120px);
       animation: shadowDrive 1.2s cubic-bezier(.4,0,.2,1) forwards;
       animation-delay: 0.2s;
       opacity: 0;
     }
     @keyframes shadowDrive {
-      0%   { transform: translateX(-120px) scaleX(0.5); opacity: 0; }
+      0%   { transform: translateX(120px) scaleX(0.5); opacity: 0; }
       40%  { opacity: 1; }
       100% { transform: translateX(0) scaleX(1); opacity: 1; }
     }
