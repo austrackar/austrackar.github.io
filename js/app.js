@@ -257,24 +257,14 @@ function calculateRoute() {
         document.getElementById('route-warning')?.classList.add('hidden');
       }
 
-      // Route toggle click handlers
+      // Route click handlers — focus on selected route
       const primaryToggle = document.getElementById('route-primary-toggle');
       const altToggle = document.getElementById('route-alt-toggle');
       if (primaryToggle) {
-        primaryToggle.onclick = () => {
-          const visible = toggleRoute('primary');
-          const eye = document.getElementById('primary-route-eye');
-          if (eye) eye.style.opacity = visible ? '1' : '0.3';
-          if (visible) focusRoute('primary');
-        };
+        primaryToggle.onclick = () => focusRoute('primary');
       }
       if (altToggle) {
-        altToggle.onclick = () => {
-          const visible = toggleRoute('alternative');
-          const eye = document.getElementById('alt-route-eye');
-          if (eye) eye.style.opacity = visible ? '1' : '0.3';
-          if (visible) focusRoute('alternative');
-        };
+        altToggle.onclick = () => focusRoute('alternative');
       }
 
       // Enable sharing button for employees
