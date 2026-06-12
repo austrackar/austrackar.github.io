@@ -208,81 +208,104 @@ function calculateRoute() {
       const alt = data.routes[1] || null;
       const coords = primary.geometry.coordinates.map(c => [c[1], c[0]]);
       clearRoute();
-      drawRoute(coords, 'primary');
+      drawPrimaryRoute(coords);
 
       // Check for road cuts along the route
       const routeCuts = findCutsAlongRoute(coords, RUTAS_CORTADAS);
       const hasCuts = routeCuts.length > 0;
 
-      // Alternative from OSRM, or fallback to cut's alternativa data
-      let altData = null;
-      if (alt) {
-        const altCoords = alt.geometry.coordinates.map(c => [c[1], c[0]]);
-        drawRoute(altCoords, 'alternative');
-        fitRoute([...coords, ...altCoords]);
-        altData = { desc: 'Ruta alternativa disponible', kmExtra: Math.round((alt.distance - primary.distance) / 1000), minExtra: Math.round((alt.duration - primary.duration) / 60) };
-      } else if (hasCuts) {
-        // Use alternativa from the first cut that has one
-        const cutWithAlt = routeCuts.find(c => c.alternativa);
-        if (cutWithAlt) {
-          const a = cutWithAlt.alternativa;
-          if (a.altCoords && a.altCoords.length > 0) {
-            drawRoute(a.altCoords, 'alternative');
-            fitRoute([...coords, ...a.altCoords]);
-          }
-          altData = { desc: a.desc, kmExtra: a.kmExtra, minExtra: a.minExtra };
-        } else {
-          fitRoute(coords);
-        }
-      } else {
-        fitRoute(coords);
-      }
-
-      // Highlight primary by default after both routes are drawn
-      if (currentRouteLayer) highlightRoute('primary');
-
-      updateRouteInfo({
-        distance: primary.distance,
-        duration: primary.duration,
-        hasCuts,
-        cuts: routeCuts,
-        alt: altData
+      // Collect all alternatives from all cuts (with altCoords or waypoints)
+      const allCutsAlts = [];
+      routeCuts.forEach(cut => {
+        (cut.alternativas || []).forEach((a, idx) => {
+          allCutsAlts.push({ ...a, cutId: cut.id, altIdx: idx });
+        });
       });
 
-      if (hasCuts) {
-        const warningSection = document.getElementById('route-warning');
-        const warningText = document.getElementById('warning-text');
-        warningSection.classList.remove('hidden');
-        warningText.innerHTML = routeCuts.map(c =>
-          `🚧 <strong>${c.ruta}</strong> — ${c.motivo} (${c.provincia})`
-        ).join('<br>');
-        showNotification({ title: '⚠️ Cortes en la ruta', body: `Se detectaron ${routeCuts.length} corte(s) en el camino`, type: 'warning', duration: 8000 });
-      } else {
-        document.getElementById('route-warning')?.classList.add('hidden');
+      // Draw alternatives (immediate coords ones)
+      const altRoutes = [];
+      let allCoords = [...coords];
+      allCutsAlts.forEach((a, idx) => {
+        const altId = `alt-${idx}`;
+        if (a.altCoords && a.altCoords.length > 0) {
+          drawAltRoute(a.altCoords, altId);
+          altRoutes.push({ altId, desc: a.desc, kmExtra: a.kmExtra, minExtra: a.minExtra, coords: a.altCoords });
+          allCoords = allCoords.concat(a.altCoords);
+        } else if (a.waypoints && a.waypoints.length > 0 && document.getElementById('origen')?.dataset.lat && document.getElementById('destino')?.dataset.lat) {
+          // Need to fetch OSRM with waypoints - schedule the fetch
+          const oLat = parseFloat(document.getElementById('origen').dataset.lat);
+          const oLng = parseFloat(document.getElementById('origen').dataset.lng);
+          const dLat = parseFloat(document.getElementById('destino').dataset.lat);
+          const dLng = parseFloat(document.getElementById('destino').dataset.lng);
+          const wp = a.waypoints[0];
+          const url = `https://router.project-osrm.org/route/v1/driving/${oLng},${oLat};${wp[1]},${wp[0]};${dLng},${dLat}?overview=full&geometries=geojson`;
+          altRoutes.push({ altId, desc: a.desc, kmExtra: a.kmExtra, minExtra: a.minExtra, url });
+        } else {
+          altRoutes.push({ altId, desc: a.desc, kmExtra: a.kmExtra, minExtra: a.minExtra });
+        }
+      });
+
+      // Resolve OSRM-based alternatives via fetch
+      let pendingFetches = altRoutes.filter(r => r.url).length;
+
+      function finalizeRoute() {
+        // Fit to all coords
+        if (allCoords.length > 0) fitRoute(allCoords);
+
+        // Highlight primary
+        if (currentRouteLayer) highlightRoute('primary');
+
+        updateRouteInfo({
+          distance: primary.distance,
+          duration: primary.duration,
+          hasCuts,
+          cuts: routeCuts,
+          altRoutes
+        });
+
+        if (hasCuts) {
+          const warningSection = document.getElementById('route-warning');
+          const warningText = document.getElementById('warning-text');
+          warningSection.classList.remove('hidden');
+          warningText.innerHTML = routeCuts.map(c =>
+            `🚧 <strong>${c.ruta}</strong> — ${c.motivo} (${c.provincia})`
+          ).join('<br>');
+          showNotification({ title: '⚠️ Cortes en la ruta', body: `Se detectaron ${routeCuts.length} corte(s) en el camino`, type: 'warning', duration: 8000 });
+        } else {
+          document.getElementById('route-warning')?.classList.add('hidden');
+        }
+
+        // Enable sharing button for employees
+        if (sharingProfile) {
+          const destName = document.getElementById('dest-input')?.value || 'Destino';
+          enableSharingButton();
+          updateSharingDestInfo(destName, Math.round(primary.distance / 1000), formatDuration(primary.duration));
+        }
       }
 
-      // Route click handlers — highlight selected route
-      const primaryToggle = document.getElementById('route-primary-toggle');
-      const altToggle = document.getElementById('route-alt-toggle');
-      if (primaryToggle) {
-        primaryToggle.onclick = () => {
-          highlightRoute('primary');
-          focusRoute('primary');
-        };
-      }
-      if (altToggle) {
-        altToggle.onclick = () => {
-          highlightRoute('alternative');
-          focusRoute('alternative');
-        };
+      if (pendingFetches === 0) {
+        finalizeRoute();
       }
 
-      // Enable sharing button for employees
-      if (sharingProfile) {
-        const destName = document.getElementById('dest-input')?.value || 'Destino';
-        enableSharingButton();
-        updateSharingDestInfo(destName, Math.round(primary.distance / 1000), formatDuration(primary.duration));
-      }
+      // Fetch each OSRM-based alternative
+      altRoutes.forEach(r => {
+        if (!r.url) return;
+        fetch(r.url)
+          .then(res => res.json())
+          .then(d => {
+            if (d.routes && d.routes[0]) {
+              const altCoords = d.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+              drawAltRoute(altCoords, r.altId);
+              r.coords = altCoords;
+              allCoords = allCoords.concat(altCoords);
+            }
+          })
+          .catch(err => console.warn('Error fetching alternative route:', err))
+          .finally(() => {
+            pendingFetches--;
+            if (pendingFetches <= 0) finalizeRoute();
+          });
+      });
     })
     .catch(err => {
       hideLoading();
@@ -302,13 +325,13 @@ function findCutsAlongRoute(routeCoords, cuts) {
   };
 
   const affected = [];
-  const THRESHOLD = 20; // km
+  const THRESHOLD = 30; // km
 
   cuts.forEach(cut => {
     if (!cut.coords || cut.coords.length === 0) return;
     let near = false;
     for (let i = 0; i < routeCoords.length; i += 10) {
-      for (let j = 0; j < cut.coords.length; j += 2) {
+      for (let j = 0; j < cut.coords.length; j += 1) {
         if (haversine(routeCoords[i], cut.coords[j]) < THRESHOLD) {
           near = true;
           break;

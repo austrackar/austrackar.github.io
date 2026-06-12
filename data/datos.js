@@ -17,7 +17,7 @@ const RUTAS_CORTADAS = [
     desde: '2026-05-15T08:00:00',
     estimacion: '2026-05-17T18:00:00',
     severidad: 'total',
-    coords: [[-32.58, -69.10], [-32.65, -69.15]],
+    coords: [[-32.58, -69.10], [-32.65, -69.15], [-32.80, -69.00], [-32.89, -68.90], [-32.95, -68.85]],
     fuente: 'Vialidad Nacional',
     alternativas: [
       { desc: 'RN 188 (ingresando por el sur mendocino)', kmExtra: 150, minExtra: 120, waypoints: [[-34.55, -68.55]] },
@@ -71,7 +71,9 @@ const RUTAS_CORTADAS = [
     severidad: 'parcial',
     coords: [[-23.20, -65.35], [-23.28, -65.40]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Desvío por RP 16 (camino alternativo por la quebrada).', kmExtra: 18, minExtra: 25, altCoords: [[-23.20, -65.35], [-23.22, -65.42], [-23.26, -65.48], [-23.30, -65.44], [-23.28, -65.40]] }
+    alternativas: [
+      { desc: 'Desvío por RP 16 (camino alternativo por la quebrada).', kmExtra: 18, minExtra: 25, altCoords: [[-23.20, -65.35], [-23.22, -65.42], [-23.26, -65.48], [-23.30, -65.44], [-23.28, -65.40]] }
+    ]
   },
   {
     id: 'corte-005',
@@ -86,7 +88,9 @@ const RUTAS_CORTADAS = [
     severidad: 'total',
     coords: [[-38.90, -70.05], [-39.10, -70.15]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Tomar RN 22 hacia Neuquén capital y luego RP 8.', kmExtra: 85, minExtra: 75, altCoords: [[-38.90, -70.05], [-38.95, -69.50], [-38.96, -69.00], [-38.95, -68.50], [-38.95, -68.06], [-39.05, -68.50], [-39.10, -69.00], [-39.10, -70.15]] }
+    alternativas: [
+      { desc: 'Tomar RN 22 hacia Neuquén capital y luego RP 8.', kmExtra: 85, minExtra: 75, altCoords: [[-38.90, -70.05], [-38.95, -69.50], [-38.96, -69.00], [-38.95, -68.50], [-38.95, -68.06], [-39.05, -68.50], [-39.10, -69.00], [-39.10, -70.15]] }
+    ]
   },
   {
     id: 'corte-006',
@@ -101,7 +105,9 @@ const RUTAS_CORTADAS = [
     severidad: 'parcial',
     coords: [[-29.18, -58.08], [-29.25, -58.15]],
     fuente: 'Vialidad Nacional',
-    alternativa: { desc: 'Tomar RN 123 hasta Paso de los Libres y retomar RN 14.', kmExtra: 38, minExtra: 30, altCoords: [[-29.18, -58.08], [-29.22, -57.95], [-29.30, -57.80], [-29.40, -57.65], [-29.50, -57.50], [-29.60, -57.60], [-29.50, -57.80], [-29.35, -58.00], [-29.25, -58.15]] }
+    alternativas: [
+      { desc: 'Tomar RN 123 hasta Paso de los Libres y retomar RN 14.', kmExtra: 38, minExtra: 30, altCoords: [[-29.18, -58.08], [-29.22, -57.95], [-29.30, -57.80], [-29.40, -57.65], [-29.50, -57.50], [-29.60, -57.60], [-29.50, -57.80], [-29.35, -58.00], [-29.25, -58.15]] }
+    ]
   }
 ];
 

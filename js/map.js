@@ -2,7 +2,7 @@
 // MAP.JS — Gestión del mapa Leaflet
 // ═══════════════════════════════════════════════
 
-let map, sosCluster = null, currentRouteLayer = null, altRouteLayer = null;
+let map, sosCluster = null, currentRouteLayer = null, currentAlternatives = [];
 const isMobile = window.innerWidth <= 768;
 let cutLayers = [], 
     sosLayers = [], 
@@ -332,10 +332,10 @@ function renderCutsOnMap() {
           </div>
           <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px">
             <strong style="color:#16a34a;font-size:12px">🔄 Ruta Alternativa:</strong>
-            <p style="font-size:11px;color:#333;margin:4px 0">${corte.alternativa.desc}</p>
+            <p style="font-size:11px;color:#333;margin:4px 0">${corte.alternativas?.[0]?.desc || ''}</p>
             <div style="display:flex;gap:12px;font-size:11px;margin-top:6px">
-              ${corte.alternativa.kmExtra > 0 ? `<span style="background:#dcfce7;padding:2px 8px;border-radius:10px">+${corte.alternativa.kmExtra} km</span>` : ''}
-              <span style="background:#dcfce7;padding:2px 8px;border-radius:10px">+${corte.alternativa.minExtra} min</span>
+              ${corte.alternativas?.[0]?.kmExtra > 0 ? `<span style="background:#dcfce7;padding:2px 8px;border-radius:10px">+${corte.alternativas[0].kmExtra} km</span>` : ''}
+              <span style="background:#dcfce7;padding:2px 8px;border-radius:10px">+${corte.alternativas?.[0]?.minExtra || ''} min</span>
             </div>
           </div>
           <div style="font-size:10px;color:#999;margin-top:8px;text-align:right">Fuente: ${corte.fuente}</div>
@@ -448,50 +448,87 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-function drawRoute(coords, type) {
-  // Remove existing layer of same type only
-  if (type === 'primary' && currentRouteLayer) {
+function drawPrimaryRoute(coords) {
+  if (currentRouteLayer) {
     currentRouteLayer.forEach(l => map.removeLayer(l));
     currentRouteLayer = null;
-  } else if (type === 'alternative' && altRouteLayer) {
-    altRouteLayer.forEach(l => map.removeLayer(l));
-    altRouteLayer = null;
   }
-  const isPrimary = type === 'primary';
   const defaultOpts = {
-    outline: { color: '#000', weight: isPrimary ? 9 : 7, opacity: 0.55, dashArray: isPrimary ? null : '12,6' },
-    layer: { color: isPrimary ? '#fbbf24' : '#22c55e', weight: isPrimary ? 5 : 4, opacity: 0.95, dashArray: isPrimary ? null : '12,6' }
+    outline: { color: '#000', weight: 9, opacity: 0.55 },
+    layer: { color: '#fbbf24', weight: 5, opacity: 0.95 }
   };
   const highlightOpts = {
-    outline: { color: '#000', weight: isPrimary ? 14 : 12, opacity: 0.7, dashArray: isPrimary ? null : '12,6' },
-    layer: { color: isPrimary ? '#fef08a' : '#86efac', weight: isPrimary ? 8 : 7, opacity: 1, dashArray: isPrimary ? null : '12,6' }
+    outline: { color: '#000', weight: 14, opacity: 0.7 },
+    layer: { color: '#fef08a', weight: 8, opacity: 1 }
   };
-
   const outline = L.polyline(coords, defaultOpts.outline).addTo(map);
   const layer = L.polyline(coords, defaultOpts.layer).addTo(map);
-
-  if (isPrimary) {
-    currentRouteLayer = [outline, layer];
-    currentRouteLayer._default = defaultOpts;
-    currentRouteLayer._highlight = highlightOpts;
-  } else {
-    altRouteLayer = [outline, layer];
-    altRouteLayer._default = defaultOpts;
-    altRouteLayer._highlight = highlightOpts;
-  }
-
+  currentRouteLayer = [outline, layer];
+  currentRouteLayer._default = defaultOpts;
+  currentRouteLayer._highlight = highlightOpts;
   return layer;
 }
 
-function highlightRoute(type) {
-  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
-  const otherLayer = type === 'primary' ? altRouteLayer : currentRouteLayer;
-  [layer, otherLayer].forEach(l => {
-    if (!l) return;
-    const opts = l === layer ? l._highlight : l._default;
-    l[0].setStyle(opts.outline);
-    l[1].setStyle(opts.layer);
+function drawAltRoute(coords, altId) {
+  // Remove existing alt with same id if any
+  const existing = currentAlternatives.findIndex(a => a.id === altId);
+  if (existing >= 0) {
+    currentAlternatives[existing].layer.forEach(l => map.removeLayer(l));
+    currentAlternatives.splice(existing, 1);
+  }
+  const colors = ['#22c55e', '#3b82f6', '#a855f7', '#f97316'];
+  const colorIdx = currentAlternatives.length % colors.length;
+  const color = colors[colorIdx];
+  const dash = '12,6';
+  const defaultOpts = {
+    outline: { color: '#000', weight: 7, opacity: 0.5, dashArray: dash },
+    layer: { color, weight: 4, opacity: 0.9, dashArray: dash }
+  };
+  const highlightOpts = {
+    outline: { color: '#000', weight: 12, opacity: 0.7, dashArray: dash },
+    layer: { color: '#93ffb0', weight: 7, opacity: 1, dashArray: dash }
+  };
+  const outline = L.polyline(coords, defaultOpts.outline).addTo(map);
+  const layer = L.polyline(coords, defaultOpts.layer).addTo(map);
+  const entry = { id: altId, layer: [outline, layer], _default: defaultOpts, _highlight: highlightOpts };
+  currentAlternatives.push(entry);
+  return entry;
+}
+
+function highlightRoute(type, altId) {
+  // Reset all alts to default
+  currentAlternatives.forEach(a => {
+    a.layer[0].setStyle(a._default.outline);
+    a.layer[1].setStyle(a._default.layer);
   });
+  if (currentRouteLayer) {
+    currentRouteLayer[0].setStyle(currentRouteLayer._default.outline);
+    currentRouteLayer[1].setStyle(currentRouteLayer._default.layer);
+  }
+
+  if (type === 'primary' && currentRouteLayer) {
+    currentRouteLayer[0].setStyle(currentRouteLayer._highlight.outline);
+    currentRouteLayer[1].setStyle(currentRouteLayer._highlight.layer);
+  } else if (type === 'alternative') {
+    const alt = currentAlternatives.find(a => a.id === altId);
+    if (alt) {
+      alt.layer[0].setStyle(alt._highlight.outline);
+      alt.layer[1].setStyle(alt._highlight.layer);
+    }
+  }
+}
+
+function focusRoute(type, altId) {
+  let coords = null;
+  if (type === 'primary' && currentRouteLayer) {
+    coords = currentRouteLayer[0].getLatLngs();
+  } else if (type === 'alternative') {
+    const alt = currentAlternatives.find(a => a.id === altId);
+    if (alt) coords = alt.layer[0].getLatLngs();
+  }
+  if (coords && coords.length > 0) {
+    map.fitBounds(L.latLngBounds(coords), { padding: [50, 50] });
+  }
 }
 
 function clearRoute() {
@@ -499,19 +536,8 @@ function clearRoute() {
     currentRouteLayer.forEach(l => map.removeLayer(l));
     currentRouteLayer = null;
   }
-  if (altRouteLayer) {
-    altRouteLayer.forEach(l => map.removeLayer(l));
-    altRouteLayer = null;
-  }
-}
-
-function focusRoute(type) {
-  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
-  if (!layer) return;
-  const coords = layer[0].getLatLngs();
-  if (coords && coords.length > 0) {
-    map.fitBounds(L.latLngBounds(coords), { padding: [50, 50] });
-  }
+  currentAlternatives.forEach(a => a.layer.forEach(l => map.removeLayer(l)));
+  currentAlternatives = [];
 }
 
 function fitRoute(coords) {

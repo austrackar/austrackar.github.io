@@ -159,7 +159,7 @@ function buildServiciosList(filter = 'combustible') {
   });
 }
 
-function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
+function updateRouteInfo({ distance, duration, hasCuts, cuts, altRoutes }) {
   const section = document.getElementById('route-info-section');
   section.classList.remove('hidden');
 
@@ -170,7 +170,7 @@ function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
   statusEl.style.color = hasCuts ? 'var(--danger)' : 'var(--success)';
 
   const warnEl = document.getElementById('route-warning');
-  const altEl = document.getElementById('route-alt-toggle');
+  const altContainer = document.getElementById('alternatives-container');
 
   if (hasCuts && cuts.length > 0) {
     warnEl.classList.remove('hidden');
@@ -180,14 +180,43 @@ function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
     warnEl.classList.add('hidden');
   }
 
-  if (alt) {
-    altEl.classList.remove('hidden');
-    document.getElementById('alt-route-details').innerHTML = `
-      <div class="alt-detail"><span>📍 ${alt.desc}</span></div>
-      <div class="alt-detail"><span>Distancia adicional</span><strong>+${alt.kmExtra} km</strong></div>
-      <div class="alt-detail"><span>Tiempo adicional</span><strong>+${alt.minExtra} min</strong></div>`;
+  // Render alternative routes
+  altContainer.innerHTML = '';
+  if (altRoutes && altRoutes.length > 0) {
+    altContainer.classList.remove('hidden');
+    const colors = ['#22c55e', '#3b82f6', '#a855f7', '#f97316'];
+    altRoutes.forEach((r, idx) => {
+      const box = document.createElement('div');
+      box.className = 'alt-box';
+      box.style.cssText = 'cursor:pointer;margin-top:10px';
+      box.dataset.altId = r.altId;
+      box.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="display:inline-block;width:20px;height:0;border-top:3px dashed ${colors[idx % colors.length]};flex-shrink:0"></span>
+          <h4 style="margin:0;font-size:13px">${r.desc}</h4>
+        </div>
+        <div style="display:flex;gap:12px;font-size:12px;color:var(--text3)">
+          ${r.kmExtra != null ? `<span>+${r.kmExtra} km</span>` : ''}
+          ${r.minExtra != null ? `<span>+${r.minExtra} min</span>` : ''}
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">Tocá para ver en el mapa</div>`;
+      box.onclick = () => {
+        highlightRoute('alternative', r.altId);
+        focusRoute('alternative', r.altId);
+      };
+      altContainer.appendChild(box);
+    });
   } else {
-    altEl.classList.add('hidden');
+    altContainer.classList.add('hidden');
+  }
+
+  // Wire primary route click
+  const primaryToggle = document.getElementById('route-primary-toggle');
+  if (primaryToggle) {
+    primaryToggle.onclick = () => {
+      highlightRoute('primary');
+      focusRoute('primary');
+    };
   }
 
   document.getElementById('download-btn').disabled = false;
