@@ -212,11 +212,16 @@ body {
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .section-header .section-title { margin-bottom: 0; }
 
-.filter-tabs { display: flex; gap: 4px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-.filter-tabs::-webkit-scrollbar { height: 3px; }
-.filter-tabs::-webkit-scrollbar-button { display: none; }
+.filter-tabs {
+  display: flex; gap: 4px; overflow-x: auto; white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #30363d transparent;
+}
+.filter-tabs::-webkit-scrollbar { height: 4px; width: 4px; }
+.filter-tabs::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 .filter-tabs::-webkit-scrollbar-track { background: transparent; }
-.filter-tabs::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+.filter-tabs::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; border: none; }
 .filter-tab {
   padding: 4px 10px; border-radius: 20px; font-size: 11px;
   font-family: 'Inter', sans-serif; cursor: pointer;
