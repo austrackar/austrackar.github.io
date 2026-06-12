@@ -216,12 +216,13 @@ body {
   display: flex; gap: 4px; overflow-x: auto; white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: #30363d transparent;
+  scrollbar-color: #30363d #0d1117;
+  padding-bottom: 6px;
 }
-.filter-tabs::-webkit-scrollbar { height: 4px; width: 4px; }
-.filter-tabs::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
-.filter-tabs::-webkit-scrollbar-track { background: transparent; }
-.filter-tabs::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; border: none; }
+.filter-tabs::-webkit-scrollbar { height: 6px; }
+.filter-tabs::-webkit-scrollbar-button { display: none; }
+.filter-tabs::-webkit-scrollbar-track { background: #0d1117; border-radius: 10px; }
+.filter-tabs::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
 .filter-tab {
   padding: 4px 10px; border-radius: 20px; font-size: 11px;
   font-family: 'Inter', sans-serif; cursor: pointer;
@@ -233,10 +234,10 @@ body {
 .serv-filter-tab {
   padding: 4px 10px; border-radius: 20px; font-size: 11px;
   font-family: 'Inter', sans-serif; cursor: pointer;
-  border: 1px solid var(--border); background: none; color: var(--text3);
+  border: 1px solid #30363d; background: #161b22; color: #8b949e;
   transition: all 0.2s;
 }
-.serv-filter-tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.serv-filter-tab.active { background: #f59e0b; color: #000; border-color: #f59e0b; font-weight: 600; }
 
 .alert-card {
   background: var(--panel2); border-radius: var(--radius-sm);
