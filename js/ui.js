@@ -333,5 +333,9 @@ function buildLegendModal() {
       <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 43 — Fitz Roy → Las Heras → Perito Moreno</span></div>
       <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 39 — Koluel Kaike ↔ Las Heras</span></div>
       <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 63 / 75 / 97 — Acceso yacimientos</span></div>
+      <div class="legend-section-title">⛽ Yacimientos Petroleros</div>
+      <div class="legend-item"><span>🛢️</span><span>Yacimiento / Área petrolera</span></div>
+      <div class="legend-item"><span>🏭</span><span>Refinería / Complejo industrial</span></div>
+      <div class="legend-item"><div style="width:12px;height:12px;background:#292524;border:1px solid #78716c;border-radius:50%;display:inline-block;vertical-align:middle"></div><span>Pozo petrolero individual</span></div>
     </div>`;
 }

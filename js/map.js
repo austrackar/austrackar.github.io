@@ -10,7 +10,8 @@ let cutLayers = [],
     climaLayers = [], 
     routeNetworkLayers = [],
     provincialRouteLayers = [],
-    oilRouteLayers = [];
+    oilRouteLayers = [],
+    oilFieldsCluster = null;
 const TILE_LAYERS = {
   argenmap_oscuro: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/argenmap_oscuro@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
   argenmap: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
@@ -70,10 +71,12 @@ function initMap() {
   });
 
   document.getElementById('oil-toggle-btn')?.addEventListener('click', toggleOilRoutes);
+  document.getElementById('oil-fields-toggle-btn')?.addEventListener('click', toggleOilFields);
 
   renderRoutesNetwork();
   renderProvincialRoutes();
   renderOilRoutes();
+  renderOilFields();
   renderCutsOnMap();
   renderSOSOnMap();
   renderClimaOnMap();
@@ -299,6 +302,88 @@ function toggleOilRoutes() {
     } else {
       map.removeLayer(layer);
     }
+  }
+}
+
+// ─── YACIMIENTOS PETROLEROS ────────────────
+function renderOilFields() {
+  if (!oilFieldsCluster) {
+    oilFieldsCluster = L.markerClusterGroup({
+      chunkedLoading: true,
+      maxClusterRadius: 60,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      disableClusteringAtZoom: 13,
+      iconCreateFunction: function(cluster) {
+        return L.divIcon({
+          html: '<div style="background:#292524;color:#f59e0b;border:2px solid #b45309;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.5)">🛢️' + cluster.getChildCount() + '</div>',
+          className: '', iconSize: [36, 36]
+        });
+      }
+    });
+  }
+
+  const existing = document.getElementById('oil-fields-cluster');
+  if (existing) map.removeLayer(oilFieldsCluster);
+
+  fetch('data/oil-fields.json')
+    .then(res => res.json())
+    .then(data => {
+      oilFieldsCluster.clearLayers();
+
+      const yacimientoIcon = L.divIcon({
+        html: '<div style="background:#292524;color:#f59e0b;border:2px solid #b45309;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,0.5)">🛢️</div>',
+        className: '', iconSize: [32, 32], iconAnchor: [16, 16]
+      });
+      const wellIcon = L.divIcon({
+        html: '<div style="background:#292524;border:1px solid #78716c;border-radius:50%;width:12px;height:12px;display:flex;align-items:center;justify-content:center;font-size:7px;box-shadow:0 1px 4px rgba(0,0,0,0.5)">⛽</div>',
+        className: '', iconSize: [12, 12], iconAnchor: [6, 6]
+      });
+      const refineryIcon = L.divIcon({
+        html: '<div style="background:#1c1917;color:#f59e0b;border:2px solid #f59e0b;border-radius:8px;padding:2px 6px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5)">🏭 Refinería</div>',
+        className: '', iconSize: [80, 22], iconAnchor: [40, 11]
+      });
+
+      data.features.forEach(f => {
+        if (!f.geometry || !f.geometry.coordinates) return;
+        const [lng, lat] = f.geometry.coordinates;
+        const props = f.properties;
+        let marker;
+        if (props.category === 'yacimiento' || props.name?.includes('Refinería') || props.name?.includes('Polo') || props.name?.includes('Complejo')) {
+          const icon = (props.name?.includes('Refinería') || props.name?.includes('Polo') || props.name?.includes('Complejo') || props.name?.includes('Destilería')) ? refineryIcon : yacimientoIcon;
+          marker = L.marker([lat, lng], { icon });
+          const op = props.name?.includes('Refinería') || props.name?.includes('Polo') ? '' : '<div style="color:#78716c;font-size:10px">' + (props.region || '') + '</div>';
+          marker.bindPopup(`
+            <div style="font-family:Inter,sans-serif;min-width:180px">
+              <div style="background:#b45309;color:white;padding:8px 12px;border-radius:6px 6px 0 0;margin:-4px -4px 8px;font-size:13px;font-weight:700">🛢️ ${props.name}</div>
+              ${op}
+              <div style="font-size:11px;color:#666">${props.operator ? 'Operador: <strong>' + props.operator + '</strong>' : ''}</div>
+            </div>
+          `);
+        } else {
+          marker = L.marker([lat, lng], { icon: wellIcon });
+        }
+        oilFieldsCluster.addLayer(marker);
+      });
+
+      const show = localStorage.getItem('oilFieldsVisible') !== 'false';
+      if (show) {
+        map.addLayer(oilFieldsCluster);
+        document.getElementById('oil-fields-toggle-btn')?.classList.add('active');
+      }
+    })
+    .catch(err => console.error('Error cargando yacimientos:', err));
+}
+
+function toggleOilFields() {
+  const btn = document.getElementById('oil-fields-toggle-btn');
+  const visible = btn.classList.toggle('active');
+  localStorage.setItem('oilFieldsVisible', visible);
+  if (visible) {
+    if (oilFieldsCluster) map.addLayer(oilFieldsCluster);
+  } else {
+    if (oilFieldsCluster) map.removeLayer(oilFieldsCluster);
   }
 }
 
