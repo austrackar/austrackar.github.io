@@ -207,6 +207,7 @@ function calculateRoute() {
       const primary = data.routes[0];
       const alt = data.routes[1] || null;
       const coords = primary.geometry.coordinates.map(c => [c[1], c[0]]);
+      clearRoute();
       drawRoute(coords, 'primary');
 
       // Check for road cuts along the route

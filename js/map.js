@@ -449,7 +449,14 @@ function formatDate(dateStr) {
 }
 
 function drawRoute(coords, type) {
-  clearRoute();
+  // Remove existing layer of same type only
+  if (type === 'primary' && currentRouteLayer) {
+    currentRouteLayer.forEach(l => map.removeLayer(l));
+    currentRouteLayer = null;
+  } else if (type === 'alternative' && altRouteLayer) {
+    altRouteLayer.forEach(l => map.removeLayer(l));
+    altRouteLayer = null;
+  }
   const isPrimary = type === 'primary';
   const defaultOpts = {
     outline: { color: '#000', weight: isPrimary ? 9 : 7, opacity: 0.55, dashArray: isPrimary ? null : '12,6' },
