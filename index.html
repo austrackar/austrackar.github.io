@@ -145,19 +145,28 @@
         </div>
 
         <div id="route-warning" class="hidden">
-          <div class="warning-box">
+          <div id="route-primary-toggle" class="warning-box" style="cursor:pointer">
             <span style="font-size:20px">⚠️</span>
-            <div>
-              <strong>Ruta afectada por corte</strong>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="display:inline-block;width:20px;height:4px;background:#fbbf24;border-radius:2px;flex-shrink:0"></span>
+                <strong>Ruta afectada por corte</strong>
+              </div>
               <p id="warning-text"></p>
             </div>
+            <span id="primary-route-eye" style="font-size:14px">👁️</span>
           </div>
-          <div id="alternative-route-info" class="alt-box hidden">
-            <h4>✅ Ruta Alternativa Disponible</h4>
+          <div id="route-alt-toggle" class="alt-box hidden" style="cursor:pointer">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="display:inline-block;width:20px;height:4px;background:#22c55e;border-radius:2px;border-top:2px dashed #22c55e;background:none;flex-shrink:0"></span>
+              <h4 style="margin:0">Ruta Alternativa</h4>
+            </div>
             <div id="alt-route-details"></div>
-
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+              <span style="font-size:11px;color:var(--text3)">Tocá para ver en el mapa</span>
+              <span id="alt-route-eye" style="font-size:14px">👁️</span>
+            </div>
           </div>
-
         </div>
       </div>
 
@@ -331,7 +340,7 @@
 <script src="js/map.js?v=9"></script>
 <script src="js/ui.js?v=10"></script>
 <script src="js/data-fetcher.js?v=5"></script>
-<script src="js/app.js?v=20"></script>
+<script src="js/app.js?v=21"></script>
 <script src="js/flota.js?v=4"></script>
 
 </body>

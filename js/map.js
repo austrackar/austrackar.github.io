@@ -482,6 +482,27 @@ function clearRoute() {
   }
 }
 
+function toggleRoute(type) {
+  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
+  if (!layer) return false;
+  const visible = layer[0].options.opacity > 0;
+  const newOpacity = visible ? 0 : 1;
+  layer.forEach(l => {
+    l.setStyle({ opacity: newOpacity });
+    if (l.setStyle) l.setStyle({ pointerEvents: newOpacity === 0 ? 'none' : '' });
+  });
+  return !visible;
+}
+
+function focusRoute(type) {
+  const layer = type === 'primary' ? currentRouteLayer : altRouteLayer;
+  if (!layer) return;
+  const coords = layer[0].getLatLngs();
+  if (coords && coords.length > 0) {
+    map.fitBounds(L.latLngBounds(coords), { padding: [50, 50] });
+  }
+}
+
 function fitRoute(coords) {
   if (coords && coords.length > 0) {
     map.fitBounds(L.latLngBounds(coords), { padding: [50, 50] });

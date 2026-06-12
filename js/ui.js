@@ -170,7 +170,7 @@ function updateRouteInfo({ distance, duration, hasCuts, cuts, alt }) {
   statusEl.style.color = hasCuts ? 'var(--danger)' : 'var(--success)';
 
   const warnEl = document.getElementById('route-warning');
-  const altEl = document.getElementById('alternative-route-info');
+  const altEl = document.getElementById('route-alt-toggle');
 
   if (hasCuts && cuts.length > 0) {
     warnEl.classList.remove('hidden');

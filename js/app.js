@@ -257,6 +257,26 @@ function calculateRoute() {
         document.getElementById('route-warning')?.classList.add('hidden');
       }
 
+      // Route toggle click handlers
+      const primaryToggle = document.getElementById('route-primary-toggle');
+      const altToggle = document.getElementById('route-alt-toggle');
+      if (primaryToggle) {
+        primaryToggle.onclick = () => {
+          const visible = toggleRoute('primary');
+          const eye = document.getElementById('primary-route-eye');
+          if (eye) eye.style.opacity = visible ? '1' : '0.3';
+          if (visible) focusRoute('primary');
+        };
+      }
+      if (altToggle) {
+        altToggle.onclick = () => {
+          const visible = toggleRoute('alternative');
+          const eye = document.getElementById('alt-route-eye');
+          if (eye) eye.style.opacity = visible ? '1' : '0.3';
+          if (visible) focusRoute('alternative');
+        };
+      }
+
       // Enable sharing button for employees
       if (sharingProfile) {
         const destName = document.getElementById('dest-input')?.value || 'Destino';
