@@ -9,7 +9,8 @@ let cutLayers = [],
     sosRouteLayers = [],
     climaLayers = [], 
     routeNetworkLayers = [],
-    provincialRouteLayers = [];
+    provincialRouteLayers = [],
+    oilRouteLayers = [];
 const TILE_LAYERS = {
   argenmap_oscuro: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/argenmap_oscuro@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
   argenmap: { url: 'https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{y}.png', attr: '<a href="http://www.ign.gob.ar" target="_blank">IGN Argentina</a> + <a href="http://www.osm.org/copyright" target="_blank">OpenStreetMap</a>', tms: true, maxZoom: 18 },
@@ -68,8 +69,11 @@ function initMap() {
     });
   });
 
+  document.getElementById('oil-toggle-btn')?.addEventListener('click', toggleOilRoutes);
+
   renderRoutesNetwork();
   renderProvincialRoutes();
+  renderOilRoutes();
   renderCutsOnMap();
   renderSOSOnMap();
   renderClimaOnMap();
@@ -240,6 +244,61 @@ function renderProvincialRoutes() {
 
     });
 
+}
+
+// ─── RUTAS PETROLERAS SANTA CRUZ ────────────
+function renderOilRoutes() {
+  oilRouteLayers.forEach(l => map.removeLayer(l));
+  oilRouteLayers = [];
+
+  fetch('data/oil-routes.json')
+    .then(res => res.json())
+    .then(data => {
+      const layer = L.geoJSON(data, {
+        filter: feature => {
+          return feature.geometry && (
+            feature.geometry.type === 'LineString' ||
+            feature.geometry.type === 'MultiLineString'
+          );
+        },
+        style: feature => ({
+          color: '#b45309',
+          weight: isMobile ? 1.5 : 3,
+          opacity: isMobile ? 0.5 : 0.7
+        }),
+        onEachFeature: (feature, layer) => {
+          const ref = feature.properties.ref;
+          const name = feature.properties.name;
+          layer.bindTooltip(
+            ref ? `🛢️ RP ${ref}` : name || 'Ruta Petrolera',
+            { sticky: true }
+          );
+        }
+      });
+
+      const show = localStorage.getItem('oilRoutesVisible') !== 'false';
+      if (show) {
+        layer.addTo(map);
+        document.getElementById('oil-toggle-btn')?.classList.add('active');
+      }
+      oilRouteLayers.push(layer);
+    })
+    .catch(err => {
+      console.error('Error cargando rutas petroleras:', err);
+    });
+}
+
+function toggleOilRoutes() {
+  const btn = document.getElementById('oil-toggle-btn');
+  const layer = oilRouteLayers[0];
+  if (!layer) return;
+  const visible = btn.classList.toggle('active');
+  if (visible) {
+    map.addLayer(layer);
+  } else {
+    map.removeLayer(layer);
+  }
+  localStorage.setItem('oilRoutesVisible', visible);
 }
 
 // ─── FILTRO POR VISTA ─────────────────────────

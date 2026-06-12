@@ -328,5 +328,10 @@ function buildLegendModal() {
       <div class="legend-section-title">🗺️ Rutas Calculadas</div>
       <div class="legend-item"><div style="width:24px;height:4px;background:#3b82f6;border-radius:2px"></div><span>Ruta principal</span></div>
       <div class="legend-item"><div style="width:24px;height:4px;background:#22c55e;border-radius:2px;border-top:2px dashed #22c55e;background:none"></div><span>Ruta alternativa</span></div>
+      <div class="legend-section-title">🛢️ Rutas Petroleras (Santa Cruz)</div>
+      <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 12 — Caleta Olivia → Las Heras</span></div>
+      <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 43 — Fitz Roy → Las Heras → Perito Moreno</span></div>
+      <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 39 — Koluel Kaike ↔ Las Heras</span></div>
+      <div class="legend-item"><div style="width:24px;height:4px;background:#b45309;border-radius:2px"></div><span>RP 63 / 75 / 97 — Acceso yacimientos</span></div>
     </div>`;
 }
