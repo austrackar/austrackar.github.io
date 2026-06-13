@@ -255,13 +255,14 @@ function showNotification({ title, body, type = 'info', duration = 6000, locatio
   setTimeout(() => el.remove(), duration);
 }
 
+const modalBtns = ['panel-handle','mobile-layers-btn','mobile-zoom-controls','mobile-notif-btn','mobile-weather-btn','mobile-user-btn','mobile-logout-btn','layer-controls'];
 function showModal(id) {
   document.getElementById(id).classList.remove('hidden');
-  document.getElementById('mobile-ui').classList.add('modal-open');
+  modalBtns.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
 }
 function hideModal(id) {
   document.getElementById(id).classList.add('hidden');
-  document.getElementById('mobile-ui').classList.remove('modal-open');
+  modalBtns.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = ''; });
 }
 
 function showLoading() { document.getElementById('map-loading').classList.remove('hidden'); }
