@@ -83,11 +83,13 @@ function checkOnlineStatus() {
 
 function toggleFlotaPanel() {
   const section = document.getElementById('flota-section');
-  const isHidden = section.classList.contains('hidden');
   section.classList.toggle('hidden');
-  // Close other panels if opening
   if (!section.classList.contains('hidden')) {
-    // Scroll to flota section
+    if (window.innerWidth <= 768) {
+      const panel = document.getElementById('left-panel');
+      panel?.classList.add('open');
+      document.getElementById('panel-handle')?.classList.add('down');
+    }
     section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
@@ -114,14 +116,15 @@ function setupEventListeners() {
   document.querySelector('#legend-modal .modal-box')?.addEventListener('click', (e) => e.stopPropagation());
 
   // Notifications toggle
-  document.getElementById('notif-toggle-btn')?.addEventListener('click', () => {
+  function toggleNotif() {
     const container = document.getElementById('notifications-container');
-    container.style.display = container.style.display === 'none' ? 'block' : 'none';
-  });
-  document.getElementById('mobile-notif-btn')?.addEventListener('click', () => {
-    const container = document.getElementById('notifications-container');
-    container.style.display = container.style.display === 'none' ? 'block' : 'none';
-  });
+    const isHidden = container.style.display === 'none' || !container.style.display;
+    container.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) setTimeout(() => { container.style.display = 'none'; }, 4000);
+  }
+  document.getElementById('notif-toggle-btn')?.addEventListener('click', toggleNotif);
+  document.getElementById('mobile-notif-btn')?.addEventListener('click', toggleNotif);
+  document.getElementById('mobile-user-btn')?.addEventListener('click', toggleFlotaPanel);
 
   // Alert filter tabs
   document.querySelectorAll('.filter-tab').forEach(tab => {
