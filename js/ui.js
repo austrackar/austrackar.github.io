@@ -255,8 +255,14 @@ function showNotification({ title, body, type = 'info', duration = 6000, locatio
   setTimeout(() => el.remove(), duration);
 }
 
-function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
-function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
+function showModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+  document.getElementById('mobile-ui').classList.add('modal-open');
+}
+function hideModal(id) {
+  document.getElementById(id).classList.add('hidden');
+  document.getElementById('mobile-ui').classList.remove('modal-open');
+}
 
 function showLoading() { document.getElementById('map-loading').classList.remove('hidden'); }
 function hideLoading() { document.getElementById('map-loading').classList.add('hidden'); }

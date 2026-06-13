@@ -108,6 +108,14 @@
 
   #mobile-search-toggle { display: none !important; }
   #mobile-search { display: none !important; }
+  #mobile-ui.modal-open #panel-handle,
+  #mobile-ui.modal-open #mobile-layers-btn,
+  #mobile-ui.modal-open #mobile-zoom-controls,
+  #mobile-ui.modal-open #mobile-notif-btn,
+  #mobile-ui.modal-open #mobile-weather-btn,
+  #mobile-ui.modal-open #mobile-user-btn,
+  #mobile-ui.modal-open #mobile-logout-btn,
+  #mobile-ui.modal-open #layer-controls { display: none !important; }
 
   /* Mobile layers button */
   #mobile-layers-btn {
