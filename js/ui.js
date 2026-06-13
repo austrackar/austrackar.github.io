@@ -255,14 +255,19 @@ function showNotification({ title, body, type = 'info', duration = 6000, locatio
   setTimeout(() => el.remove(), duration);
 }
 
-const modalBtns = ['panel-handle','mobile-layers-btn','mobile-zoom-controls','mobile-notif-btn','mobile-weather-btn','mobile-user-btn','mobile-logout-btn','layer-controls'];
 function showModal(id) {
   document.getElementById(id).classList.remove('hidden');
-  modalBtns.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  const ui = document.getElementById('mobile-ui');
+  if (ui) ui.dataset.modalOpen = '1';
+  const lc = document.getElementById('layer-controls');
+  if (lc) lc.dataset.modalOpen = '1';
 }
 function hideModal(id) {
   document.getElementById(id).classList.add('hidden');
-  modalBtns.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = ''; });
+  const ui = document.getElementById('mobile-ui');
+  if (ui) delete ui.dataset.modalOpen;
+  const lc = document.getElementById('layer-controls');
+  if (lc) delete lc.dataset.modalOpen;
 }
 
 function showLoading() { document.getElementById('map-loading').classList.remove('hidden'); }
