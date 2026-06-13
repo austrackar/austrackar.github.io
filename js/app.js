@@ -103,11 +103,15 @@ function setupEventListeners() {
   // Weather modal
   document.getElementById('weather-btn')?.addEventListener('click', () => showModal('windy-modal'));
   document.getElementById('mobile-weather-btn')?.addEventListener('click', () => showModal('windy-modal'));
-  document.getElementById('windy-close')?.addEventListener('click', () => hideModal('windy-modal'));
+  document.getElementById('windy-close')?.addEventListener('click', (e) => { e.stopPropagation(); hideModal('windy-modal'); });
+  document.getElementById('windy-modal')?.addEventListener('click', () => hideModal('windy-modal'));
+  document.querySelector('#windy-modal .modal-box')?.addEventListener('click', (e) => e.stopPropagation());
 
   // Legend modal
   document.getElementById('legend-toggle-btn')?.addEventListener('click', () => showModal('legend-modal'));
-  document.getElementById('legend-close')?.addEventListener('click', () => hideModal('legend-modal'));
+  document.getElementById('legend-close')?.addEventListener('click', (e) => { e.stopPropagation(); hideModal('legend-modal'); });
+  document.getElementById('legend-modal')?.addEventListener('click', () => hideModal('legend-modal'));
+  document.querySelector('#legend-modal .modal-box')?.addEventListener('click', (e) => e.stopPropagation());
 
   // Notifications toggle
   document.getElementById('notif-toggle-btn')?.addEventListener('click', () => {
