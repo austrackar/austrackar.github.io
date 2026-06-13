@@ -137,12 +137,6 @@ function setupEventListeners() {
     });
   });
 
-  // Mobile search toggle
-  document.getElementById('mobile-search-toggle')?.addEventListener('click', () => {
-    const ms = document.getElementById('mobile-search');
-    ms.style.display = ms.style.display === 'none' ? 'block' : 'none';
-  });
-
   // Mobile layers popup
   document.getElementById('mobile-layers-btn')?.addEventListener('click', () => {
     document.getElementById('layer-controls').classList.toggle('open');
