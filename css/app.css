@@ -298,6 +298,9 @@ body {
   
   z-index: 2000;
 }
+#mobile-layers-btn, #mobile-layers-close {
+  display: none;
+}
 .layer-btn {
   width: 48px; 
   height: 48px;

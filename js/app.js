@@ -143,16 +143,27 @@ function setupEventListeners() {
     ms.style.display = ms.style.display === 'none' ? 'block' : 'none';
   });
 
-  // Mobile alerts button
-  document.querySelector('.mobile-alerts-btn')?.addEventListener('click', () => {
-    const panel = document.getElementById('left-panel');
-    panel.classList.toggle('open');
-    panel.scrollTop = 0;
+  // Mobile layers popup
+  document.getElementById('mobile-layers-btn')?.addEventListener('click', () => {
+    document.getElementById('layer-controls').classList.toggle('open');
+  });
+  document.getElementById('mobile-layers-close')?.addEventListener('click', () => {
+    document.getElementById('layer-controls').classList.remove('open');
+  });
+  document.addEventListener('click', (e) => {
+    const lc = document.getElementById('layer-controls');
+    const lb = document.getElementById('mobile-layers-btn');
+    if (lc.classList.contains('open') && !lc.contains(e.target) && !lb.contains(e.target)) {
+      lc.classList.remove('open');
+    }
   });
 
-  // Panel handle (mobile)
+  // Panel handle (mobile) with arrow toggle
   document.getElementById('panel-handle')?.addEventListener('click', () => {
-    document.getElementById('left-panel').classList.toggle('open');
+    const panel = document.getElementById('left-panel');
+    const open = panel.classList.toggle('open');
+    document.getElementById('panel-handle').classList.toggle('down', open);
+    if (open) panel.scrollTop = 0;
   });
 
   // Route calculation
