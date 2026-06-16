@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuth();
   onAuthReady((user, profile) => {
     if (!user) { window.location.href = 'login.html'; return; }
+    window.__profile = profile;
     document.getElementById('user-name').textContent = profile?.nombre || user.email;
     document.getElementById('user-btn').style.display = '';
 
@@ -355,6 +356,7 @@ function requestUserLocation() {
   function onPosition(pos) {
     const lat = pos.coords.latitude;
     const lng = pos.coords.longitude;
+    window.userLocationCoords = { lat, lng };
     checkNearbyAlerts(lat, lng);
 
     if (userLocationMarker) {

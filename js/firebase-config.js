@@ -13,7 +13,8 @@
 // {
 //   "rules": {
 //     "usuarios": { "$uid": { ".read": "$uid === auth.uid", ".write": "$uid === auth.uid" } },
-//     "flota": { "$empresa": { ".read": "auth != null", ".write": "auth != null" } }
+//     "flota": { "$empresa": { ".read": "auth != null", ".write": "auth != null" } },
+//     "reportes": { ".read": "auth != null", ".write": "auth != null" }
 //   }
 // }
 // ═══════════════════════════════════════════════

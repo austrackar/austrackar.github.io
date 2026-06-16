@@ -205,6 +205,25 @@
         <div id="servicios-list"></div>
       </div>
 
+      <!-- REPORTES -->
+      <div class="panel-section">
+        <div class="section-title">📝 Reportes de Ruta</div>
+        <div id="reportes-form" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+          <textarea id="reporte-texto" placeholder="Ej: RP 12 con neblina a la altura de Las Heras..." style="background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:13px;font-family:inherit;resize:vertical;min-height:60px"></textarea>
+          <div style="display:flex;gap:8px">
+            <select id="reporte-categoria" style="flex:1;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;color:var(--text);font-size:13px;font-family:inherit">
+              <option value="ruta">🚧 Estado de ruta</option>
+              <option value="clima">🌤 Clima</option>
+              <option value="accidente">🚑 Accidente</option>
+              <option value="corte">⛔ Corte / Desvío</option>
+              <option value="otro">📌 Otro</option>
+            </select>
+            <button id="reporte-submit" style="background:var(--accent);color:#000;border:none;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Enviar</button>
+          </div>
+        </div>
+        <div id="reportes-feed" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+
       <!-- FLOTA -->
       <div id="flota-section" class="panel-section hidden">
         <div class="section-header">
@@ -328,7 +347,8 @@
 <script src="js/ui.js?v=10"></script>
 <script src="js/data-fetcher.js?v=5"></script>
 <script src="js/app.js?v=26"></script>
-<script src="js/flota.js?v=4"></script>
+  <script src="js/flota.js?v=4"></script>
+  <script src="js/reportes.js?v=1"></script>
 
 </body>
 </html>
